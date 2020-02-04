@@ -63,12 +63,26 @@ public class Vehicle extends SimulatedObject{
 	} 
 	
 	void setContaminationClass(int c) { 
-//		pone el valor de contaminación del vehículo a c.
-//		Lanza una excepción si c no es un valor entre 0 y 10 (ambos incluidos).
-		
+		if(c<0 || c>10)
+			throw new Exception();
+		contClass = c;	
 	}
 	
 	void advance(int time) { 
+		
+		if(VehicleStatus != ***) {
+			//a
+			int a = localization + actualSpeed;
+			int b;
+			int oldLoc = localization;
+			if(a>b)
+				localization = b;
+			else
+				localization = a;
+			
+			//b
+			int c = (contClass*oldLoc)/10;
+		}
 //		si el estado del vehículo no es Traveling, no hace nada. En otro caso:
 //		
 //		(a) se actualiza su localización al valor mínimo entre (i) la localización actual más
