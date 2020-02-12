@@ -21,4 +21,9 @@ public class Road extends SimulatedObject{
 		return null;
 	}
 
+	public int getLenght() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
