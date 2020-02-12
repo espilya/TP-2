@@ -16,14 +16,9 @@ public abstract class Road extends SimulatedObject{
 	protected Junction srcJunc;
 	protected Junction destJunc;
 	protected Weather weather;
-<<<<<<< HEAD
 	protected List <Vehicle> vehicles;  //? is that enough?    (descending order o orden descendente)
 	Road(String id, Junction srcJunc, Junction destJunc,int maxSpeed,int contLimit,int length, Weather weather) throws ValueParseException {
-=======
-	protected List <Vehicle> vehicles;  //? is that enough?
-	//spisok avtomobiley na doroge sorted by their location na doroge (descending order o orden descendente)
-	protected Road(String id, Junction srcJunc, Junction destJunc,int maxSpeed,int contLimit,int length, Weather weather) {
->>>>>>> 9100c9d8041d7dcc57f5fe3340c891e466848e27
+
 		super(id);
 		if(maxSpeed <= 0) //positive <=0, non-negative < 0
 			throw new ValueParseException("Negative value for maxSpeed");
