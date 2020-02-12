@@ -9,7 +9,11 @@ public class RoadMap {
 	private List<Vehicle> vehicleList;
 	private Map<String,Junction>  junctionMap;
 	private Map<String,Vehicle> vehicleMap;
-	
+
+	protected RoadMap(){} // not sure that it was needed in presentation
+	//ClassRoad Map has a single package protected constructor without arguments, it simply
+	// initializes the data-structures mentioned above.
+
 	void addJunction(Junction j) {
 		
 	}
