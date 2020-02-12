@@ -9,14 +9,13 @@ import exceptions.ValueParseException;
 
 public class Vehicle extends SimulatedObject{
 	
-//			List<Junction>
 	String id;
-	private List iter;
+	private List<Junction> iter;
 	private int maxSpeed;
 	private int actualSpeed;
 	private VehicleStatus state;
 	private Road actualRoad;
-	private int localization;
+	private int localization;		
 	private int contClass; //0-10
 	private int totalCont;
 	private int totalDistance;
@@ -24,28 +23,23 @@ public class Vehicle extends SimulatedObject{
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
 			super(id);
 			if(maxSpeed < 0)
-				throw new Exception(); //add new Exceptions
+				throw new ValueParseException("Negative value for maxSpeed");
 			else if(contClass < 0 || contClass > 10)
-				throw new Exception();
-			else if(maxSpeed < 0)
-				throw new Exception();
+				throw new ValueParseException("Incorrect value for contamination class");
 			else if(itinerary.size < 2)
-				throw new Exception();
-			
+				throw new ValueParseException("Incorrect value for ");
 			
 			this.id = id;
 			this.maxSpeed=maxSpeed;
 			this.contClass=contClass;
 			
+//			Además, no se debe compartir el argumento itinerary, sino que debes hacer una copia
+//			de dicho argumento en una lista de sólo lectura, para evitar modificarlo desde fuera:
+//			Collections.unmodifiableList(new ArrayList<>(itinerary));
+			
 			//...
 			
 			}
-
-
-//	Vehicle(String id) {
-//		super(id);
-//		// TODO Auto-generated method stub
-//	}
 
 	
 	
@@ -67,22 +61,31 @@ public class Vehicle extends SimulatedObject{
 	
 	void advance(int time) { 
 		
-		if(state != Traveling) {
-			//a
+		if(!state.equals(VehicleStatus.TRAVELING)) {
+			//a+
 			int a = localization + actualSpeed;
-			int b = actualRoad.getLenght();
+			int roadLength = actualRoad.getLength();
 			int oldLoc = localization;
-			if(a>b)
-				localization = b;
+			if(a>roadLength)
+				localization = roadLength;
 			else
 				localization = a;
 			
-			//b
+			//b +/-
 			int c = (contClass * (localization-oldLoc))/10;
+			totalCont += c;
+			//y también añade c al grado de
+//			contaminación de la carretera actual, invocando al método correspondiente de
+//			la clase Road.
 			
+			//c +/-
+			if(localization >= roadLength) {
+//				el vehículo entra en la cola del cruce correspondiente (llamando
+//						a un método de la clase Junction). Recuerda que debes modificar el estado del
+//						vehículo.
+				//mashina vhodit v Juction
+			}
 			
-			//c
-			//...
 			
 		}
 //		si el estado del vehículo no es Traveling, no hace nada. En otro caso:
@@ -105,6 +108,11 @@ public class Vehicle extends SimulatedObject{
 	
 	
 	void moveToNextRoad() {
+		
+		
+//		actualRoad.exit(this);
+//		..
+		
 //		mueve el vehículo a la siguiente carretera. Este proceso
 //		se hace saliendo de la carretera actual y entrando a la siguiente carretera de su
 //		itinerario, en la localización 0. Para salir y entrar de las carreteras, debes utilizar el
