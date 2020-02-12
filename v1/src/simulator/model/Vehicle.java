@@ -4,6 +4,8 @@ import java.awt.List;
 
 import org.json.JSONObject;
 
+import exceptions.ValueParseException;
+
 
 public class Vehicle extends SimulatedObject{
 	
@@ -35,12 +37,7 @@ public class Vehicle extends SimulatedObject{
 			this.maxSpeed=maxSpeed;
 			this.contClass=contClass;
 			
-			//iter=itinerary;
-			
-//			Además, no se debe compartir el argumento itinerary, sino que debes hacer una copia
-//			 de dicho argumento en una lista de sólo lectura, para evitar modificarlo desde fuera:
-			
-//			 Collections.unmodifiableList(new ArrayList<>(itinerary));
+			//...
 			
 			}
 
@@ -52,28 +49,28 @@ public class Vehicle extends SimulatedObject{
 
 	
 	
-	void setSpeed(int s) {
+	void setSpeed(int s) throws ValueParseException {
 	if(maxSpeed > s)
 		if(s<0)
-			throw new Exception();
+			throw new ValueParseException("Negative value for speed");
 		else
 			actualSpeed = s;
 	else
 		actualSpeed = maxSpeed;
 	} 
 	
-	void setContaminationClass(int c) { 
+	void setContaminationClass(int c) throws ValueParseException { 
 		if(c<0 || c>10)
-			throw new Exception();
+			throw new ValueParseException("Incorrect value for contamination class");
 		contClass = c;	
 	}
 	
 	void advance(int time) { 
 		
-		if(VehicleStatus != ***) {
+		if(state != Traveling) {
 			//a
 			int a = localization + actualSpeed;
-			int b;
+			int b = actualRoad.getLenght();
 			int oldLoc = localization;
 			if(a>b)
 				localization = b;
@@ -81,7 +78,12 @@ public class Vehicle extends SimulatedObject{
 				localization = a;
 			
 			//b
-			int c = (contClass*oldLoc)/10;
+			int c = (contClass * (localization-oldLoc))/10;
+			
+			
+			//c
+			//...
+			
 		}
 //		si el estado del vehículo no es Traveling, no hace nada. En otro caso:
 //		
