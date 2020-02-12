@@ -1,6 +1,14 @@
 package simulator.model;
 
+import java.util.List;
+import java.util.Map;
+
 public class RoadMap {
+	private List<Junction> junctionList;
+	private List<Road> roadList;
+	private List<Vehicle> vehicleList;
+	private Map<String,Junction>  junctionMap;
+	private Map<String,Vehicle> vehicleMap;
 	
 	void addJunction(Junction j) {
 		
