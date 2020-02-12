@@ -45,15 +45,9 @@ public abstract class Road extends SimulatedObject{
 		this.weather = weather;
 
 	}
-<<<<<<< HEAD
-	
+
 	public void enter(Vehicle v){
-=======
 
-
-	//protected or not??
-	void enter(Vehicle v){
->>>>>>> 9100c9d8041d7dcc57f5fe3340c891e466848e27
 
 	}
 
