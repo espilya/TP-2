@@ -13,7 +13,7 @@ public class Road extends SimulatedObject{
 	protected Weather weather;
 	protected List <Vehicle> vehicles;  //? is that enough?
 	//spisok avtomobiley na doroge sorted by their location na doroge (descending order o orden descendente)
-	Road(String id, Junction srcJunc, Junction destJunc,int maxSpeed,int contLimit,int length, Weather weather) {
+	protected Road(String id, Junction srcJunc, Junction destJunc,int maxSpeed,int contLimit,int length, Weather weather) {
 		super(id);
 		if(maxSpeed <= 0) //positive <=0, non-negative < 0
 			throw new Exception();
@@ -35,6 +35,8 @@ public class Road extends SimulatedObject{
 		this.weather = weather;
 
 	}
+
+
 	//protected or not??
 	void enter(Vehicle v){
 
