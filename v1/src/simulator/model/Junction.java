@@ -4,6 +4,7 @@ public class Junction extends SimulatedObject {
 	
 	// atributos
 
+
 	Junction(String id, LightSwitchStrategy lsStrategy, DequeingStrategy dqStrategy, int xCoor, int yCoor) {
 		
 		super(id);
