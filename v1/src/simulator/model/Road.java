@@ -84,7 +84,8 @@ public abstract class Road extends SimulatedObject{
 
 		Iterator<Vehicle> it = vehicles.iterator();
 		while ( it.hasNext() )
-			Vehicle n = it.next();  
+			Vehicle n = it.next(); 
+		
 		
 		
 		
