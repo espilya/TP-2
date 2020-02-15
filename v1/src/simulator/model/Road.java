@@ -12,6 +12,7 @@ public abstract class Road extends SimulatedObject{
 	protected int contLimit;
 	protected int contTotal;
 	protected int maxSpeed;
+	protected int actualSpeed;
 	protected int speedLimit;
 	protected Junction srcJunc;
 	protected Junction destJunc;
@@ -82,6 +83,8 @@ public abstract class Road extends SimulatedObject{
 		int size = vehicles.size();
 		
 
+		
+		//iterator
 		Iterator<Vehicle> it = vehicles.iterator();
 		while ( it.hasNext() )
 			Vehicle n = it.next(); 

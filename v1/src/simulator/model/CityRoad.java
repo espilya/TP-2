@@ -9,24 +9,31 @@ public class CityRoad extends Road {
 		// the speed limit does not change, it is always the maximum speed.
 	}
 
-	public void reduceTotalContamination(int totalCont, Weather weather) {
+	public void reduceTotalContamination() {
+		//IM NOT SURE, NEED ASK TO TEACHER
+		//NOT SURE IF WE MUST THROW EXCEPTION OR SET IT TO ZERO
 
-		if (weather.name == "WINDY" || weather.name == "STORM"){ //name netu
-			totalCont -= 10;
-			if (totalCont < 0)
+		if (weather.equals(Weather.WINDY) || weather.equals(Weather.STORM)){
+			contTotal -= 10;
+			if (contTotal < 0) {
+
+				contTotal = 0;
 				throw new Exception();
+			}
 		}
 		else {
-			totalCont -= 2;
-			if (totalCont < 0)
+			contTotal -= 2;
+			if (contTotal < 0) {
+				contTotal = 0;
 				throw new Exception();
-		}
-		//check if I am right
+
+			}
+			}
 	}
 
-	public void calculateVehicleSpeed(int maxSpeed, int contClass) {
+	public void calculateVehicleSpeed(int contClassCar) {
 
-		int vehicleSpeed = ((11-maxSpeed)/11)*contClass;
+		int vehicleSpeed = (int) (((11.0-contClassCar)/11.0)* maxSpeed);
 		System.out.println(vehicleSpeed); // or write to file or do nothing
 	}
 }

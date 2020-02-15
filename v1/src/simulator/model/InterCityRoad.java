@@ -9,27 +9,28 @@ public class InterCityRoad extends Road {
 
 	public void reduceTotalContamination(int totalCont, Weather weather) {
 		// we dont have attribute name now in the class Weather, maybe it will call in other way
-		if (weather.name == "SUNNY"){
+		//state.equals(VehicleStatus.TRAVELING)
+		if (weather.equals(Weather.SUNNY)){
 			totalCont = ((100-2)/100)*totalCont;
 			if (totalCont < 0)
 				throw new Exception();
 		}
-		else if (weather.name == "CLOUDY"){
+		else if (weather.equals(Weather.CLOUDY)){
 			totalCont = ((100-3)/100)*totalCont;
 			if (totalCont < 0)
 				throw new Exception();
 		}
-		else if (weather.name == "RAINY"){
+		else if (weather.equals(Weather.RAINY)){
 			totalCont = ((100-10)/100)*totalCont;
 			if (totalCont < 0)
 				throw new Exception();
 		}
-		else if (weather.name == "WINDY"){
+		else if (weather.equals(Weather.WINDY)){
 			totalCont = ((100-15)/100)*totalCont;
 			if (totalCont < 0)
 				throw new Exception();
 		}
-		else if (weather.name == "STORM"){
+		else if (weather.equals(Weather.STORM)){
 			totalCont = ((100-20)/100)*totalCont;
 			if (totalCont < 0)
 				throw new Exception();
@@ -43,31 +44,28 @@ public class InterCityRoad extends Road {
 	public void updateSpeedLimit(int totalCont, int contAlarmLimit) {   //not sure about should we put here values
 		// change names
 		if (totalCont > contAlarmLimit){
-			currSpeedLimit = maxSpeed*0.5;
+			speedLimit = (int) (maxSpeed*0.5);
 		}
 		else {
-			currSpeedLimit = maxSpeed;
+			speedLimit = maxSpeed;
 		}
 
 	}
-//			si la contaminación total excede el límite de contaminaión, entonces
-//		pone el límite de la velocidad al 50% de la velocidad máxima (es decir a
-//		“(int)(maxSpeed*0.5)”). En otro caso pone el límite de la velocidad a la velocidad
-//		máxima.
 
 	public void calculateVehicleSpeed() { // dont know about variables
 		int speedVehicle;
-		if (weather.name == "STORM"){
-			speedVehicle = speedLimit * 0.8;
+		if (weather.equals(Weather.STORM)){
+			speedVehicle = (int) (speedLimit * 0.8);
 		}
 		else {
 			speedVehicle = speedLimit;
 		}
 		System.out.println(speedVehicle);
+		//4to za ebanniy debug 4erez print??? da i nahuya on tut vobshe??
+		//u nas dazhe main'a net a ti uzhe ho4esh debagat progu 
 
 	}
-
-//			pone la velocidad del vehículo a la velocidad límite de la carretera.
-//		Si el tiempo es STORM lo reduce en un 20% (es decir, “(int)(speedLimit*0.8)”).
-
+	
+	
+	//... probably(im sure) more
 }
