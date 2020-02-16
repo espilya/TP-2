@@ -26,15 +26,15 @@ public class RoadMap {
 		
 	}
 	
-	public Junction getJunction(Srting id) {
+	public Junction getJunction(String id) {
 		
 	}
 	
-	public Road getRoad(Srting id) {
+	public Road getRoad(String id) {
 		
 	}
 	
-	public Vehicle getVehicle(Srting id) {
+	public Vehicle getVehicle(String id) {
 		
 	}
 	

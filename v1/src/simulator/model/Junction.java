@@ -23,7 +23,7 @@ public class Junction extends SimulatedObject {
 	int[] pos = new int[2]; //x & y  pos. for v2
 
 	Junction(String id, LightSwitchingStrategy lsStrategy, 
-			DequeuingStrategy dqStrategy, int xCoor, int yCoor) {
+			DequeuingStrategy dqStrategy, int xCoor, int yCoor) throws ValueParseException {
 		
 		super(id);//i think we need change this , nut not sure
 		
