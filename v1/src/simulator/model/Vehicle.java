@@ -40,6 +40,10 @@ public class Vehicle extends SimulatedObject{
 			//...
 			
 			}
+	
+	Road getRoad() {
+		return actualRoad;
+	}
 
 	
 	

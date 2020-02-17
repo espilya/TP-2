@@ -1,31 +1,35 @@
 package simulator.model;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.json.JSONObject;
 
+import exceptions.IncorrectRoadException;
 import exceptions.ValueParseException;
 
-public class Junction extends SimulatedObject {
+public class Junction extends SimulatedObject{
 	
-	// atributos
+
 	List<Road> roadList;
 	Map<Junction, Road> mapOutRoads;
 	List<List<Vehicle>> listQueue;
 	int indexGreenLight;
 	int lastTimeChangeLight;  
-	//el paso en el cual el índice del semáforo en verde ha cambiado de valor. Su valor inicial es 0.
-
+	
 	LightSwitchingStrategy _strategyChangeLight;
 	DequeuingStrategy _stretegyExtractElementsFromQueue;
 	
-	int[] pos = new int[2]; //x & y  pos. for v2
+	int[] pos = new int[2]; 
 
 	Junction(String id, LightSwitchingStrategy lsStrategy, 
 			DequeuingStrategy dqStrategy, int xCoor, int yCoor) throws ValueParseException {
 		
-		super(id);//i think we need change this , nut not sure
+		super(id);
+		
+		lastTimeChangeLight = 0;
 		
 		if(lsStrategy == null || dqStrategy == null) {
 			throw new ValueParseException("Null values for lsStrategy OR dqStrategy");
@@ -34,25 +38,63 @@ public class Junction extends SimulatedObject {
 			throw new ValueParseException("Negative values for x OR y coordinates");
 		}
 	}
+
+	void addIncommingRoad(Road r) throws IncorrectRoadException {
+		roadList.add(r);
+		listQueue.add(r.getVehicleList());
+		if(!r.getDestination().equals(this)) 
+			throw new IncorrectRoadException("");
+	}
 	
-	void addIncommingRoad(Road r) {
+	void addOutGoingRoad(Road r)  throws IncorrectRoadException {
+		
+		Junction j = r.destJunc;
+		for(Road i : roadList) {
+			if(i.getDestination().equals(j))
+				throw new IncorrectRoadException("");
+			
+			
+				
+		}
+		mapOutRoads.put(j, r);
 		
 	}
 	
-	void addOutGoingRoad(Road r) {
-		
-	}
-	
-	void enter(Vehicle v) {
+	void enter(Vehicle v, Road r) {
+//		Map<> ;
+		for (List<Vehicle> i : listQueue){
+
+		}
 		
 	}
 	
 	Road roadTo(Junction j) {
 		
-		return null;
+		
+		boolean found = false;
+		long i = 0;
+		Road road = null;
+		Iterator<Entry<Junction, Road>> it = mapOutRoads.entrySet().iterator();
+		while (it.hasNext() || !found) {
+		    Entry<Junction, Road> pair = it.next();
+		    road = pair.getValue();
+		    if(pair.getKey().equals(j) && road.getDestination().equals(j)) {
+		    	found = true;
+		    }
+		}
+		return road;
 	}
 	
 	void advance(int time) {
+		
+//--1--
+		List<Vehicle> newQueui = null;
+//		newQueui =  _stretegyExtractElementsFromQueue(listQueue.get(0));
+		for(Vehicle i : newQueui) {
+			i.moveToNextRoad();
+			
+
+		}
 		
 	}
 	
@@ -60,5 +102,7 @@ public class Junction extends SimulatedObject {
 		
 		return null;
 	}
+
+
 
 }

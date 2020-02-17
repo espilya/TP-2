@@ -113,4 +113,16 @@ public abstract class Road extends SimulatedObject{
 		return 0;
 	}
 
+	public List<Vehicle> getVehicleList() {
+		// TODO Auto-generated method stub
+		return vehicles;
+	}
+
+	public Object getDestination() {
+		// TODO Auto-generated method stub
+		return destJunc;
+	}
+
+	
+
 }
