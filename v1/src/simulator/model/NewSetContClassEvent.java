@@ -2,7 +2,7 @@ package simulator.model;
 
 public class NewSetContClassEvent extends Event{
 	
-	public NewSetContClassEvent(int time, List<Pair<String, Integer> cs) {
+	public NewSetContClassEvent(int time, List<Pair<String, Integer>> cs) {
 		super(time);
 		// ...
 		}

@@ -2,6 +2,7 @@ package simulator.model;
 
 import org.json.JSONObject;
 
+import exceptions.IncorrectVariableValue;
 import exceptions.ValueParseException;
 
 import java.util.Iterator;
@@ -66,7 +67,7 @@ public abstract class Road extends SimulatedObject{
 
 	}
 
-	abstract void reduceTotalContamination(); 
+	abstract void reduceTotalContamination() throws IncorrectVariableValue; 
 
 	abstract void updateSpeedLimit();
 

@@ -3,6 +3,8 @@ package simulator.model;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 public class TrafficSimulator {
 	
 	private Map<RoadMap> roadMap;
