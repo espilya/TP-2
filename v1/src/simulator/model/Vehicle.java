@@ -1,6 +1,8 @@
 package simulator.model;
 
-import java.awt.List;
+
+
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -20,13 +22,13 @@ public class Vehicle extends SimulatedObject{
 	private int totalCont;
 	private int totalDistance;
 	
-	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) {
+	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) throws ValueParseException {
 			super(id);
 			if(maxSpeed < 0)
 				throw new ValueParseException("Negative value for maxSpeed");
 			else if(contClass < 0 || contClass > 10)
 				throw new ValueParseException("Incorrect value for contamination class");
-			else if(itinerary.size < 2)
+			else if(itinerary.size() < 2)
 				throw new ValueParseException("Incorrect value for ");
 			
 			this.id = id;
@@ -41,11 +43,33 @@ public class Vehicle extends SimulatedObject{
 			
 			}
 	
-	Road getRoad() {
-		return actualRoad;
-	}
 
 	
+	 int getLocation() {
+		return 0;
+	}
+	
+	 int getSpeed() {
+		return actualSpeed;
+	}
+	
+	 int getContClass() {
+		return contClass;
+	}
+	
+	public VehicleStatus getStatus() {
+		return state;
+	}
+	
+	public List<Junction> getItinerary() {
+		return iter;
+	}
+	
+	public Road getRoad() {
+		return actualRoad;
+	}
+	
+
 	
 	void setSpeed(int s) throws ValueParseException {
 	if(maxSpeed > s)
@@ -68,7 +92,7 @@ public class Vehicle extends SimulatedObject{
 		if(!state.equals(VehicleStatus.TRAVELING)) {
 			//a+
 			int a = localization + actualSpeed;
-			int roadLength = actualRoad.getLength();
+			int roadLength = actualRoad.getLenght();
 			int oldLoc = localization;
 			if(a>roadLength)
 				localization = roadLength;

@@ -38,15 +38,23 @@ public class Junction extends SimulatedObject{
 			throw new ValueParseException("Negative values for x OR y coordinates");
 		}
 	}
+	
+	
+	public int getX(){
+		return 0;
+	}
+	public int getY(){
+		return 0;
+	}
 
-	void addIncommingRoad(Road r) throws IncorrectRoadException {
+	public void addIncommingRoad(Road r) throws IncorrectRoadException {
 		roadList.add(r);
 		listQueue.add(r.getVehicleList());
 		if(!r.getDestination().equals(this)) 
 			throw new IncorrectRoadException("");
 	}
 	
-	void addOutGoingRoad(Road r)  throws IncorrectRoadException {
+	public void addOutGoingRoad(Road r)  throws IncorrectRoadException {
 		
 		Junction j = r.destJunc;
 		for(Road i : roadList) {

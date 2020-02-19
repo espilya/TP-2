@@ -10,43 +10,43 @@ public class InterCityRoad extends Road {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void reduceTotalContamination(int totalCont, Weather weather) throws IncorrectVariableValue {
+	public void reduceTotalContamination() throws IncorrectVariableValue {
 		// we dont have attribute name now in the class Weather, maybe it will call in other way
 		//state.equals(VehicleStatus.TRAVELING)
 		if (weather.equals(Weather.SUNNY)){
-			totalCont = ((100-2)/100)*totalCont;
-			if (totalCont < 0)
+			contTotal = ((100-2)/100)*contTotal;
+			if (contTotal < 0)
 				throw new IncorrectVariableValue();
 		}
 		else if (weather.equals(Weather.CLOUDY)){
-			totalCont = ((100-3)/100)*totalCont;
-			if (totalCont < 0)
+			contTotal = ((100-3)/100)*contTotal;
+			if (contTotal < 0)
 				throw new IncorrectVariableValue();
 		}
 		else if (weather.equals(Weather.RAINY)){
-			totalCont = ((100-10)/100)*totalCont;
-			if (totalCont < 0)
+			contTotal = ((100-10)/100)*contTotal;
+			if (contTotal < 0)
 				throw new IncorrectVariableValue();
 		}
 		else if (weather.equals(Weather.WINDY)){
-			totalCont = ((100-15)/100)*totalCont;
-			if (totalCont < 0)
+			contTotal = ((100-15)/100)*contTotal;
+			if (contTotal < 0)
 				throw new IncorrectVariableValue();
 		}
 		else if (weather.equals(Weather.STORM)){
-			totalCont = ((100-20)/100)*totalCont;
-			if (totalCont < 0)
+			contTotal = ((100-20)/100)*contTotal;
+			if (contTotal < 0)
 				throw new IncorrectVariableValue();
 		}
-		System.out.println(totalCont); // or write to file or do nothing
+		System.out.println(contTotal); // or write to file or do nothing
 
 
 
 	}
 
-	public void updateSpeedLimit(int totalCont, int contAlarmLimit) {   //not sure about should we put here values
+	public void updateSpeedLimit() {   //not sure about should we put here values
 		// change names
-		if (totalCont > contAlarmLimit){
+		if (contTotal > contLimit){
 			speedLimit = (int) (maxSpeed*0.5);
 		}
 		else {
@@ -55,7 +55,9 @@ public class InterCityRoad extends Road {
 
 	}
 
-	public void calculateVehicleSpeed() { // dont know about variables
+	public int calculateVehicleSpeed(Vehicle car) { 
+		
+		//calculate carSpped from car??
 		int speedVehicle;
 		if (weather.equals(Weather.STORM)){
 			speedVehicle = (int) (speedLimit * 0.8);
@@ -63,30 +65,9 @@ public class InterCityRoad extends Road {
 		else {
 			speedVehicle = speedLimit;
 		}
-		System.out.println(speedVehicle);
-		//4to za ebanniy debug 4erez print??? da i nahuya on tut vobshe??
-		//u nas dazhe main'a net a ti uzhe ho4esh debagat progu 
-
+		return speedVehicle;
 	}
 
-	@Override
-	void reduceTotalContamination() throws IncorrectVariableValue {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	void updateSpeedLimit() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	int calculateVehicleSpeed(Vehicle v) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-	//... probably(im sure) more
+	//... probably(im sure) more methods
 }

@@ -32,10 +32,11 @@ public class CityRoad extends Road {
 			}
 	}
 
-	public void calculateVehicleSpeed(int contClassCar) {
-
+	public int calculateVehicleSpeed(Vehicle car) {
+		int contClassCar = car.getContClass();
 		int vehicleSpeed = (int) (((11.0-contClassCar)/11.0)* maxSpeed);
-		System.out.println(vehicleSpeed); // or write to file or do nothing
+		//System.out.println(vehicleSpeed); // or write to file or do nothing
+		return vehicleSpeed;
 	}
 
 	@Override
@@ -44,9 +45,4 @@ public class CityRoad extends Road {
 		
 	}
 
-	@Override
-	int calculateVehicleSpeed(Vehicle v) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

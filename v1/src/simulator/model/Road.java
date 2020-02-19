@@ -42,16 +42,28 @@ public abstract class Road extends SimulatedObject{
 		this.weather = weather;
 
 	}
-
-	public void enter(Vehicle v){
-
-
+	
+	public int getLength() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	public void exit(Vehicle v){
-		
-
+	public List<Vehicle> getVehicleList() {
+		// TODO Auto-generated method stub
+		return vehicles;
 	}
+
+	public Junction getDestination() {
+		// TODO Auto-generated method stub
+		return destJunc;
+	}
+	
+	public Junction getSource() {
+		// TODO Auto-generated method stub
+		return srcJunc;
+	}
+	
+
 
 	public void setWeather(Weather w) throws ValueParseException{
 		if(weather == null) 
@@ -67,17 +79,19 @@ public abstract class Road extends SimulatedObject{
 
 	}
 
-	abstract void reduceTotalContamination() throws IncorrectVariableValue; 
 
-	abstract void updateSpeedLimit();
-
-	abstract int calculateVehicleSpeed(Vehicle v);
+	 void enter(Vehicle v){
 
 
+	}
 
+	 void exit(Vehicle v){
+		
 
-	@Override
-	void advance(int time) {
+	}
+
+	
+	public void advance(int time) {
 		reduceTotalContamination();
 		updateSpeedLimit();
 		
@@ -103,26 +117,23 @@ public abstract class Road extends SimulatedObject{
 		
 	}
 
-	@Override
+	
 	public JSONObject report() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
+	abstract void reduceTotalContamination() throws IncorrectVariableValue; 
 
-	public int getLenght() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	abstract void updateSpeedLimit();
 
-	public List<Vehicle> getVehicleList() {
-		// TODO Auto-generated method stub
-		return vehicles;
-	}
+	abstract int calculateVehicleSpeed(Vehicle v);
 
-	public Object getDestination() {
-		// TODO Auto-generated method stub
-		return destJunc;
-	}
+
+
+
 
 	
 
