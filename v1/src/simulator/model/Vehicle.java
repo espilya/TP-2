@@ -87,30 +87,29 @@ public class Vehicle extends SimulatedObject{
 		contClass = c;	
 	}
 	
-	void advance(int time) { 
+	void advance(int time) throws ValueParseException { 
 		
 		if(!state.equals(VehicleStatus.TRAVELING)) {
 			//a+
 			int a = localization + actualSpeed;
-			int roadLength = actualRoad.getLenght();
+			int roadLength = actualRoad.getLength();
 			int oldLoc = localization;
 			if(a>roadLength)
 				localization = roadLength;
 			else
 				localization = a;
 			
-			//b +/-
+			//b+
 			int c = (contClass * (localization-oldLoc))/10;
 			totalCont += c;
-			//y también añade c al grado de
-//			contaminación de la carretera actual, invocando al método correspondiente de
-//			la clase Road.
+			actualRoad.addContamination(c);
 			
-			//c +/-
+			
+			//c -
 			if(localization >= roadLength) {
 //				el vehículo entra en la cola del cruce correspondiente (llamando
-//						a un método de la clase Junction). Recuerda que debes modificar el estado del
-//						vehículo.
+//						a un método de la clase Junction). Recuerda que debes modificar 
+//				el estado del vehículo.
 				//mashina vhodit v Juction
 			}
 			

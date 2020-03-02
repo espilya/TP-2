@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class TrafficSimulator {
 	
-	private Map<RoadMap> roadMap;
+	private RoadMap roadMap;
 	private List<Event> listEvents;
 	private int time;
 	
@@ -21,6 +21,12 @@ public class TrafficSimulator {
 	}
 	
 	public void advance() {
+		time++;
+		
+		2. ejecuta todos los eventos cuyo tiempo sea el tiempo actual de la simulación y
+		los elimina de la lista. Después llama a sus correspondientes métodos execute.
+		3. llama al método advance de todos los cruces.
+		4. llama al método advance de todas las carreteras.
 		
 	}
 	

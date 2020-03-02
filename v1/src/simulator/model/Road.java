@@ -44,22 +44,18 @@ public abstract class Road extends SimulatedObject{
 	}
 	
 	public int getLength() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public List<Vehicle> getVehicleList() {
-		// TODO Auto-generated method stub
 		return vehicles;
 	}
 
 	public Junction getDestination() {
-		// TODO Auto-generated method stub
 		return destJunc;
 	}
 	
 	public Junction getSource() {
-		// TODO Auto-generated method stub
 		return srcJunc;
 	}
 	
