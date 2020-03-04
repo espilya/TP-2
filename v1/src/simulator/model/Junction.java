@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import exceptions.IncorrectRoadException;
@@ -16,8 +17,8 @@ public class Junction extends SimulatedObject{
 	List<Road> roadList;
 	Map<Junction, Road> mapOutRoads;
 	List<List<Vehicle>> listQueue;
-	int indexGreenLight;
-	int lastTimeChangeLight;  
+	private int indexGreenLight;
+	private int lastTimeChangeLight;  
 	
 	LightSwitchingStrategy _strategyChangeLight;
 	DequeuingStrategy _stretegyExtractElementsFromQueue;
@@ -33,7 +34,7 @@ public class Junction extends SimulatedObject{
 		
 		if(lsStrategy == null || dqStrategy == null) {
 			throw new ValueParseException("Null values for lsStrategy OR dqStrategy");
-		}
+		} 
 		if(xCoor < 0 || yCoor < 0) {
 			throw new ValueParseException("Negative values for x OR y coordinates");
 		}
@@ -107,8 +108,28 @@ public class Junction extends SimulatedObject{
 	}
 	
 	public JSONObject report() {
+		JSONObject j = new JSONObject();
+		j.put("id", _id);
+		if(indexGreenLight == -1)
+			j.put("green", "none");
+		else
+			j.put("green", roadList.get(indexGreenLight).getId());
+
 		
-		return null;
+		JSONArray jQueues = new JSONArray();
+		for(Road r : roadList) {
+			JSONObject jQueue = new JSONObject();
+			jQueue.put("road", r.getId());
+			
+			JSONArray jVehicles = new JSONArray();
+			for(Vehicle v : r.getVehicleList()) {
+				jVehicles.put(v.getId());
+			}
+			jQueue.put("vehicles", jVehicles);
+			jQueues.put(jQueue);
+		}	
+		j.put("queues", jQueues);
+		return j;
 	}
 
 

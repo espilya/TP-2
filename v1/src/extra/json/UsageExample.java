@@ -139,6 +139,7 @@ public class UsageExample {
 		// build a JSONObject from a string
 		JSONObject joFromString = new JSONObject(jsonString);
 
+		
 		// build a JSONObject from a file
 		JSONObject joFromFile1 = new JSONObject(
 				new JSONTokener(new FileInputStream(new File("resources/other/json-example-1.json"))));
