@@ -1,5 +1,6 @@
 package simulator.model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import exceptions.IncorrectVariableValue;
@@ -111,8 +112,18 @@ public abstract class Road extends SimulatedObject{
 
 	
 	public JSONObject report() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject j = new JSONObject();
+		j.put("id", _id);
+		j.put("speedlimit", speedLimit);
+		j.put("weather", weather);
+		j.put("co2", contTotal);
+		
+		JSONArray ja = new JSONArray();
+		for(Vehicle i : vehicles) {
+			ja.put(i.getId());
+		}
+		j.put("vehicles", ja);
+		return j;
 	}
 	
 	

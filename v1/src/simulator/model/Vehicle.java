@@ -12,7 +12,6 @@ import exceptions.ValueParseException;
 
 public class Vehicle extends SimulatedObject{
 	
-	String id;
 	private List<Junction> iter;
 	private int maxSpeed;
 	private int actualSpeed;
@@ -25,7 +24,6 @@ public class Vehicle extends SimulatedObject{
 	
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) throws ValueParseException {
 			super(id);
-			this.id = id;
 			this.maxSpeed=maxSpeed;
 			this.contClass=contClass;
 			iter = Collections.unmodifiableList(itinerary);
@@ -137,8 +135,18 @@ public class Vehicle extends SimulatedObject{
 	
 	
 	public JSONObject report() {
-		
-		return new JSONObject();
+		JSONObject j = new JSONObject();
+		j.put("id", _id);
+		j.put("speed", actualSpeed);
+		j.put("distance", totalDistance);
+		j.put("co2", totalCont);
+		j.put("class", contClass);
+		j.put("status", state);
+		if(!(state.equals(VehicleStatus.PENDING) || state.equals(VehicleStatus.ARRIVED))) {
+			j.put("road", actualRoad.getId());
+			j.put("location", localization);
+		}
+		return j;
 	}
 	
 	
