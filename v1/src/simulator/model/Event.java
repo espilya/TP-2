@@ -1,5 +1,7 @@
 package simulator.model;
 
+import exceptions.ValueParseException;
+
 public abstract class Event implements Comparable<Event> {
 
 	protected int _time;
@@ -21,5 +23,5 @@ public abstract class Event implements Comparable<Event> {
 		return 0;
 	}
 
-	abstract void execute(RoadMap map);
+	abstract void execute(RoadMap map) throws ValueParseException;
 }
