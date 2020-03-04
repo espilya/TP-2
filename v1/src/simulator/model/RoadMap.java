@@ -17,6 +17,7 @@ public class RoadMap {
 	void addJunction(Junction j) {
 		junctionList.add(j);
 		// TO DO: Check if the element exists in the junctionMap
+		//for
 		junctionMap.put(j._id, j);
 		
 	}
@@ -26,6 +27,8 @@ public class RoadMap {
 		// TO DO: Check if the element exists in the roadMap
 		
 		//???¿¿¿(ii) the junctions that connect the road exists in the road-map.???¿¿¿
+		//if road.dst() == for(in Map)
+		//else exception
 		roadMap.put(r._id, r);
 		
 	}

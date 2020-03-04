@@ -41,10 +41,10 @@ public class Junction extends SimulatedObject{
 	
 	
 	public int getX(){
-		return 0;
+		return pos[0];
 	}
 	public int getY(){
-		return 0;
+		return pos[1];
 	}
 
 	public void addIncommingRoad(Road r) throws IncorrectRoadException {
