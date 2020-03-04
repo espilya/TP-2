@@ -68,7 +68,7 @@ public class Junction extends SimulatedObject{
 		
 	}
 	
-	void enter(Vehicle v, Road r) {
+	void enter(Vehicle v) {
 //		Map<> ;
 		for (List<Vehicle> i : listQueue){
 

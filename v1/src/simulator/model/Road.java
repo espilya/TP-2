@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import exceptions.IncorrectVariableValue;
 import exceptions.ValueParseException;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,12 +14,11 @@ public abstract class Road extends SimulatedObject{
 	protected int contLimit;
 	protected int contTotal;
 	protected int maxSpeed;
-	protected int actualSpeed;
 	protected int speedLimit;
 	protected Junction srcJunc;
 	protected Junction destJunc;
 	protected Weather weather;
-	protected List <Vehicle> vehicles;  //? is that enough?    (descending order o orden descendente)
+	protected List <Vehicle> vehicles;  //  (descending order - orden descendente)
 	Road(String id, Junction srcJunc, Junction destJunc,int maxSpeed,int contLimit,int length, Weather weather) throws ValueParseException {
 
 		super(id);
@@ -48,7 +48,7 @@ public abstract class Road extends SimulatedObject{
 	}
 
 	public List<Vehicle> getVehicleList() {
-		return vehicles;
+		return Collections.unmodifiableList(vehicles);
 	}
 
 	public Junction getDestination() {
@@ -77,41 +77,37 @@ public abstract class Road extends SimulatedObject{
 
 
 	 void enter(Vehicle v){
-
-
+		 
+		 vehicles.add(v);
+		 if(v.getSpeed()!=0 || v.getLocation()!=0)
+			 throw new IllegalArgumentException("Vehicle speed and location must be equal to 0:(Speed: " + v.getSpeed() + " Location: " + v.getLocation() + ")");
+		 
 	}
 
 	 void exit(Vehicle v){
-		
-
+		 vehicles.remove(v);
 	}
 
 	
-	public void advance(int time) {
+	public void advance(int time) throws ValueParseException, IncorrectVariableValue {
+		
+		//1)
 		reduceTotalContamination();
+		
+		//2)
 		updateSpeedLimit();
 		
-		int size = vehicles.size();
-		
-
-		
-		//iterator
+		//3)
 		Iterator<Vehicle> it = vehicles.iterator();
-		while ( it.hasNext() )
+		while ( it.hasNext() ) {
 			Vehicle n = it.next(); 
-		
-		
-		
-		
-		//...
-		
-		
-//		(3) recorre la lista de vehículos (desde el primero al último) y, para cada vehículo:
-//			a) pone la velocidad del vehículo al valor devuelto por calculateVehicleSpeed.
-//			b) llama al método advance del vehículo.
-//			Recuerda ordenar la lista de vehículos por su localización al final del método.
-		
+			n.setSpeed(calculateVehicleSpeed(n));
+		}
+		//4)
+		//sort by localization
 	}
+		
+	
 
 	
 	public JSONObject report() {
