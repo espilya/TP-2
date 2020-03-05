@@ -1,6 +1,6 @@
 package simulator.model;
 
-import exceptions.ValueParseException;
+
 
 public class NewJunctionEvent extends Event {
 	private String id;
@@ -20,10 +20,15 @@ public class NewJunctionEvent extends Event {
 	
 
 	@Override
-	void execute(RoadMap map) throws ValueParseException {
+	void execute(RoadMap map)   {
+		try {
 		Junction junc = new Junction(id,  lsStrategy, dqStrategy,  xCoor,  yCoor);
 		map.addJunction(junc);
-		// where to use time???
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+
+		
 	}
 
 }
