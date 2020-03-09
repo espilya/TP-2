@@ -1,23 +1,50 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class RoadMap {
 	private List<Junction> junctionList;
 	private List<Road> roadList;
 	private List<Vehicle> vehicleList;
 	private Map<String,Junction>  junctionMap;
-	private Map<String,Vehicle> vehicleMap;
 	private Map<String, Road> roadMap;
-	protected RoadMap(){} 
+	private Map<String,Vehicle> vehicleMap;
+	
+	protected RoadMap(){
+		this.junctionList = new ArrayList<Junction>();
+		this.roadList = new ArrayList<Road>();
+		this.vehicleList = new ArrayList<Vehicle>();
+		
+		// ----------------------------- Map ===> hashMap or TreeMap?????? -----------------------------
+//		5. Which Implementation to Use?
+//				In general, both implementations have their respective pros and cons, however, it's about understanding the underlying expectation and requirement which must govern our choice regarding the same.
+//
+//				Summarizing:
+//				We should use a TreeMap if we want to keep our entries sorted
+//				We should use a HashMap if we prioritize performance over memory consumption
+//				Since a TreeMap has a more significant locality, we might consider it if we want to access objects that are relatively close to each other according to their natural ordering
+//				HashMap can be tuned using the initialCapacity and loadFactor, which isn't possible for the TreeMap
+//				We can use the LinkedHashMap if we want to preserve insertion order while benefiting from constant time access
+//		More: https://www.google.es/search?client=opera&hs=2fE&sxsrf=ALeKk01FpnYBvur2VMG6y3D3T_jesB7ESQ%3A1583415431777&ei=hwBhXpWEL5OBjLsPzYu8uAE&q=TreeMap+or+HashMapjava&oq=TreeMap+or+HashMapjava&gs_l=psy-ab.3..0i8i7i30.1113204.1122276..1122661...0.4..0.109.303.1j2......0....2j1..gws-wiz.......0i71j0i8i13i30j0i8i30.bojsIplxGZU&ved=0ahUKEwjV496SuoPoAhWTAGMBHc0FDxcQ4dUDCAo&uact=5
+		this.junctionMap = new HashMap<String,Junction>();
+		this.roadMap = new HashMap<String,Road>();
+		this.vehicleMap = new HashMap<String,Vehicle>();
+		// ----------------------------- Map ===> hashMap or TreeMap?????? -----------------------------
+	} 
 	
 
 	void addJunction(Junction j) {
 		junctionList.add(j);
-		// TO DO: Check if the element exists in the junctionMap
-		//for
+		if(junctionMap.containsKey(j.getId()))
+			throw new IllegalArgumentException("Tried to add existing element.");
+
 		junctionMap.put(j._id, j);
 		
 	}
@@ -96,6 +123,9 @@ public class RoadMap {
 	
 	public JSONObject report() {
 		
+		JSONObject j = new JSONObject();
+		// TODO
+		return j;
 	}
 	
 	

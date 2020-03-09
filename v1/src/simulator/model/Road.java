@@ -63,7 +63,7 @@ public abstract class Road extends SimulatedObject{
 
 
 	public void setWeather(Weather w) throws ValueParseException{
-		if(weather == null) 
+		if(weather == null) //creo que es w no weather
 			throw new ValueParseException("Weather is null");
 		weather = w;
 

@@ -1,6 +1,6 @@
 package simulator.model;
 
-import exceptions.ValueParseException;
+
 
 public abstract class Event implements Comparable<Event> {
 
@@ -19,9 +19,13 @@ public abstract class Event implements Comparable<Event> {
 
 	@Override
 	public int compareTo(Event o) {
-		// TODO complete
-		return 0;
+		if (this._time > o._time)
+			return 1;
+		else if (this._time < o._time)
+			return -1;
+		else
+			return 0;
 	}
 
-	abstract void execute(RoadMap map) throws ValueParseException;
+	abstract void execute(RoadMap map);
 }
