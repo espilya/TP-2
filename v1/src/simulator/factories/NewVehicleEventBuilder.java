@@ -3,6 +3,7 @@ package simulator.factories;
 import org.json.JSONObject;
 
 import simulator.model.Event;
+import simulator.model.Weather;
 
 public class NewVehicleEventBuilder extends Builder{
 
@@ -13,7 +14,13 @@ public class NewVehicleEventBuilder extends Builder{
 
 	@Override
 	protected Event createTheInstance(JSONObject data) {
-		// TODO Auto-generated method stub
+		int time = data.getInt("time");
+		String id = data.getString("id");
+		int co2class = data.getInt("class");
+		int maxspeed = data.getInt("maxspeed");
+		
+		
+		
 		return null;
 	}
 

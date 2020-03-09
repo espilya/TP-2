@@ -2,19 +2,22 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-import simulator.model.Event;
+import simulator.model.LightSwitchingStrategy;
+import simulator.model.RoundRobinStrategy;
 
-public class RoundRobinStrategyBuilder extends Builder{
+public class RoundRobinStrategyBuilder extends Builder<LightSwitchingStrategy>{
 
-	RoundRobinStrategyBuilder(String type) {
-		super(type);
-		// TODO Auto-generated constructor stub
+	final static String idType =  "round_robin_lss";
+	
+	public RoundRobinStrategyBuilder() {
+		super(idType);
 	}
 
 	@Override
-	protected Event createTheInstance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return null;
+	protected LightSwitchingStrategy createTheInstance(JSONObject data) {
+		final int defaultValue = 1;
+		
+		return new RoundRobinStrategy(data.has("timeslot") ? data.getInt("timeslot") : defaultValue);
 	}
 
 }

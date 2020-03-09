@@ -2,9 +2,10 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-import simulator.model.Event;
+import simulator.model.LightSwitchingStrategy;
+import simulator.model.MostCrowdedStrategy;
 
-public class MostCrowdedStrategyBuilder extends Builder{
+public class MostCrowdedStrategyBuilder extends Builder<LightSwitchingStrategy> {
 
 	MostCrowdedStrategyBuilder(String type) {
 		super(type);
@@ -12,9 +13,10 @@ public class MostCrowdedStrategyBuilder extends Builder{
 	}
 
 	@Override
-	protected Event createTheInstance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return null;
+	protected LightSwitchingStrategy createTheInstance(JSONObject data) {
+		final int defaultValue = 1;
+
+		return new MostCrowdedStrategy(data.has("timeslot") ? data.getInt("timeslot") : defaultValue);
 	}
 
 }

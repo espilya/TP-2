@@ -2,9 +2,10 @@ package simulator.factories;
 
 import org.json.JSONObject;
 
-import simulator.model.Event;
+import simulator.model.DequeuingStrategy;
+import simulator.model.MoveFirstStrategy;
 
-public class MoveFirstStrategyBuilder extends Builder{
+public class MoveFirstStrategyBuilder extends Builder<DequeuingStrategy>{
 
 	MoveFirstStrategyBuilder(String type) {
 		super(type);
@@ -12,9 +13,8 @@ public class MoveFirstStrategyBuilder extends Builder{
 	}
 
 	@Override
-	protected Event createTheInstance(JSONObject data) {
-		// TODO Auto-generated method stub
-		return null;
+	protected DequeuingStrategy createTheInstance(JSONObject data) {
+		return new MoveFirstStrategy();
 	}
 
 }

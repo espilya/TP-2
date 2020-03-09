@@ -13,7 +13,8 @@ public class SetWeatherEventBuilder extends Builder{
 
 	@Override
 	protected Event createTheInstance(JSONObject data) {
-		// TODO Auto-generated method stub
+		Event e = null;
+		
 		return null;
 	}
 

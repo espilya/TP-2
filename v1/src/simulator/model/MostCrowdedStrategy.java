@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MostCrowdedStrategy implements LightSwitchingStrategy{
 	int timeSlot;
-	MostCrowdedStrategy(int t){
+	public MostCrowdedStrategy(int t){
 		timeSlot = t;
 	}
 	
