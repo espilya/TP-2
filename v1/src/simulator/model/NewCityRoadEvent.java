@@ -19,7 +19,11 @@ public class NewCityRoadEvent extends NewRoadEvent {
 
 	@Override
 	public Road createRoadObject() throws ValueParseException {
-		CityRoad newroad = new CityRoad(id, srcJun, destJunc, maxSpeed, co2Limit, length, weather);
+		Junction srcJun1;
+		Junction destJunc1;
+		srcJun1 = RoadMap.getJunction(srcJun);
+		destJunc1 = RoadMap.getJunction(destJunc);// we need object class Roadmap
+		CityRoad newroad = new CityRoad(id, srcJun1, destJunc1, maxSpeed, co2Limit, length, weather);
 		// must be Junction but in PDF String is required
 		return newroad;
 	}
