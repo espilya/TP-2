@@ -28,7 +28,7 @@ public class NewJunctionEventBuilder extends Builder<Event> {
 		LightSwitchingStrategy lss = this.lssFactory.createInstance(data.getJSONObject("ls_strategy"));
 		DequeuingStrategy dqs = this.dqsFactory.createInstance(data.getJSONObject("dq_strategy"));
 
-		return new NewJunctionEvent(data.getInt("time"), data.getString("id"), null, null, coor.getInt(0),
+		return new NewJunctionEvent(data.getInt("time"), data.getString("id"), lss, dqs, coor.getInt(0),
 				coor.getInt(1));
 	}
 
