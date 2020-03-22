@@ -1,6 +1,6 @@
 package simulator.model;
 
-import exceptions.ValueParseException;
+import exceptions.IncorrectRoadException;
 
 public abstract class NewRoadEvent extends Event {
 	protected String id;
@@ -10,6 +10,7 @@ public abstract class NewRoadEvent extends Event {
 	protected int co2Limit;
 	protected int maxSpeed;
 	protected Weather weather;
+	protected RoadMap rMap;
 
 	NewRoadEvent(int time, String id, String srcJun, String destJunc, int length, int co2Limit, int maxSpeed,
 			Weather weather) {
@@ -23,9 +24,27 @@ public abstract class NewRoadEvent extends Event {
 		this.weather = weather;
 
 	}
+	
+	void execute(RoadMap map) {
+			rMap = map;
+			Junction src = map.getJunction(srcJun);
+			Junction dest = map.getJunction(destJunc);
+			
+			Road road = createRoadObject();
+			
+			try {
+				map.addRoad(road);
+//				map.getJunction(src.getId()).addIncommingRoad(road);
+//				map.getJunction(dest.getId()).addOutGoingRoad(road);
+				
+				map.getJunction(src.getId()).addOutGoingRoad(road);
+				map.getJunction(dest.getId()).addIncommingRoad(road);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-	// not sure about public/protected/private
-	// i think protected because only used in this hierarchy tree
-	abstract protected Road createRoadObject() throws ValueParseException;
+	}
+
+	abstract protected Road createRoadObject();
 
 }

@@ -12,7 +12,7 @@ public class InterCityRoad extends Road {
 
 	public void reduceTotalContamination() throws IncorrectVariableValue {
 		// we dont have attribute name now in the class Weather, maybe it will call in other way
-		//state.equals(VehicleStatus.TRAVELING)
+		//state.equals(VehicleStatus.TRAVELING) 
 		int x;
 		if (weather.equals(Weather.SUNNY))
 			x=2;
@@ -25,7 +25,7 @@ public class InterCityRoad extends Road {
 		else //if (weather.equals(Weather.STORM))
 			x=20;
 		
-		contTotal = ((100-x)/100)*contTotal;
+		contTotal = (int)((100.0-x)/100.0)*contTotal;
 		
 		if (contTotal < 0)
 			throw new IncorrectVariableValue();
@@ -40,12 +40,14 @@ public class InterCityRoad extends Road {
 			speedLimit = maxSpeed;
 	}
 
-	public int calculateVehicleSpeed(Vehicle car) { 
+	public int calculateVehicleSpeed(Vehicle car) {
+		
 		if (weather.equals(Weather.STORM)){
 			return (int) (speedLimit * 0.8);
 		}
 		else {
 			return speedLimit;
+			
 		}
 	}
 

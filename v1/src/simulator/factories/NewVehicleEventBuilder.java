@@ -10,11 +10,12 @@ import org.json.JSONObject;
 import simulator.model.Event;
 import simulator.model.NewVehicleEvent;
 
-public class NewVehicleEventBuilder extends Builder<Event>{
+public class NewVehicleEventBuilder extends Builder<Event> {
 
-	NewVehicleEventBuilder(String type) {
+	private final static String type = "new_vehicle";
+
+	public NewVehicleEventBuilder() {
 		super(type);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -23,16 +24,16 @@ public class NewVehicleEventBuilder extends Builder<Event>{
 		String id = data.getString("id");
 		int co2class = data.getInt("class");
 		int maxspeed = data.getInt("maxspeed");
-		
+
 		List<String> itinerary = new ArrayList<String>();
-		
+
 		JSONArray jsonArray = (JSONArray) data.get("itinerary");
-		
-		Iterator<Object> iterator = jsonArray.iterator();//not sure about the last one
-		while(iterator.hasNext()) {
-		   itinerary.add((String) iterator.next());
-		} 
-		
+
+		Iterator<Object> iterator = jsonArray.iterator();
+		while (iterator.hasNext()) {
+			itinerary.add((String) iterator.next());
+		}
+
 		return new NewVehicleEvent(time, id, maxspeed, co2class, itinerary);
 	}
 

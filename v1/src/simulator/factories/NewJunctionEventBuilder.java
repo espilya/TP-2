@@ -10,7 +10,8 @@ import simulator.model.NewJunctionEvent;
 
 public class NewJunctionEventBuilder extends Builder<Event> {
 
-	final static String type = "new_junction";
+	private final static String type = "new_junction";
+
 	protected Factory<LightSwitchingStrategy> lssFactory;
 	protected Factory<DequeuingStrategy> dqsFactory;
 
@@ -20,7 +21,6 @@ public class NewJunctionEventBuilder extends Builder<Event> {
 		this.lssFactory = lssFactory;
 	}
 
-	@Override
 	protected Event createTheInstance(JSONObject data) {
 
 		JSONArray coor = data.getJSONArray("coor");

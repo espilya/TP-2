@@ -7,12 +7,12 @@ import simulator.model.MostCrowdedStrategy;
 
 public class MostCrowdedStrategyBuilder extends Builder<LightSwitchingStrategy> {
 
-	MostCrowdedStrategyBuilder(String type) {
+	private final static String type = "most_crowned_lss";
+
+	public MostCrowdedStrategyBuilder() {
 		super(type);
-		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	protected LightSwitchingStrategy createTheInstance(JSONObject data) {
 		final int defaultValue = 1;
 

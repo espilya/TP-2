@@ -1,6 +1,9 @@
 package simulator.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,127 +14,147 @@ import org.json.JSONObject;
 import exceptions.IncorrectRoadException;
 import exceptions.ValueParseException;
 
-public class Junction extends SimulatedObject{
-	
+public class Junction extends SimulatedObject {
 
-	List<Road> roadList;
-	Map<Junction, Road> mapOutRoads;
-	List<List<Vehicle>> listQueue;
+	private List<Road> roadList;
+	private List<List<Vehicle>> listQueue;
+
+	private Map<Junction, Road> mapOutRoads;
+//	private Map<Road, List<Vehicle>> roadQueue; // new
 	private int indexGreenLight;
-	private int lastTimeChangeLight;  
-	
-	LightSwitchingStrategy _strategyChangeLight;
-	DequeuingStrategy _stretegyExtractElementsFromQueue;
-	
-	int[] pos = new int[2]; 
+	private int lastTimeChangeGreenLight;
 
-	Junction(String id, LightSwitchingStrategy lsStrategy, 
-			DequeuingStrategy dqStrategy, int xCoor, int yCoor) throws ValueParseException {
-		
+	private LightSwitchingStrategy _strategyChangeLight;
+	private DequeuingStrategy _stretegyExtractElementsFromQueue;
+
+	int[] pos = new int[2];
+
+	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor)
+			throws ValueParseException {
+
 		super(id);
-		
-		lastTimeChangeLight = 0;
-		
-		if(lsStrategy == null || dqStrategy == null) {
+		roadList = new ArrayList<Road>();
+		listQueue = new ArrayList<List<Vehicle>>();
+		mapOutRoads = new HashMap<Junction, Road>();
+		_strategyChangeLight = lsStrategy;
+		_stretegyExtractElementsFromQueue = dqStrategy;
+		lastTimeChangeGreenLight = 0;
+		indexGreenLight = -1;
+		pos[0] = xCoor;
+		pos[1] = yCoor;
+
+		if (lsStrategy == null || dqStrategy == null) {
 			throw new ValueParseException("Null values for lsStrategy OR dqStrategy");
-		} 
-		if(xCoor < 0 || yCoor < 0) {
+		}
+		if (xCoor < 0 || yCoor < 0) {
 			throw new ValueParseException("Negative values for x OR y coordinates");
 		}
 	}
-	
-	
-	public int getX(){
+
+	public int getX() {
 		return pos[0];
 	}
-	public int getY(){
+
+	public int getY() {
 		return pos[1];
 	}
 
 	public void addIncommingRoad(Road r) throws IncorrectRoadException {
-		roadList.add(r);
-		listQueue.add(r.getVehicleList());
-		if(!r.getDestination().equals(this)) 
+		List<Vehicle> listV = new LinkedList<Vehicle>();
+		if (!r.getDestination().equals(this))
 			throw new IncorrectRoadException("");
+
+		roadList.add(r);
+		listQueue.add(listV);
 	}
-	
-	public void addOutGoingRoad(Road r)  throws IncorrectRoadException {
-		
+
+	public void addOutGoingRoad(Road r) throws IncorrectRoadException {
+
 		Junction j = r.destJunc;
-		for(Road i : roadList) {
-			if(i.getDestination().equals(j))
+		for (Road i : roadList) {
+			if (i.getDestination().equals(j))
 				throw new IncorrectRoadException("");
-			
-			
-				
+
 		}
 		mapOutRoads.put(j, r);
-		
+
 	}
-	
+
 	void enter(Vehicle v) {
-//		Map<> ;
-		for (List<Vehicle> i : listQueue){
-
-		}
-		
+		System.out.println(this.report());
+		System.out.println("-Entrada de '" + v._id + "' desde " + v.getRoad() + " a " + this);
+		Road r = v.getRoad();
+		int index = roadList.indexOf(r);
+		listQueue.get(index).add(v);
+		System.out.println(this.report());
 	}
-	
+
 	Road roadTo(Junction j) {
-		
-		
-		boolean found = false;
-		long i = 0;
-		Road road = null;
-		Iterator<Entry<Junction, Road>> it = mapOutRoads.entrySet().iterator();
-		while (it.hasNext() || !found) {
-		    Entry<Junction, Road> pair = it.next();
-		    road = pair.getValue();
-		    if(pair.getKey().equals(j) && road.getDestination().equals(j)) {
-		    	found = true;
-		    }
-		}
-		return road;
+		return mapOutRoads.get(j);
 	}
-	
-	void advance(int time) {
-		
-//--1--
-		List<Vehicle> newQueui = null;
-//		newQueui =  _stretegyExtractElementsFromQueue(listQueue.get(0));
-		for(Vehicle i : newQueui) {
-			i.moveToNextRoad();
-			
 
+	void advance(int time) {
+		// --1--
+		if (indexGreenLight != -1) {
+			List<Vehicle> newQueui = _stretegyExtractElementsFromQueue.dequeue(listQueue.get(indexGreenLight));
+			if (newQueui != null)
+				for (Vehicle i : newQueui) {
+					try {
+						if (i.getStatus().equals(VehicleStatus.WAITING)) {
+							i.moveToNextRoad();
+							listQueue.get(indexGreenLight).remove(i);
+							System.out.println("-Eliminacion de '" + i._id + "' desde cola " + this);
+							System.out.println(this.report());
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 		}
-		
+
+		// --2--
+		int newIndexGreenLight = _strategyChangeLight.chooseNextGreen(roadList, listQueue, indexGreenLight,
+				lastTimeChangeGreenLight, time);
+		if (newIndexGreenLight != indexGreenLight) {
+			lastTimeChangeGreenLight = time;
+			indexGreenLight = newIndexGreenLight;
+		}
 	}
-	
+
 	public JSONObject report() {
 		JSONObject j = new JSONObject();
 		j.put("id", _id);
-		if(indexGreenLight == -1)
+		if (indexGreenLight == -1)
 			j.put("green", "none");
 		else
 			j.put("green", roadList.get(indexGreenLight).getId());
 
-		
 		JSONArray jQueues = new JSONArray();
-		for(Road r : roadList) {
+		for (Road r : roadList) {
 			JSONObject jQueue = new JSONObject();
 			jQueue.put("road", r.getId());
-			
+
 			JSONArray jVehicles = new JSONArray();
-			for(Vehicle v : r.getVehicleList()) {
+			for (Vehicle v : r.getVehicleList()) {
 				jVehicles.put(v.getId());
 			}
 			jQueue.put("vehicles", jVehicles);
 			jQueues.put(jQueue);
-		}	
+		}
 		j.put("queues", jQueues);
 		return j;
 	}
 
-
+	public Road getOutRoad(Vehicle v) {
+		List<Junction> listJ = v.getItinerary();
+		int index = -1;
+		for (int i = 0; i < listJ.size(); i++) {
+			if (this.equals(listJ.get(i)))
+				index = i + 1;
+		}
+		if (index >= listJ.size())
+			return null;
+		return mapOutRoads.get(listJ.get(index));
+	}
 
 }

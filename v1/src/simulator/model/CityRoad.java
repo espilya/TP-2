@@ -7,8 +7,6 @@ public class CityRoad extends Road {
 
 	 CityRoad(String id, Junction srcJunc, Junction destJunc,int maxSpeed,int contLimit,int length, Weather weather) throws ValueParseException{
 		super(id, srcJunc, destJunc, maxSpeed, contLimit, length, weather);
-
-		// the speed limit does not change, it is always the maximum speed.
 	}
 
 	public void reduceTotalContamination() throws IncorrectVariableValue {
@@ -20,12 +18,14 @@ public class CityRoad extends Road {
 			contTotal -= 2;
 		
 		if (contTotal < 0) 
-			throw new IncorrectVariableValue();
+			contTotal = 0;
 			
 	}
 
 	public int calculateVehicleSpeed(Vehicle car) {
-		int vehicleSpeed = (int) (((11.0-car.getContClass())/11.0)* maxSpeed);
+
+			
+		int vehicleSpeed = (int)  Math.ceil((((11.0-car.getContClass())/11.0)* maxSpeed));
 		return vehicleSpeed;
 	}
 

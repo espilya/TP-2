@@ -1,13 +1,12 @@
 package simulator.model;
 
-
-
 public class NewJunctionEvent extends Event {
 	private String id;
 	private LightSwitchingStrategy lsStrategy;
 	private DequeuingStrategy dqStrategy;
 	private int xCoor;
 	private int yCoor;
+
 	public NewJunctionEvent(int time, String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy,
 			int xCoor, int yCoor) {
 		super(time);
@@ -17,18 +16,16 @@ public class NewJunctionEvent extends Event {
 		this.xCoor = xCoor;
 		this.yCoor = yCoor;
 	}
-	
 
 	@Override
-	void execute(RoadMap map)   {
+	void execute(RoadMap map) {
 		try {
-		Junction junc = new Junction(id,  lsStrategy, dqStrategy,  xCoor,  yCoor);
-		map.addJunction(junc);
+			Junction junc = new Junction(id, lsStrategy, dqStrategy, xCoor, yCoor);
+			map.addJunction(junc);
 		} catch (Exception e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
 		}
 
-		
 	}
 
 }

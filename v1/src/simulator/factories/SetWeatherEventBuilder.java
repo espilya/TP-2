@@ -1,21 +1,39 @@
 package simulator.factories;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.misc.Pair;
 import simulator.model.Event;
+import simulator.model.SetWeatherEvent;
+import simulator.model.Weather;
 
-public class SetWeatherEventBuilder extends Builder{
+public class SetWeatherEventBuilder extends Builder<Event> {
 
-	SetWeatherEventBuilder(String type) {
+	private final static String type = "set_weather";
+
+	public SetWeatherEventBuilder() {
 		super(type);
-		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	protected Event createTheInstance(JSONObject data) {
-		Event e = null;
-		
-		return null;
+		List<Pair<String, Weather>> wList = new ArrayList<Pair<String, Weather>>();
+		int time = data.getInt("time");
+
+		JSONArray jsonArray = data.getJSONArray("info");
+		Iterator<Object> iterator = jsonArray.iterator();
+		while (iterator.hasNext()) {
+			JSONObject jo = (JSONObject) iterator.next();
+			Pair<String, Weather> p = new Pair<String, Weather>(jo.getString("road"),
+					Weather.valueOf(jo.getString("weather")));
+			wList.add(p);
+		}
+
+		return new SetWeatherEvent(time, wList);
 	}
 
 }
