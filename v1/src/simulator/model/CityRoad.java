@@ -5,7 +5,8 @@ import exceptions.ValueParseException;
 
 public class CityRoad extends Road {
 
-	 CityRoad(String id, Junction srcJunc, Junction destJunc,int maxSpeed,int contLimit,int length, Weather weather) throws ValueParseException{
+	CityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather)
+			throws ValueParseException {
 		super(id, srcJunc, destJunc, maxSpeed, contLimit, length, weather);
 	}
 
@@ -13,25 +14,20 @@ public class CityRoad extends Road {
 
 		if (weather.equals(Weather.WINDY) || weather.equals(Weather.STORM))
 			contTotal -= 10;
-		
-		else 
+		else
 			contTotal -= 2;
-		
-		if (contTotal < 0) 
+		if (contTotal < 0)
 			contTotal = 0;
-			
 	}
 
 	public int calculateVehicleSpeed(Vehicle car) {
-
-			
-		int vehicleSpeed = (int)  Math.ceil((((11.0-car.getContClass())/11.0)* maxSpeed));
+		int vehicleSpeed = (int) Math.ceil((((11.0 - car.getContClass()) / 11.0) * maxSpeed));
 		return vehicleSpeed;
 	}
 
 	@Override
 	void updateSpeedLimit() {
-		speedLimit = maxSpeed;		
+		speedLimit = maxSpeed;
 	}
 
 }

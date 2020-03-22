@@ -81,12 +81,9 @@ public class Junction extends SimulatedObject {
 	}
 
 	void enter(Vehicle v) {
-		System.out.println(this.report());
-		System.out.println("-Entrada de '" + v._id + "' desde " + v.getRoad() + " a " + this);
 		Road r = v.getRoad();
 		int index = roadList.indexOf(r);
 		listQueue.get(index).add(v);
-		System.out.println(this.report());
 	}
 
 	Road roadTo(Junction j) {
@@ -103,8 +100,6 @@ public class Junction extends SimulatedObject {
 						if (i.getStatus().equals(VehicleStatus.WAITING)) {
 							i.moveToNextRoad();
 							listQueue.get(indexGreenLight).remove(i);
-							System.out.println("-Eliminacion de '" + i._id + "' desde cola " + this);
-							System.out.println(this.report());
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -119,30 +114,53 @@ public class Junction extends SimulatedObject {
 			lastTimeChangeGreenLight = time;
 			indexGreenLight = newIndexGreenLight;
 		}
+		
 	}
 
 	public JSONObject report() {
-		JSONObject j = new JSONObject();
-		j.put("id", _id);
-		if (indexGreenLight == -1)
-			j.put("green", "none");
-		else
-			j.put("green", roadList.get(indexGreenLight).getId());
-
-		JSONArray jQueues = new JSONArray();
-		for (Road r : roadList) {
-			JSONObject jQueue = new JSONObject();
-			jQueue.put("road", r.getId());
-
-			JSONArray jVehicles = new JSONArray();
-			for (Vehicle v : r.getVehicleList()) {
-				jVehicles.put(v.getId());
+		JSONObject jo = new JSONObject();
+		jo.put("id", this._id);
+		if(indexGreenLight != -1) jo.put("green", roadList.get(indexGreenLight)._id); 
+		else jo.put("green", "none");
+		
+		List<Vehicle> listV;
+		JSONArray ja = new JSONArray();
+		for(int i = 0; i < roadList.size(); i++) {
+			listV = listQueue.get(i);
+			JSONObject jo2 = new JSONObject();
+			jo2.put("road",roadList.get(i)._id);
+			JSONArray ja2 = new JSONArray();
+			for(Vehicle v : listV){
+				ja2.put(v);
 			}
-			jQueue.put("vehicles", jVehicles);
-			jQueues.put(jQueue);
+			jo2.put("vehicles", ja2);
+			ja.put(jo2);
 		}
-		j.put("queues", jQueues);
-		return j;
+		jo.put("queues", ja);
+		return jo;
+	
+	
+//		JSONObject j = new JSONObject();
+//		j.put("id", _id);
+//		if (indexGreenLight == -1)
+//			j.put("green", "none");
+//		else
+//			j.put("green", roadList.get(indexGreenLight).getId());
+//
+//		JSONArray jQueues = new JSONArray();
+//		for (Road r : roadList) {
+//			JSONObject jQueue = new JSONObject();
+//			jQueue.put("road", r.getId());
+//
+//			JSONArray jVehicles = new JSONArray();
+//			for (Vehicle v : r.getVehicleList()) {
+//				jVehicles.put(v.getId());
+//			}
+//			jQueue.put("vehicles", jVehicles);
+//			jQueues.put(jQueue);
+//		}
+//		j.put("queues", jQueues);
+//		return j;
 	}
 
 	public Road getOutRoad(Vehicle v) {

@@ -19,6 +19,7 @@ public class Vehicle extends SimulatedObject {
 	private int totalCont;
 	private int totalDistance;
 	private int lastJunction;
+	private int pastRoadsLengt;
 
 	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) throws ValueParseException {
 		super(id);
@@ -94,8 +95,7 @@ public class Vehicle extends SimulatedObject {
 				localization = b;
 			else
 				localization = a;
-
-			totalDistance = localization;
+			totalDistance += actualSpeed;
 
 			// 2)
 			int c = contClass * (localization - oldLoc);
@@ -112,6 +112,9 @@ public class Vehicle extends SimulatedObject {
 				actualRoad.getDestination().enter(this); // not sure
 				actualSpeed = 0;
 				lastJunction++;
+				pastRoadsLengt += actualRoad.getLength();
+				totalDistance = pastRoadsLengt;
+
 			}
 
 		} else {
@@ -139,6 +142,9 @@ public class Vehicle extends SimulatedObject {
 			if (state.equals(VehicleStatus.PENDING)) {
 				nextRoad = iter.get(0).getOutRoad(this);
 			} else {
+				int roadsLength = 0;
+
+//				totalDistance += actualRoad.getLength();
 				actualRoad.exit(this);
 				nextRoad = actualRoad.getDestination().getOutRoad(this);
 			}

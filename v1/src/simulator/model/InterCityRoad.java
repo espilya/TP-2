@@ -25,7 +25,7 @@ public class InterCityRoad extends Road {
 		else //if (weather.equals(Weather.STORM))
 			x=20;
 		
-		contTotal = (int)((100.0-x)/100.0)*contTotal;
+		contTotal = (int)(((100.0-x)/100.0)*contTotal);
 		
 		if (contTotal < 0)
 			throw new IncorrectVariableValue();
