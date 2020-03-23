@@ -5,7 +5,6 @@ import java.util.List;
 
 public class MoveFirstStrategy implements DequeuingStrategy {
 
-	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {
 		List<Vehicle> qq = new ArrayList<Vehicle>();
 		if(q.size() == 0)

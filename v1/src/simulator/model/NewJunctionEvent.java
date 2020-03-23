@@ -1,5 +1,8 @@
 package simulator.model;
 
+import simulator.exceptions.ExistingObjectException;
+import simulator.exceptions.IncorrectVariableValueException;
+
 public class NewJunctionEvent extends Event {
 	private String id;
 	private LightSwitchingStrategy lsStrategy;
@@ -18,14 +21,9 @@ public class NewJunctionEvent extends Event {
 	}
 
 	@Override
-	void execute(RoadMap map) {
-		try {
-			Junction junc = new Junction(id, lsStrategy, dqStrategy, xCoor, yCoor);
-			map.addJunction(junc);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	void execute(RoadMap map) throws ExistingObjectException, IncorrectVariableValueException {
+		Junction junc = new Junction(id, lsStrategy, dqStrategy, xCoor, yCoor);
+		map.addJunction(junc);
 	}
 
 }

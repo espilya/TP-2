@@ -42,9 +42,7 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy {
 					index = i;
 					max = qs.get(i).size();
 				}
-
 				i++;
-
 				if (i >= qs.size())
 					i = 0;
 			}

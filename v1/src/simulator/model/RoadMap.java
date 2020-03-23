@@ -9,6 +9,9 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import simulator.exceptions.ExistingObjectException;
+import simulator.exceptions.NonExistingObjectException;
+
 public class RoadMap {
 	private List<Junction> junctionList;
 	private List<Road> roadList;
@@ -28,40 +31,46 @@ public class RoadMap {
 		this.vehicleMap = new HashMap<String, Vehicle>();
 	}
 
-	void addJunction(Junction j) {
+	void addJunction(Junction j) throws ExistingObjectException {
 		junctionList.add(j);
 		if (junctionMap.containsKey(j.getId()))
-			throw new IllegalArgumentException("Tried to add existing element.");
+			throw new ExistingObjectException("");
 		junctionMap.put(j._id, j);
 	}
 
-	void addRoad(Road r) throws Exception {
+	void addRoad(Road r) throws ExistingObjectException, NonExistingObjectException {
 		roadList.add(r);
 		Junction dest = r.getDestination();
 		Junction src = r.getSource();
 		// i) and ii)
-		if (roadMap.containsKey(r._id) || !junctionMap.containsKey(dest._id) || !junctionMap.containsKey(src._id))
-			throw new Exception("");
+		if (roadMap.containsKey(r._id))
+			throw new ExistingObjectException("Road '" + r._id + "' already exist in roadMap." );
+		if (!junctionMap.containsKey(dest._id))
+			throw new NonExistingObjectException("Junction '" + dest._id + "' does not exist in junctionMap." );
+		if (!junctionMap.containsKey(src._id))
+			throw new NonExistingObjectException("Junction '" + src._id + "' does not exist in junctionMap." );
 		roadMap.put(r._id, r);
 	}
 
-	void addVehicle(Vehicle v) throws Exception {
+	void addVehicle(Vehicle v) throws ExistingObjectException, NonExistingObjectException {
 		vehicleList.add(v);
-		// i) and ii)
-		if (roadMap.containsKey(v._id))
-			throw new Exception("-");
+		// i) 
+		if (vehicleMap.containsKey(v._id))
+			throw new ExistingObjectException("Vehicle '" + v.getId() + "' already exist in junctionMap." );
 
-		List<Junction> j = v.getItinerary();
-		for (int i = 0; i < j.size() - 1; i++) {
-
-			boolean ok = false;
-			for (Road r : roadList) {
-				if (r.getSource().equals(j.get(i)) && r.getDestination().equals(j.get(i + 1)))
-					ok = true;
-			}
-			if (!ok)
-				throw new Exception("");
-		}
+		
+		//terminar: ii)
+//		List<Junction> j = v.getItinerary();
+//		for (int i = 0; i < j.size() - 1; i++) {
+//
+//			boolean ok = false;
+//			for (Road r : roadList) {
+//				if (!r.getSource().equals(j.get(i)) || !r.getDestination().equals(j.get(i + 1)))
+//					throw new NonExistingObjectException("");
+//			}
+//			if (!ok)
+//				throw new NonExistingObjectException("");
+//		}
 
 		vehicleMap.put(v._id, v);
 	}

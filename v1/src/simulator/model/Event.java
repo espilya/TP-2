@@ -1,6 +1,9 @@
 package simulator.model;
 
-
+import simulator.exceptions.ExistingObjectException;
+import simulator.exceptions.IncorrectObjectException;
+import simulator.exceptions.IncorrectVariableValueException;
+import simulator.exceptions.NonExistingObjectException;
 
 public abstract class Event implements Comparable<Event> {
 
@@ -27,5 +30,6 @@ public abstract class Event implements Comparable<Event> {
 			return 0;
 	}
 
-	abstract void execute(RoadMap map);
+	abstract void execute(RoadMap map) throws ExistingObjectException, IncorrectObjectException,
+			NonExistingObjectException, IncorrectVariableValueException;
 }

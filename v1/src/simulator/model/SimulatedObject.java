@@ -2,8 +2,7 @@ package simulator.model;
 
 import org.json.JSONObject;
 
-import exceptions.IncorrectVariableValue;
-import exceptions.ValueParseException;
+import simulator.exceptions.IncorrectVariableValueException;
 
 public abstract class SimulatedObject {
 
@@ -22,6 +21,7 @@ public abstract class SimulatedObject {
 		return _id;
 	}
 
-	abstract void advance(int time) throws ValueParseException, IncorrectVariableValue;
+	abstract void advance(int time) throws IncorrectVariableValueException;
+
 	abstract public JSONObject report();
 }

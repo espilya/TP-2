@@ -3,11 +3,9 @@ package simulator.model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import exceptions.IncorrectVariableValue;
-import exceptions.ValueParseException;
+import simulator.exceptions.IncorrectVariableValueException;
 import simulator.misc.SortedArrayList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -26,22 +24,22 @@ public abstract class Road extends SimulatedObject {
 	private Comparator<Vehicle> _cmp;
 
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather)
-			throws ValueParseException {
+			throws IncorrectVariableValueException {
 
 		super(id);
 
 		if (maxSpeed <= 0) // positive <=0, non-negative < 0
-			throw new ValueParseException("Negative value for maxSpeed");
+			throw new IncorrectVariableValueException("Negative value for maxSpeed: " + maxSpeed);
 		else if (length <= 0)
-			throw new ValueParseException("Negative value for length");
+			throw new IncorrectVariableValueException("Negative value for length: " + length);
 		else if (contLimit < 0)
-			throw new ValueParseException("Negative value for contamition limit");
+			throw new IncorrectVariableValueException("Negative value for contamination limit: " + contLimit);
 		else if (srcJunc == null)
-			throw new ValueParseException("Junction source is null");
+			throw new IncorrectVariableValueException("Junction source is null");
 		else if (destJunc == null)
-			throw new ValueParseException("Junction destination is null");
+			throw new IncorrectVariableValueException("Junction destination is null");
 		else if (weather == null)
-			throw new ValueParseException("Weather is null");
+			throw new IncorrectVariableValueException("Weather is null");
 		this.srcJunc = srcJunc;
 		this.destJunc = destJunc;
 		this.maxSpeed = maxSpeed;
@@ -74,28 +72,28 @@ public abstract class Road extends SimulatedObject {
 	public Junction getDestination() {
 		return destJunc;
 	}
-
+ 
 	public Junction getSource() {
 		return srcJunc;
 	}
 
-	public void setWeather(Weather w) throws ValueParseException {
+	public void setWeather(Weather w) throws IncorrectVariableValueException {
 		if (w == null)
-			throw new ValueParseException("Weather is null");
+			throw new IncorrectVariableValueException("Weather is null");
 		weather = w;
 	}
 
-	public void addContamination(int c) throws ValueParseException {
+	public void addContamination(int c) throws IncorrectVariableValueException {
 		if (c < 0)
-			throw new ValueParseException("Negative value for contamition");
+			throw new IncorrectVariableValueException("Negative value for contamition: " + c);
 		contTotal += c;
 	}
 
-	void enter(Vehicle v) {
+	void enter(Vehicle v) throws IncorrectVariableValueException {
 
 		vehicles.add(v);
 		if (v.getSpeed() != 0 || v.getLocation() != 0)
-			throw new IllegalArgumentException("Vehicle speed and location must be equal to 0:(Speed: " + v.getSpeed()
+			throw new IncorrectVariableValueException("Vehicle speed and location must be equal to 0:(Speed: " + v.getSpeed()
 					+ " Location: " + v.getLocation() + ")");
 	}
 
@@ -108,7 +106,7 @@ public abstract class Road extends SimulatedObject {
 		// 1)
 		try {
 			reduceTotalContamination();
-		} catch (IncorrectVariableValue e) {
+		} catch (IncorrectVariableValueException e) {
 			e.printStackTrace();
 		}
 
@@ -123,7 +121,7 @@ public abstract class Road extends SimulatedObject {
 				if (n.getStatus() != VehicleStatus.WAITING)
 					n.setSpeed(calculateVehicleSpeed(n));
 				n.advance(time);
-			} catch (ValueParseException e) {
+			} catch (IncorrectVariableValueException e) {
 				e.printStackTrace();
 			}
 		}
@@ -137,7 +135,6 @@ public abstract class Road extends SimulatedObject {
 		j.put("speedlimit", speedLimit);
 		j.put("weather", weather);
 		j.put("co2", contTotal);
-
 		JSONArray ja = new JSONArray();
 		for (Vehicle i : vehicles) {
 			ja.put(i.getId());
@@ -146,7 +143,7 @@ public abstract class Road extends SimulatedObject {
 		return j;
 	}
 
-	abstract void reduceTotalContamination() throws IncorrectVariableValue;
+	abstract void reduceTotalContamination() throws IncorrectVariableValueException;
 
 	abstract void updateSpeedLimit();
 

@@ -1,16 +1,15 @@
 package simulator.model;
 
-import exceptions.IncorrectVariableValue;
-import exceptions.ValueParseException;
+import simulator.exceptions.IncorrectVariableValueException;
 
 public class CityRoad extends Road {
 
 	CityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather)
-			throws ValueParseException {
+			throws IncorrectVariableValueException {
 		super(id, srcJunc, destJunc, maxSpeed, contLimit, length, weather);
 	}
 
-	public void reduceTotalContamination() throws IncorrectVariableValue {
+	public void reduceTotalContamination() throws IncorrectVariableValueException {
 
 		if (weather.equals(Weather.WINDY) || weather.equals(Weather.STORM))
 			contTotal -= 10;
@@ -25,7 +24,6 @@ public class CityRoad extends Road {
 		return vehicleSpeed;
 	}
 
-	@Override
 	void updateSpeedLimit() {
 		speedLimit = maxSpeed;
 	}

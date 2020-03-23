@@ -2,7 +2,6 @@ package simulator.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,12 +16,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import exceptions.ValueParseException;
-import simulator.control.Controller;
+import simulator.control.*;
+import simulator.exceptions.NonExistingObjectException;
 import simulator.factories.*;
 import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
@@ -78,8 +73,7 @@ public class Main {
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
 		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg()
-				.desc("Ticks to the simulator’s main loop (default value is " 
-		+ _timeLimitDefaultValue + ").").build());
+				.desc("Ticks to the simulator’s main loop (default value is " + _timeLimitDefaultValue + ").").build());
 
 		return cmdLineOptions;
 	}
@@ -135,48 +129,23 @@ public class Main {
 		_eventsFactory = new BuilderBasedFactory<>(ebs);
 	}
 
-	private static void startBatchMode() throws IOException, ValueParseException {
+	private static void startBatchMode() throws IOException {
 		InputStream in = new FileInputStream(new File(_inFile));
 		OutputStream out = _outFile == null ? System.out : new FileOutputStream(new File(_outFile));
 		TrafficSimulator simulator = new TrafficSimulator();
-		Controller control = new Controller(simulator, _eventsFactory);
+		Controller control = null;
+		try {
+			control = new Controller(simulator, _eventsFactory);
+		} catch (NonExistingObjectException e) {
+			e.printStackTrace();
+		}
 		control.loadEvents(in);
-		// System.out.println(Main.timeLimit); "resources/tmp/ex3.out.json"
 		control.run(Main.ticks, out);
 		in.close();
-		compararSiSonIguales();
-		System.out.println("Fin del programa");
-	} 
-
-	private static void compararSiSonIguales() throws JSONException, FileNotFoundException {
-		JSONObject joFromFile1 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/examples/ex1.expout.json"))));
-		JSONObject joFromFile11 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/examples/ex1.out.json"))));
-		JSONObject joFromFile2 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/examples/ex2.expout.json"))));
-		JSONObject joFromFile22 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/examples/ex2.out.json"))));
-		JSONObject joFromFile3 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/examples/ex3.expout.json"))));
-		JSONObject joFromFile33 = new JSONObject(
-				new JSONTokener(new FileInputStream(new File("resources/examples/ex3.out.json"))));
-		System.out.println("Compare JSON structures");
-
-		System.out.println(
-				"Are ex1.expout.json and ex1.out.json equal? " + checkSemanticEquality(joFromFile1, joFromFile11));
-		System.out.println(
-				"Are ex2.expout.json and ex2.out.json equal? " + checkSemanticEquality(joFromFile2, joFromFile22));
-		System.out.println(
-				"Are ex3.expout.json and ex3.out.json equal? " + checkSemanticEquality(joFromFile3, joFromFile33));
-
+		System.out.println("End.");
 	}
 
-	private static String checkSemanticEquality(JSONObject jo1, JSONObject jo2) {
-		return jo1.similar(jo2) ? "Yes" : "No";
-	}
-
-	private static void start(String[] args) throws IOException, ValueParseException {
+	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
 		startBatchMode();

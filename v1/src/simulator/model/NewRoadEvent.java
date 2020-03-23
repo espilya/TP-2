@@ -1,6 +1,9 @@
 package simulator.model;
 
-import exceptions.IncorrectRoadException;
+import simulator.exceptions.ExistingObjectException;
+import simulator.exceptions.IncorrectObjectException;
+import simulator.exceptions.IncorrectVariableValueException;
+import simulator.exceptions.NonExistingObjectException;
 
 public abstract class NewRoadEvent extends Event {
 	protected String id;
@@ -24,27 +27,17 @@ public abstract class NewRoadEvent extends Event {
 		this.weather = weather;
 
 	}
-	
-	void execute(RoadMap map) {
-			rMap = map;
-			Junction src = map.getJunction(srcJun);
-			Junction dest = map.getJunction(destJunc);
-			
-			Road road = createRoadObject();
-			
-			try {
-				map.addRoad(road);
-//				map.getJunction(src.getId()).addIncommingRoad(road);
-//				map.getJunction(dest.getId()).addOutGoingRoad(road);
-				
-				map.getJunction(src.getId()).addOutGoingRoad(road);
-				map.getJunction(dest.getId()).addIncommingRoad(road);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 
+	void execute(RoadMap map) throws IncorrectObjectException, ExistingObjectException, NonExistingObjectException, IncorrectVariableValueException {
+		rMap = map;
+		Junction src = map.getJunction(srcJun);
+		Junction dest = map.getJunction(destJunc);
+		Road road = createRoadObject();
+		map.getJunction(dest.getId()).addIncommingRoad(road);
+		map.addRoad(road);
+		map.getJunction(src.getId()).addOutGoingRoad(road);
 	}
 
-	abstract protected Road createRoadObject();
+	abstract protected Road createRoadObject() throws IncorrectVariableValueException;
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import exceptions.ValueParseException;
+import simulator.exceptions.IncorrectVariableValueException;
 
 public class Vehicle extends SimulatedObject {
 
@@ -21,8 +21,16 @@ public class Vehicle extends SimulatedObject {
 	private int lastJunction;
 	private int pastRoadsLengt;
 
-	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) throws ValueParseException {
+	Vehicle(String id, int maxSpeed, int contClass, List<Junction> itinerary) throws IncorrectVariableValueException {
 		super(id);
+
+		if (maxSpeed < 0)
+			throw new IncorrectVariableValueException("Negative value for maxSpeed: " + maxSpeed);
+		if (contClass < 0 || contClass > 10)
+			throw new IncorrectVariableValueException("Incorrect value for contamination class: " + contClass);
+		if (itinerary.size() < 2)
+			throw new IncorrectVariableValueException("Incorrect size of itinerary: " + itinerary.size());
+
 		this.maxSpeed = maxSpeed;
 		this.contClass = contClass;
 		state = VehicleStatus.PENDING;
@@ -31,16 +39,6 @@ public class Vehicle extends SimulatedObject {
 		localization = 0;
 		totalCont = 0;
 		lastJunction = 0;
-		if (maxSpeed < 0)
-			throw new ValueParseException("Negative value for maxSpeed");
-		if (contClass < 0 || contClass > 10)
-			throw new ValueParseException("Incorrect value for contamination class");
-		if (itinerary.size() < 2)
-			throw new ValueParseException("Incorrect value for ");
-		if (iter.size() < 2) {
-			throw new IllegalArgumentException(
-					"List<Junction> itinerary size must be bigger less than 2(" + iter.size() + ")");
-		}
 
 	}
 
@@ -61,7 +59,6 @@ public class Vehicle extends SimulatedObject {
 	}
 
 	public List<Junction> getItinerary() {
-//		return iter; this or this
 		return Collections.unmodifiableList(iter);
 	}
 
@@ -69,19 +66,19 @@ public class Vehicle extends SimulatedObject {
 		return actualRoad;
 	}
 
-	public void setSpeed(int s) throws ValueParseException {
+	public void setSpeed(int s) throws IncorrectVariableValueException {
 		if (maxSpeed > s)
 			if (s < 0)
-				throw new IllegalArgumentException("Negative value for speed");
+				throw new IncorrectVariableValueException("Negative value for maxSpeed: " + maxSpeed);
 			else
 				actualSpeed = s;
 		else
 			actualSpeed = maxSpeed;
 	}
 
-	public void setContaminationClass(int c) throws ValueParseException {
+	public void setContaminationClass(int c) throws IncorrectVariableValueException {
 		if (c < 0 || c > 10)
-			throw new ValueParseException("Incorrect value for contamination class");
+			throw new IncorrectVariableValueException("Incorrect value for contamination class: " + c);
 		contClass = c;
 	}
 
@@ -102,7 +99,7 @@ public class Vehicle extends SimulatedObject {
 			totalCont += c;
 			try {
 				actualRoad.addContamination(c);
-			} catch (ValueParseException e) {
+			} catch (IncorrectVariableValueException e) {
 				e.printStackTrace();
 			}
 
@@ -123,7 +120,7 @@ public class Vehicle extends SimulatedObject {
 
 	}
 
-	public void moveToNextRoad() throws Exception {
+	public void moveToNextRoad() throws IncorrectVariableValueException {
 //		for(Junction j : iter) {
 //			System.out.println(j);
 //		}
@@ -137,14 +134,11 @@ public class Vehicle extends SimulatedObject {
 			Road nextRoad = null;
 
 			if (!(state.equals(VehicleStatus.PENDING) || state.equals(VehicleStatus.WAITING)))
-				throw new Exception("Incorrect Vehicle state");
+				throw new IncorrectVariableValueException("Incorrect vehicle state: " + state.toString());
 
 			if (state.equals(VehicleStatus.PENDING)) {
 				nextRoad = iter.get(0).getOutRoad(this);
 			} else {
-				int roadsLength = 0;
-
-//				totalDistance += actualRoad.getLength();
 				actualRoad.exit(this);
 				nextRoad = actualRoad.getDestination().getOutRoad(this);
 			}

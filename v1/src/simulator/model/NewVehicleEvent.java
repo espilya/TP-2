@@ -1,9 +1,11 @@
 package simulator.model;
 
-import exceptions.ValueParseException;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import simulator.exceptions.ExistingObjectException;
+import simulator.exceptions.IncorrectVariableValueException;
+import simulator.exceptions.NonExistingObjectException;
 
 public class NewVehicleEvent extends Event {
 	private String id;
@@ -20,19 +22,19 @@ public class NewVehicleEvent extends Event {
 	}
 
 	@Override
-	void execute(RoadMap map) {
+	void execute(RoadMap map) throws IncorrectVariableValueException, ExistingObjectException, NonExistingObjectException {
 		List<Junction> listIter = new ArrayList<Junction>();
 		Vehicle newVehicle = null;
 		for (String j : itinerary) {
 			listIter.add(map.getJunction(j));
 		}
-		try {
-			newVehicle = new Vehicle(id, maxSpeed, contClass, listIter);
-			newVehicle.moveToNextRoad();
-			map.addVehicle(newVehicle);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//			try {
+		newVehicle = new Vehicle(id, maxSpeed, contClass, listIter);
+		newVehicle.moveToNextRoad();
+		map.addVehicle(newVehicle);
+//			} catch (IncorrectVariableValueException | ExistingObjectException | NonExistingObjectException e) {
+//				e.printStackTrace();
+//			}
 
 	}
 

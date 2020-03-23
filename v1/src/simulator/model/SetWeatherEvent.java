@@ -2,7 +2,8 @@ package simulator.model;
 
 import java.util.List;
 
-import exceptions.ValueParseException;
+import simulator.exceptions.IncorrectVariableValueException;
+import simulator.exceptions.NonExistingObjectException;
 import simulator.misc.Pair;
 
 // TO DO
@@ -18,19 +19,12 @@ public class SetWeatherEvent extends Event {
 	}
 
 	@Override
-	void execute(RoadMap map) {
+	void execute(RoadMap map) throws NonExistingObjectException, IncorrectVariableValueException {
 		for (Pair<String, Weather> p : ws) {
 			Road r = map.getRoad(p.getFirst());
-
-			try {
-				if (r == null)
-					throw new Exception();
-				r.setWeather(p.getSecond());
-			} catch (ValueParseException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			if (r == null)
+				throw new NonExistingObjectException("Road " + p.getFirst() + " does not exist in roadMap");
+			r.setWeather(p.getSecond());
 		}
 	}
 

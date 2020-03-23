@@ -1,6 +1,6 @@
 package simulator.model;
 
-import exceptions.ValueParseException;
+import simulator.exceptions.IncorrectVariableValueException;
 
 public class NewInterCityRoadEvent extends NewRoadEvent {
 	
@@ -21,7 +21,7 @@ public class NewInterCityRoadEvent extends NewRoadEvent {
 		InterCityRoad newroad = null;
 		try {
 			newroad = new InterCityRoad(id, srcJun1, destJunc1, maxSpeed, co2Limit, length, weather);
-		} catch (ValueParseException e) {
+		} catch (IncorrectVariableValueException e) {
 			e.printStackTrace();
 		}
 		return newroad;

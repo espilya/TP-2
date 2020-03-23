@@ -1,5 +1,6 @@
 package simulator.control;
 
+import simulator.exceptions.NonExistingObjectException;
 import simulator.factories.Factory;
 import simulator.model.Event;
 import simulator.model.TrafficSimulator;
@@ -12,20 +13,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import exceptions.ValueParseException;
-
 public class Controller {
 
 	private TrafficSimulator trafficSim;
 	private Factory<Event> evtsFactory;
 
-	public Controller(TrafficSimulator sim, Factory<Event> eventsFactory) throws ValueParseException  {
+	public Controller(TrafficSimulator sim, Factory<Event> eventsFactory) throws NonExistingObjectException  {
 		trafficSim = sim;
 		evtsFactory = eventsFactory;
 		if (sim == null)
-			throw new ValueParseException("Null value for TrafficSimulator in controller");
+			throw new NonExistingObjectException("TrafficSimulator does not exist");
 		if (eventsFactory == null)
-			throw new ValueParseException("Null value for eventsFactory in controller");
+			throw new NonExistingObjectException("eventsFactory does not exist");
 	}
  
 	public void loadEvents(InputStream in)  {
@@ -48,7 +47,7 @@ public class Controller {
 		j.put("states", jArr);
 		
 		PrintStream p = new PrintStream(out);
-		p.println(j.toString(3)); // 3
+		p.println(j.toString(3)); 
 		
 	}
 

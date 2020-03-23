@@ -2,17 +2,15 @@ package simulator.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import exceptions.IncorrectRoadException;
-import exceptions.ValueParseException;
+import simulator.exceptions.IncorrectObjectException;
+import simulator.exceptions.IncorrectVariableValueException;
 
 public class Junction extends SimulatedObject {
 
@@ -20,7 +18,7 @@ public class Junction extends SimulatedObject {
 	private List<List<Vehicle>> listQueue;
 
 	private Map<Junction, Road> mapOutRoads;
-//	private Map<Road, List<Vehicle>> roadQueue; // new
+//	private Map<Road, List<Vehicle>> roadQueue;
 	private int indexGreenLight;
 	private int lastTimeChangeGreenLight;
 
@@ -30,7 +28,7 @@ public class Junction extends SimulatedObject {
 	int[] pos = new int[2];
 
 	Junction(String id, LightSwitchingStrategy lsStrategy, DequeuingStrategy dqStrategy, int xCoor, int yCoor)
-			throws ValueParseException {
+			throws IncorrectVariableValueException {
 
 		super(id);
 		roadList = new ArrayList<Road>();
@@ -43,12 +41,12 @@ public class Junction extends SimulatedObject {
 		pos[0] = xCoor;
 		pos[1] = yCoor;
 
-		if (lsStrategy == null || dqStrategy == null) {
-			throw new ValueParseException("Null values for lsStrategy OR dqStrategy");
-		}
-		if (xCoor < 0 || yCoor < 0) {
-			throw new ValueParseException("Negative values for x OR y coordinates");
-		}
+		if (lsStrategy == null)
+			throw new IncorrectVariableValueException("Null values for lsStrategy.");
+		if (dqStrategy == null)
+			throw new IncorrectVariableValueException("Null values for dqStrategy.");
+		if (xCoor < 0 || yCoor < 0)
+			throw new IncorrectVariableValueException("Negative values for Coor; x: " + xCoor + ", y: " + yCoor);
 	}
 
 	public int getX() {
@@ -59,21 +57,22 @@ public class Junction extends SimulatedObject {
 		return pos[1];
 	}
 
-	public void addIncommingRoad(Road r) throws IncorrectRoadException {
+	public void addIncommingRoad(Road r) throws IncorrectObjectException {
 		List<Vehicle> listV = new LinkedList<Vehicle>();
 		if (!r.getDestination().equals(this))
-			throw new IncorrectRoadException("");
+			throw new IncorrectObjectException("Road " + r._id + " is not a incomingRoad to Junction" + this._id);
 
 		roadList.add(r);
 		listQueue.add(listV);
 	}
 
-	public void addOutGoingRoad(Road r) throws IncorrectRoadException {
+	public void addOutGoingRoad(Road r) throws IncorrectObjectException {
 
 		Junction j = r.destJunc;
 		for (Road i : roadList) {
 			if (i.getDestination().equals(j))
-				throw new IncorrectRoadException("");
+				throw new IncorrectObjectException(
+						"Road " + r._id + " is not a OutGoingRoad from Junction " + this._id);
 
 		}
 		mapOutRoads.put(j, r);
@@ -114,53 +113,32 @@ public class Junction extends SimulatedObject {
 			lastTimeChangeGreenLight = time;
 			indexGreenLight = newIndexGreenLight;
 		}
-		
+
 	}
 
 	public JSONObject report() {
-		JSONObject jo = new JSONObject();
-		jo.put("id", this._id);
-		if(indexGreenLight != -1) jo.put("green", roadList.get(indexGreenLight)._id); 
-		else jo.put("green", "none");
-		
+		JSONObject j = new JSONObject();
+		j.put("id", this._id);
+		if (indexGreenLight != -1)
+			j.put("green", roadList.get(indexGreenLight)._id);
+		else
+			j.put("green", "none");
+
 		List<Vehicle> listV;
 		JSONArray ja = new JSONArray();
-		for(int i = 0; i < roadList.size(); i++) {
+		for (int i = 0; i < roadList.size(); i++) {
 			listV = listQueue.get(i);
-			JSONObject jo2 = new JSONObject();
-			jo2.put("road",roadList.get(i)._id);
+			JSONObject j2 = new JSONObject();
+			j2.put("road", roadList.get(i)._id);
 			JSONArray ja2 = new JSONArray();
-			for(Vehicle v : listV){
+			for (Vehicle v : listV) {
 				ja2.put(v);
 			}
-			jo2.put("vehicles", ja2);
-			ja.put(jo2);
+			j2.put("vehicles", ja2);
+			ja.put(j2);
 		}
-		jo.put("queues", ja);
-		return jo;
-	
-	
-//		JSONObject j = new JSONObject();
-//		j.put("id", _id);
-//		if (indexGreenLight == -1)
-//			j.put("green", "none");
-//		else
-//			j.put("green", roadList.get(indexGreenLight).getId());
-//
-//		JSONArray jQueues = new JSONArray();
-//		for (Road r : roadList) {
-//			JSONObject jQueue = new JSONObject();
-//			jQueue.put("road", r.getId());
-//
-//			JSONArray jVehicles = new JSONArray();
-//			for (Vehicle v : r.getVehicleList()) {
-//				jVehicles.put(v.getId());
-//			}
-//			jQueue.put("vehicles", jVehicles);
-//			jQueues.put(jQueue);
-//		}
-//		j.put("queues", jQueues);
-//		return j;
+		j.put("queues", ja);
+		return j;
 	}
 
 	public Road getOutRoad(Vehicle v) {

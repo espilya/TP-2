@@ -1,10 +1,13 @@
 package simulator.model;
 
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONObject;
 
+import simulator.exceptions.ExistingObjectException;
+import simulator.exceptions.IncorrectObjectException;
+import simulator.exceptions.IncorrectVariableValueException;
+import simulator.exceptions.NonExistingObjectException;
 import simulator.misc.SortedArrayList;
 
 public class TrafficSimulator {
@@ -27,17 +30,24 @@ public class TrafficSimulator {
 	public void advance() {
 // 		1)
 		time++;
-		@SuppressWarnings("unused")
-		int temp;
-		if (time == 143)
-			temp = time;
+		
+//		@SuppressWarnings("unused")
+//		int temp;
+//		if (time == 143)
+//			temp = time;
+		
 //		2) ejecuta todos los eventos cuyo tiempo sea el tiempo actual de la simulación y
 //		los elimina de la lista. Después llama a sus correspondientes métodos execute.
 		List<Event> copy = new SortedArrayList<Event>();
 		copy.addAll(listEvents);
 		for (Event e : copy) {
 			if (e.getTime() == time) {
-				e.execute(roadMap);
+				try {
+					e.execute(roadMap);
+				} catch (ExistingObjectException | IncorrectObjectException | NonExistingObjectException
+						| IncorrectVariableValueException exc) {
+					exc.printStackTrace();
+				}
 				listEvents.remove(e);
 			}
 		}
