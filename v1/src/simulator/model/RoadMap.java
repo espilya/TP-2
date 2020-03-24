@@ -21,14 +21,12 @@ public class RoadMap {
 	private Map<String, Vehicle> vehicleMap;
 
 	protected RoadMap() {
-		this.junctionList = new ArrayList<Junction>();
-		this.roadList = new ArrayList<Road>();
-		this.vehicleList = new ArrayList<Vehicle>();
-
-		// ----------------------------- Map ===> hashMap or TreeMap??????
-		this.junctionMap = new HashMap<String, Junction>();
-		this.roadMap = new HashMap<String, Road>();
-		this.vehicleMap = new HashMap<String, Vehicle>();
+		junctionList = new ArrayList<Junction>();
+		roadList = new ArrayList<Road>();
+		vehicleList = new ArrayList<Vehicle>();
+		junctionMap = new HashMap<String, Junction>();
+		roadMap = new HashMap<String, Road>();
+		vehicleMap = new HashMap<String, Vehicle>();
 	}
 
 	void addJunction(Junction j) throws ExistingObjectException {
@@ -116,22 +114,24 @@ public class RoadMap {
 	}
 
 	public JSONObject report() {
-
-		JSONObject jo = new JSONObject();
+		JSONObject j = new JSONObject();
 		JSONArray ja = new JSONArray();
 		JSONArray ja2 = new JSONArray();
 		JSONArray ja3 = new JSONArray();
 
-		for (Road r : this.roadList)
+		for (Road r : roadList)
 			ja2.put(r.report());
-		jo.put("roads", ja2);
-		for (Vehicle v : this.vehicleList)
+		j.put("roads", ja2);
+		
+		for (Vehicle v : vehicleList)
 			ja3.put(v.report());
-		jo.put("vehicles", ja3);
-		for (Junction j : this.junctionList)
-			ja.put(j.report());
-		jo.put("junctions", ja);
-		return jo;
+		j.put("vehicles", ja3);
+		
+		for (Junction ju : junctionList)
+			ja.put(ju.report());
+		j.put("junctions", ja);
+		
+		return j;
 	}
 
 }

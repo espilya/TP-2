@@ -15,7 +15,6 @@ public class MostCrowdedStrategyBuilder extends Builder<LightSwitchingStrategy> 
 
 	protected LightSwitchingStrategy createTheInstance(JSONObject data) {
 		final int defaultValue = 1;
-
 		return new MostCrowdedStrategy(data.has("timeslot") ? data.getInt("timeslot") : defaultValue);
 	}
 

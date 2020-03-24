@@ -32,8 +32,6 @@ public class MostCrowdedStrategy implements LightSwitchingStrategy {
 			if (currTime - lastSwitchingTime < timeSlot)
 				return currGreen;
 
-			// cG i
-			// 0 1 2 3 4 5 6
 			int i = currGreen + 1;
 			int max = 0;
 			int index = 0;

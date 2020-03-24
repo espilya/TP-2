@@ -18,7 +18,7 @@ public class Controller {
 	private TrafficSimulator trafficSim;
 	private Factory<Event> evtsFactory;
 
-	public Controller(TrafficSimulator sim, Factory<Event> eventsFactory) throws NonExistingObjectException  {
+	public Controller(TrafficSimulator sim, Factory<Event> eventsFactory) throws NonExistingObjectException {
 		trafficSim = sim;
 		evtsFactory = eventsFactory;
 		if (sim == null)
@@ -26,13 +26,13 @@ public class Controller {
 		if (eventsFactory == null)
 			throw new NonExistingObjectException("eventsFactory does not exist");
 	}
- 
-	public void loadEvents(InputStream in)  {
+
+	public void loadEvents(InputStream in) {
 		JSONObject jo = new JSONObject(new JSONTokener(in));
 		JSONArray jArr = jo.getJSONArray("events");
-		for(int i = 0;  i < jArr.length(); i++) {
+		for (int i = 0; i < jArr.length(); i++) {
 			JSONObject jo2 = jArr.getJSONObject(i);
-			Event e = evtsFactory.createInstance(jo2);	
+			Event e = evtsFactory.createInstance(jo2);
 			trafficSim.addEvent(e);
 		}
 	}
@@ -40,15 +40,14 @@ public class Controller {
 	public void run(int n, OutputStream out) {
 		JSONArray jArr = new JSONArray();
 		JSONObject j = new JSONObject();
-		for(int i = 0; i<n; i++) {
+		for (int i = 0; i < n; i++) {
 			trafficSim.advance();
 			jArr.put(trafficSim.report());
 		}
 		j.put("states", jArr);
-		
 		PrintStream p = new PrintStream(out);
-		p.println(j.toString(3)); 
-		
+		p.println(j.toString(3));
+
 	}
 
 	public void reset() {

@@ -39,7 +39,6 @@ public class Vehicle extends SimulatedObject {
 		localization = 0;
 		totalCont = 0;
 		lastJunction = 0;
-
 	}
 
 	public int getLocation() {
@@ -111,7 +110,6 @@ public class Vehicle extends SimulatedObject {
 				lastJunction++;
 				pastRoadsLengt += actualRoad.getLength();
 				totalDistance = pastRoadsLengt;
-
 			}
 
 		} else {

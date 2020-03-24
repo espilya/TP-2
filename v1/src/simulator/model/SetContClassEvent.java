@@ -22,7 +22,6 @@ public class SetContClassEvent extends Event {
 	void execute(RoadMap map) throws NonExistingObjectException, IncorrectVariableValueException {
 		for (Pair<String, Integer> p : cs) {
 			Vehicle v = map.getVehicle(p.getFirst());
-
 //			try {
 			if (v == null)
 				throw new NonExistingObjectException(

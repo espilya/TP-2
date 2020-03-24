@@ -25,7 +25,6 @@ public abstract class Road extends SimulatedObject {
 
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather)
 			throws IncorrectVariableValueException {
-
 		super(id);
 
 		if (maxSpeed <= 0) // positive <=0, non-negative < 0
@@ -40,6 +39,7 @@ public abstract class Road extends SimulatedObject {
 			throw new IncorrectVariableValueException("Junction destination is null");
 		else if (weather == null)
 			throw new IncorrectVariableValueException("Weather is null");
+
 		this.srcJunc = srcJunc;
 		this.destJunc = destJunc;
 		this.maxSpeed = maxSpeed;
@@ -65,14 +65,13 @@ public abstract class Road extends SimulatedObject {
 	}
 
 	public List<Vehicle> getVehicleList() {
-
 		return Collections.unmodifiableList(vehicles);
 	}
 
 	public Junction getDestination() {
 		return destJunc;
 	}
- 
+
 	public Junction getSource() {
 		return srcJunc;
 	}
@@ -90,11 +89,10 @@ public abstract class Road extends SimulatedObject {
 	}
 
 	void enter(Vehicle v) throws IncorrectVariableValueException {
-
 		vehicles.add(v);
 		if (v.getSpeed() != 0 || v.getLocation() != 0)
-			throw new IncorrectVariableValueException("Vehicle speed and location must be equal to 0:(Speed: " + v.getSpeed()
-					+ " Location: " + v.getLocation() + ")");
+			throw new IncorrectVariableValueException("Vehicle speed and location must be equal to 0:(Speed: "
+					+ v.getSpeed() + " Location: " + v.getLocation() + ")");
 	}
 
 	void exit(Vehicle v) {
@@ -102,7 +100,6 @@ public abstract class Road extends SimulatedObject {
 	}
 
 	public void advance(int time) {
-
 		// 1)
 		try {
 			reduceTotalContamination();
@@ -125,6 +122,7 @@ public abstract class Road extends SimulatedObject {
 				e.printStackTrace();
 			}
 		}
+
 		// 4)
 		vehicles.sort(_cmp);
 	}

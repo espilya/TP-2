@@ -18,7 +18,7 @@ public class Junction extends SimulatedObject {
 	private List<List<Vehicle>> listQueue;
 
 	private Map<Junction, Road> mapOutRoads;
-//	private Map<Road, List<Vehicle>> roadQueue;
+//	private Map<Road, List<Vehicle>> roadQueueMap;
 	private int indexGreenLight;
 	private int lastTimeChangeGreenLight;
 
@@ -73,7 +73,6 @@ public class Junction extends SimulatedObject {
 			if (i.getDestination().equals(j))
 				throw new IncorrectObjectException(
 						"Road " + r._id + " is not a OutGoingRoad from Junction " + this._id);
-
 		}
 		mapOutRoads.put(j, r);
 
@@ -150,7 +149,8 @@ public class Junction extends SimulatedObject {
 		}
 		if (index >= listJ.size())
 			return null;
-		return mapOutRoads.get(listJ.get(index));
+		else
+			return mapOutRoads.get(listJ.get(index));
 	}
 
 }

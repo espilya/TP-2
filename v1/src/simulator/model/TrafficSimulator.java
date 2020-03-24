@@ -30,14 +30,13 @@ public class TrafficSimulator {
 	public void advance() {
 // 		1)
 		time++;
-		
+
 //		@SuppressWarnings("unused")
 //		int temp;
 //		if (time == 143)
 //			temp = time;
-		
-//		2) ejecuta todos los eventos cuyo tiempo sea el tiempo actual de la simulación y
-//		los elimina de la lista. Después llama a sus correspondientes métodos execute.
+
+//		2) 
 		List<Event> copy = new SortedArrayList<Event>();
 		copy.addAll(listEvents);
 		for (Event e : copy) {
@@ -52,15 +51,14 @@ public class TrafficSimulator {
 			}
 		}
 
-//		3) llama al método advance de todos los cruces.
+//		3)
 		for (Junction j : roadMap.getJunctions()) {
 			j.advance(time);
 		}
-//		4) llama al método advance de todas las carreteras.
+//		4)
 		for (Road r : roadMap.getRoads()) {
 			r.advance(time);
 		}
-
 	}
 
 	public void reset() {

@@ -6,7 +6,6 @@ import simulator.exceptions.IncorrectVariableValueException;
 import simulator.exceptions.NonExistingObjectException;
 import simulator.misc.Pair;
 
-// TO DO
 public class SetWeatherEvent extends Event {
 	List<Pair<String, Weather>> ws;
 

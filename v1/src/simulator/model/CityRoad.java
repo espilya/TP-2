@@ -10,7 +10,6 @@ public class CityRoad extends Road {
 	}
 
 	public void reduceTotalContamination() throws IncorrectVariableValueException {
-
 		if (weather.equals(Weather.WINDY) || weather.equals(Weather.STORM))
 			contTotal -= 10;
 		else

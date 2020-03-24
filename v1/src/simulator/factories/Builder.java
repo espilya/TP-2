@@ -19,7 +19,6 @@ public abstract class Builder<T> {
 		if (_type != null && _type.equals(info.getString("type"))) {
 			b = createTheInstance(info.has("data") ? info.getJSONObject("data") : null);
 		}
-
 		return b;
 	}
 

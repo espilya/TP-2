@@ -11,7 +11,6 @@ public class NewInterCityRoadEvent extends NewRoadEvent {
 	}
 
 
-
 	@Override
 	protected Road createRoadObject() {
 		Junction srcJun1;

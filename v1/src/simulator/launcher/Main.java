@@ -57,7 +57,6 @@ public class Main {
 					error += (" " + o);
 				throw new ParseException(error);
 			}
-
 		} catch (ParseException e) {
 			System.err.println(e.getLocalizedMessage());
 			System.exit(1);
@@ -98,42 +97,40 @@ public class Main {
 	}
 
 	private static void parseTicksOption(CommandLine line) throws ParseException {
-		ticks = Integer.parseInt(line.getOptionValue("t", _timeLimitDefaultValue.toString()));
+		try {
+			ticks = Integer.parseInt(line.getOptionValue("t", _timeLimitDefaultValue.toString()));
+		} catch (NumberFormatException e) {
+			System.err.println("Incorrect ticks value.");
+		}
 	}
 
 	private static void initFactories() {
-
 		List<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
 		List<Builder<DequeuingStrategy>> dqbs = new ArrayList<>();
 		List<Builder<Event>> ebs = new ArrayList<>();
 		Factory<DequeuingStrategy> dqsFactory = null;
 		Factory<LightSwitchingStrategy> lssFactory = null;
-
 		lsbs.add(new MostCrowdedStrategyBuilder());
 		lsbs.add(new RoundRobinStrategyBuilder());
-
 		dqbs.add(new MoveFirstStrategyBuilder());
 		dqbs.add(new MoveAllStrategyBuilder());
-
-		dqsFactory = new BuilderBasedFactory<>(dqbs);
-		lssFactory = new BuilderBasedFactory<>(lsbs);
-
 		ebs.add(new NewCityRoadEventBuilder());
 		ebs.add(new NewInterCityRoadEventBuilder());
 		ebs.add(new NewVehicleEventBuilder());
 		ebs.add(new SetWeatherEventBuilder());
 		ebs.add(new SetContClassEventBuilder());
-
+		dqsFactory = new BuilderBasedFactory<>(dqbs);
+		lssFactory = new BuilderBasedFactory<>(lsbs);
 		ebs.add(new NewJunctionEventBuilder(lssFactory, dqsFactory));
-
 		_eventsFactory = new BuilderBasedFactory<>(ebs);
 	}
 
 	private static void startBatchMode() throws IOException {
+		System.out.println("-Start");
+		Controller control = null;
+		TrafficSimulator simulator = new TrafficSimulator();
 		InputStream in = new FileInputStream(new File(_inFile));
 		OutputStream out = _outFile == null ? System.out : new FileOutputStream(new File(_outFile));
-		TrafficSimulator simulator = new TrafficSimulator();
-		Controller control = null;
 		try {
 			control = new Controller(simulator, _eventsFactory);
 		} catch (NonExistingObjectException e) {
@@ -142,7 +139,7 @@ public class Main {
 		control.loadEvents(in);
 		control.run(Main.ticks, out);
 		in.close();
-		System.out.println("End.");
+		System.out.println("-End");
 	}
 
 	private static void start(String[] args) throws IOException {
