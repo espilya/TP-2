@@ -15,7 +15,6 @@ public class RoundRobinStrategyBuilder extends Builder<LightSwitchingStrategy> {
 
 	protected LightSwitchingStrategy createTheInstance(JSONObject data) {
 		final int defaultValue = 1;
-
 		return new RoundRobinStrategy(data.has("timeslot") ? data.getInt("timeslot") : defaultValue);
 	}
 

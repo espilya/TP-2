@@ -111,9 +111,7 @@ public abstract class Road extends SimulatedObject {
 		updateSpeedLimit();
 
 		// 3)
-		Iterator<Vehicle> it = vehicles.iterator();
-		while (it.hasNext()) {
-			Vehicle n = it.next();
+		for(Vehicle n : vehicles) {
 			try {
 				if (n.getStatus() != VehicleStatus.WAITING)
 					n.setSpeed(calculateVehicleSpeed(n));

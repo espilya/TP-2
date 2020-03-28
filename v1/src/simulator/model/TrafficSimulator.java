@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -15,7 +16,8 @@ public class TrafficSimulator {
 	private RoadMap roadMap;
 	private List<Event> listEvents;
 	private int time;
-
+//	private Comparator<Event> _cmp;
+	
 	public TrafficSimulator() {
 		// set values to default
 		time = 0;
@@ -37,19 +39,36 @@ public class TrafficSimulator {
 //			temp = time;
 
 //		2) 
+//		List<Event> copy = new SortedArrayList<Event>();
+//		copy.addAll(listEvents);
+//		for (Event e : copy) {
+//			if (e.getTime() == time) {
+//				try {
+//					e.execute(roadMap);
+//				} catch (ExistingObjectException | IncorrectObjectException | NonExistingObjectException
+//						| IncorrectVariableValueException exc) {
+//					exc.printStackTrace();
+//				}
+//				listEvents.remove(e);
+//			}
+//		}
+//
+		int i = 0;
+		int size = listEvents.size();
 		List<Event> copy = new SortedArrayList<Event>();
 		copy.addAll(listEvents);
-		for (Event e : copy) {
-			if (e.getTime() == time) {
+		while (i < size && copy.get(i).getTime() == time) {
+			
 				try {
-					e.execute(roadMap);
+					copy.get(i).execute(roadMap);
 				} catch (ExistingObjectException | IncorrectObjectException | NonExistingObjectException
 						| IncorrectVariableValueException exc) {
 					exc.printStackTrace();
 				}
-				listEvents.remove(e);
-			}
+				listEvents.remove(copy.get(i));
+			i++;
 		}
+		copy.clear();
 
 //		3)
 		for (Junction j : roadMap.getJunctions()) {

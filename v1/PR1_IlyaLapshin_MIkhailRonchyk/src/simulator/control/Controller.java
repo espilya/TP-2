@@ -22,7 +22,7 @@ public class Controller {
 		trafficSim = sim;
 		evtsFactory = eventsFactory;
 		if (sim == null)
-			throw new NonExistingObjectException("TrafficSimulator does not exist");
+			throw new NonExistingObjectException("trafficSimulator does not exist");
 		if (eventsFactory == null)
 			throw new NonExistingObjectException("eventsFactory does not exist");
 	}
