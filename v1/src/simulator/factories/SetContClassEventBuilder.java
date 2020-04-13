@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import simulator.misc.Pair;
 import simulator.model.Event;
-import simulator.model.SetContClassEvent;
+import simulator.model.NewSetContClassEvent;
 
 public class SetContClassEventBuilder extends Builder<Event> {
 
@@ -31,7 +31,7 @@ public class SetContClassEventBuilder extends Builder<Event> {
 			cList.add(p);
 		}
 
-		return new SetContClassEvent(time, cList);
+		return new NewSetContClassEvent(time, cList);
 	}
 
 }

@@ -28,14 +28,13 @@ public class NewVehicleEvent extends Event {
 		for (String j : itinerary) {
 			listIter.add(map.getJunction(j));
 		}
-//			try {
 		newVehicle = new Vehicle(id, maxSpeed, contClass, listIter);
 		newVehicle.moveToNextRoad();
 		map.addVehicle(newVehicle);
-//			} catch (IncorrectVariableValueException | ExistingObjectException | NonExistingObjectException e) {
-//				e.printStackTrace();
-//			}
-
+	}
+	
+	public String toString() {
+		return "New Junction '" + id + "'";
 	}
 
 }

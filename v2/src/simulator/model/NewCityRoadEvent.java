@@ -22,4 +22,8 @@ public class NewCityRoadEvent extends NewRoadEvent {
 		return newroad;
 	}
 
+	public String toString() {
+		return "New CityRoad '" + id + "'";
+	}
+
 }

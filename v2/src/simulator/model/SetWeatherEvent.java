@@ -26,5 +26,9 @@ public class SetWeatherEvent extends Event {
 			r.setWeather(p.getSecond());
 		}
 	}
+	
+	public String toString() {
+		return "SetWeather '" + ws + "'";
+	}
 
 }

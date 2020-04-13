@@ -3,6 +3,7 @@ package simulator.control;
 import simulator.exceptions.NonExistingObjectException;
 import simulator.factories.Factory;
 import simulator.model.Event;
+import simulator.model.TrafficSimObserver;
 import simulator.model.TrafficSimulator;
 
 import java.io.InputStream;
@@ -48,6 +49,15 @@ public class Controller {
 		PrintStream p = new PrintStream(out);
 		p.println(j.toString(3));
 
+	}
+
+	void addObserver(TrafficSimObserver o) {
+	}
+
+	void removeObserver(TrafficSimObserver o) {
+	}
+
+	void addEvent(Event e) {
 	}
 
 	public void reset() {
