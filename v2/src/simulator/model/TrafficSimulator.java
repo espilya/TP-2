@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -15,24 +16,27 @@ public class TrafficSimulator implements Observable<TrafficSimObserver> {
 	private RoadMap roadMap;
 	private List<Event> listEvents;
 	private int time;
-//	private Comparator<Event> _cmp;
+	private List<TrafficSimObserver> listObs;
 
 	public TrafficSimulator() {
 		// set values to default
 		time = 0;
 		listEvents = new SortedArrayList<Event>();
 		roadMap = new RoadMap();
+		listObs = new ArrayList<TrafficSimObserver>();
 	}
 
 	public void addEvent(Event e) {
 		listEvents.add(e);
-		TrafficSimObserver.onEventAdded(roadMap, listEvents, e, time);
+		for (TrafficSimObserver o : listObs)
+			o.onEventAdded(roadMap, listEvents, e, time);
 	}
 
 	public void advance() {
 // 		1)
 		time++;
-		onAdvanceStart(roadMap, listEvents, time);
+		for (TrafficSimObserver o : listObs)
+			o.onAdvanceStart(roadMap, listEvents, time);
 		int i = 0;
 		int size = listEvents.size();
 		List<Event> copy = new SortedArrayList<Event>();
@@ -57,14 +61,16 @@ public class TrafficSimulator implements Observable<TrafficSimObserver> {
 		for (Road r : roadMap.getRoads()) {
 			r.advance(time);
 		}
-		onAdvanceEnd(roadMap, copy, size);
+		for (TrafficSimObserver o : listObs)
+			o.onAdvanceEnd(roadMap, listEvents, size);
 	}
 
 	public void reset() {
 		time = 0;
 		roadMap.reset();
 		listEvents.clear();
-		TrafficSimObserver.reset(roadMap, listEvents, time);
+		for (TrafficSimObserver o : listObs)
+			o.onReset(roadMap, listEvents, time);
 	}
 
 	public JSONObject report() {
@@ -76,14 +82,16 @@ public class TrafficSimulator implements Observable<TrafficSimObserver> {
 
 	@Override
 	public void addObserver(TrafficSimObserver o) {
-		TrafficSimObserver.onRegister(roadMap, listEvents, time);
-		
+		o.onRegister(roadMap, listEvents, time);
+		if (o != null && !listObs.contains(o)) {
+			listObs.add(o);
+		}
 	}
 
 	@Override
 	public void removeObserver(TrafficSimObserver o) {
-
-		
+		if (o != null && listObs.contains(o))
+			listObs.remove(o);
 	}
 
 }
