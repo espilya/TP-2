@@ -2,6 +2,7 @@ package simulator.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +39,7 @@ import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
+import simulator.view.MainWindow;
 
 public class Main {
 
@@ -188,18 +190,37 @@ public class Main {
 			startGUIMode();
 	}
 
-	private static void startGUIMode() {
+	private static void startGUIMode() throws IOException {
 
 		// TODO:
-		// - crea el simulador
-		// - crea el controlador
-		// - carga en el simulador loseventos del fichero de entrada (si se proporciona)
+		// - carga en el simulador los eventos del fichero de entrada (si se
+		// proporciona)
 		// + y po Ultimo crea la ventana principal utilizando el siguiente código
+
+		System.out.println("-Start");
+		Controller control = null;
+		TrafficSimulator simulator = new TrafficSimulator();
+		InputStream in = null;
+
+		try {
+			control = new Controller(simulator, _eventsFactory);
+		} catch (NonExistingObjectException e) {
+			e.printStackTrace();
+		}
+
+		if (_inFile != null) {
+			in = new FileInputStream(new File(_inFile));
+			control.loadEvents(in);
+		}
+
+		control.run(Main._ticks);
+		in.close();
+		System.out.println("-End");
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new MainWindow(ctrl);
+				new MainWindow(control);
 			}
 		});
 	}

@@ -38,6 +38,18 @@ public class Controller {
 		}
 	}
 
+	public void run(int n) {
+		JSONArray jArr = new JSONArray();
+		JSONObject j = new JSONObject();
+		for (int i = 0; i < n; i++) {
+			trafficSim.advance();
+			jArr.put(trafficSim.report());
+		}
+		j.put("states", jArr);
+//		PrintStream p = new PrintStream(out);
+//		p.println(j.toString(3));
+	}
+
 	public void run(int n, OutputStream out) {
 		JSONArray jArr = new JSONArray();
 		JSONObject j = new JSONObject();
@@ -48,7 +60,6 @@ public class Controller {
 		j.put("states", jArr);
 		PrintStream p = new PrintStream(out);
 		p.println(j.toString(3));
-
 	}
 
 	void addObserver(TrafficSimObserver o) {
