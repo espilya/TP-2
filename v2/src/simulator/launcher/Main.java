@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -16,9 +18,22 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import simulator.control.*;
+
+import simulator.control.Controller;
 import simulator.exceptions.NonExistingObjectException;
-import simulator.factories.*;
+import simulator.factories.Builder;
+import simulator.factories.BuilderBasedFactory;
+import simulator.factories.Factory;
+import simulator.factories.MostCrowdedStrategyBuilder;
+import simulator.factories.MoveAllStrategyBuilder;
+import simulator.factories.MoveFirstStrategyBuilder;
+import simulator.factories.NewCityRoadEventBuilder;
+import simulator.factories.NewInterCityRoadEventBuilder;
+import simulator.factories.NewJunctionEventBuilder;
+import simulator.factories.NewVehicleEventBuilder;
+import simulator.factories.RoundRobinStrategyBuilder;
+import simulator.factories.SetContClassEventBuilder;
+import simulator.factories.SetWeatherEventBuilder;
 import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
 import simulator.model.LightSwitchingStrategy;
@@ -27,7 +42,8 @@ import simulator.model.TrafficSimulator;
 public class Main {
 
 	private final static Integer _timeLimitDefaultValue = 10;
-	private static int ticks = -1;
+	private static int _ticks = -1;
+	private static int _mode = 1;
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
@@ -35,11 +51,9 @@ public class Main {
 	private static void parseArgs(String[] args) {
 
 		// define the valid command line options
-		//
 		Options cmdLineOptions = buildOptions();
 
 		// parse the command line as provided in args
-		//
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
@@ -47,6 +61,7 @@ public class Main {
 			parseInFileOption(line);
 			parseOutFileOption(line);
 			parseTicksOption(line);
+			parseModeOption(line);
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
 			//
@@ -67,12 +82,22 @@ public class Main {
 	private static Options buildOptions() {
 		Options cmdLineOptions = new Options();
 
+		// input
 		cmdLineOptions.addOption(Option.builder("i").longOpt("input").hasArg().desc("Events input file").build());
+
+		// output
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
+		// help
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
+
+		// ticks
 		cmdLineOptions.addOption(Option.builder("t").longOpt("ticks").hasArg()
 				.desc("Ticks to the simulator’s main loop (default value is " + _timeLimitDefaultValue + ").").build());
+
+		// mode
+		cmdLineOptions.addOption(Option.builder("m").longOpt("mode").hasArg()
+				.desc("Application launch mode (default value is GUI).").build());
 
 		return cmdLineOptions;
 	}
@@ -93,14 +118,26 @@ public class Main {
 	}
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
-		_outFile = line.getOptionValue("o");
+		if (!line.hasOption("m"))
+			_outFile = line.getOptionValue("o");
 	}
 
 	private static void parseTicksOption(CommandLine line) throws ParseException {
 		try {
-			ticks = Integer.parseInt(line.getOptionValue("t", _timeLimitDefaultValue.toString()));
+			_ticks = Integer.parseInt(line.getOptionValue("t", _timeLimitDefaultValue.toString()));
 		} catch (NumberFormatException e) {
-			System.err.println("Incorrect ticks value.");
+			throw new ParseException("Incorrect ticks value.");
+		}
+	}
+
+	private static void parseModeOption(CommandLine line) throws ParseException {
+		String input;
+		if (line.hasOption("m")) {
+			input = line.getOptionValue("m");
+			if (input.equals("console"))
+				_mode = 0;
+			else if (!input.equals("gui"))
+				throw new ParseException("Incorrect mode value.");
 		}
 	}
 
@@ -137,7 +174,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		control.loadEvents(in);
-		control.run(Main.ticks, out);
+		control.run(Main._ticks, out);
 		in.close();
 		System.out.println("-End");
 	}
@@ -145,7 +182,26 @@ public class Main {
 	private static void start(String[] args) throws IOException {
 		initFactories();
 		parseArgs(args);
-		startBatchMode();
+		if (_mode == 0)
+			startBatchMode();
+		else
+			startGUIMode();
+	}
+
+	private static void startGUIMode() {
+
+		// TODO:
+		// - crea el simulador
+		// - crea el controlador
+		// - carga en el simulador loseventos del fichero de entrada (si se proporciona)
+		// + y po Ultimo crea la ventana principal utilizando el siguiente código
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new MainWindow(ctrl);
+			}
+		});
 	}
 
 	// example command lines:
@@ -154,6 +210,7 @@ public class Main {
 	// -i resources/examples/ex1.json -t 300
 	// -i resources/examples/ex1.json -o resources/tmp/ex1.out.json
 	// --help
+	// -m // "-m gui", "-m console", default = gui mode
 
 	public static void main(String[] args) {
 		try {

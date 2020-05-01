@@ -35,6 +35,6 @@ public class NewSetContClassEvent extends Event {
 	}
 	
 	public String toString() {
-		return "Contamination '" + cs + "'";
+		return "New Contamination class'" + cs + "'";
 	}
 }

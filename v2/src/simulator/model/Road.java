@@ -60,6 +60,55 @@ public abstract class Road extends SimulatedObject {
 
 	}
 
+	void enter(Vehicle v) throws IncorrectVariableValueException {
+		vehicles.add(v);
+		if (v.getSpeed() != 0 || v.getLocation() != 0)
+			throw new IncorrectVariableValueException("Vehicle speed and location must be equal to 0:(Speed: "
+					+ v.getSpeed() + " Location: " + v.getLocation() + ")");
+	}
+
+	void exit(Vehicle v) {
+		vehicles.remove(v);
+	}
+
+	abstract void reduceTotalContamination() throws IncorrectVariableValueException;
+
+	abstract void updateSpeedLimit();
+
+	abstract int calculateVehicleSpeed(Vehicle v);
+
+	public void advance(int time) {
+		// 1)
+		try {
+			reduceTotalContamination();
+		} catch (IncorrectVariableValueException e) {
+			e.printStackTrace();
+		}
+	
+		// 2)
+		updateSpeedLimit();
+	
+		// 3)
+		for(Vehicle n : vehicles) {
+			try {
+				if (n.getStatus() != VehicleStatus.WAITING)
+					n.setSpeed(calculateVehicleSpeed(n));
+				n.advance(time);
+			} catch (IncorrectVariableValueException e) {
+				e.printStackTrace();
+			}
+		}
+	
+		// 4)
+		vehicles.sort(_cmp);
+	}
+
+	public void addContamination(int c) throws IncorrectVariableValueException {
+		if (c < 0)
+			throw new IncorrectVariableValueException("Negative value for contamition: " + c);
+		contTotal += c;
+	}
+
 	public int getLength() {
 		return length;
 	}
@@ -82,47 +131,68 @@ public abstract class Road extends SimulatedObject {
 		weather = w;
 	}
 
-	public void addContamination(int c) throws IncorrectVariableValueException {
-		if (c < 0)
-			throw new IncorrectVariableValueException("Negative value for contamition: " + c);
-		contTotal += c;
+	public int getContLimit() {
+		return contLimit;
 	}
 
-	void enter(Vehicle v) throws IncorrectVariableValueException {
-		vehicles.add(v);
-		if (v.getSpeed() != 0 || v.getLocation() != 0)
-			throw new IncorrectVariableValueException("Vehicle speed and location must be equal to 0:(Speed: "
-					+ v.getSpeed() + " Location: " + v.getLocation() + ")");
+	public void setContLimit(int contLimit) {
+		this.contLimit = contLimit;
 	}
 
-	void exit(Vehicle v) {
-		vehicles.remove(v);
+	public int getContTotal() {
+		return contTotal;
 	}
 
-	public void advance(int time) {
-		// 1)
-		try {
-			reduceTotalContamination();
-		} catch (IncorrectVariableValueException e) {
-			e.printStackTrace();
-		}
+	public void setContTotal(int contTotal) {
+		this.contTotal = contTotal;
+	}
 
-		// 2)
-		updateSpeedLimit();
+	public int getMaxSpeed() {
+		return maxSpeed;
+	}
 
-		// 3)
-		for(Vehicle n : vehicles) {
-			try {
-				if (n.getStatus() != VehicleStatus.WAITING)
-					n.setSpeed(calculateVehicleSpeed(n));
-				n.advance(time);
-			} catch (IncorrectVariableValueException e) {
-				e.printStackTrace();
-			}
-		}
+	public void setMaxSpeed(int maxSpeed) {
+		this.maxSpeed = maxSpeed;
+	}
 
-		// 4)
-		vehicles.sort(_cmp);
+	public int getSpeedLimit() {
+		return speedLimit;
+	}
+
+	public void setSpeedLimit(int speedLimit) {
+		this.speedLimit = speedLimit;
+	}
+
+	public Junction getSrcJunc() {
+		return srcJunc;
+	}
+
+	public void setSrcJunc(Junction srcJunc) {
+		this.srcJunc = srcJunc;
+	}
+
+	public Junction getDestJunc() {
+		return destJunc;
+	}
+
+	public void setDestJunc(Junction destJunc) {
+		this.destJunc = destJunc;
+	}
+
+	public List<Vehicle> getVehicles() {
+		return vehicles;
+	}
+
+	public void setVehicles(List<Vehicle> vehicles) {
+		this.vehicles = vehicles;
+	}
+
+	public Weather getWeather() {
+		return weather;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 
 	public JSONObject report() {
@@ -138,11 +208,5 @@ public abstract class Road extends SimulatedObject {
 		j.put("vehicles", ja);
 		return j;
 	}
-
-	abstract void reduceTotalContamination() throws IncorrectVariableValueException;
-
-	abstract void updateSpeedLimit();
-
-	abstract int calculateVehicleSpeed(Vehicle v);
 
 }

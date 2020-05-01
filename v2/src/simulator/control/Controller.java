@@ -52,12 +52,15 @@ public class Controller {
 	}
 
 	void addObserver(TrafficSimObserver o) {
+		trafficSim.addObserver(o);
 	}
 
 	void removeObserver(TrafficSimObserver o) {
+		trafficSim.removeObserver(o);
 	}
 
 	void addEvent(Event e) {
+		trafficSim.addEvent(e);
 	}
 
 	public void reset() {
