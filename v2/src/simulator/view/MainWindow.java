@@ -20,7 +20,7 @@ public class MainWindow extends JFrame {
 
 	public MainWindow(Controller ctrl) {
 		super("Traffic Simulator");
-		_ctrl = ctrl;
+		_ctrl = ctrl; 
 		initGUI();
 	}
 
@@ -50,7 +50,8 @@ public class MainWindow extends JFrame {
 		mapsPanel.add(mapView);
 		// TODO add a map for MapByRoadComponent
 		// ...
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
 	}

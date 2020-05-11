@@ -76,7 +76,7 @@ public class JTableExamples extends JFrame {
 
 		addButton = new JButton("Add Event");
 		addButton.addActionListener(new ActionListener() {
-
+ 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				addEvent();
