@@ -15,6 +15,7 @@ import extra.jtable.EventsTableModel;
 import simulator.control.Controller;
 
 public class MainWindow extends JFrame {
+	private static final long serialVersionUID = 8720525028556625831L;
 	private Controller _ctrl;
 
 	public MainWindow(Controller ctrl) {

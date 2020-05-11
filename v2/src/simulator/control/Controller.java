@@ -62,11 +62,11 @@ public class Controller {
 		p.println(j.toString(3));
 	}
 
-	void addObserver(TrafficSimObserver o) {
+	public void addObserver(TrafficSimObserver o) {
 		trafficSim.addObserver(o);
 	}
 
-	void removeObserver(TrafficSimObserver o) {
+	public void removeObserver(TrafficSimObserver o) {
 		trafficSim.removeObserver(o);
 	}
 

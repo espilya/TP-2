@@ -9,10 +9,17 @@ import simulator.model.Event;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
+/**
+ * This is the top panel of the window
+ * @author Puppy
+ *
+ */
 public class ControlPanel extends JPanel implements TrafficSimObserver {
+	private static final long serialVersionUID = 1L;
 
 	public ControlPanel(Controller _ctrl) {
-		// TODO Auto-generated constructor stub
+		
+
 	}
 
 	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
