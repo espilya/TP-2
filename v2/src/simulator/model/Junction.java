@@ -153,4 +153,8 @@ public class Junction extends SimulatedObject {
 			return mapOutRoads.get(listJ.get(index));
 	}
 
+	public int getGreenLightIndex() {
+		return indexGreenLight;
+	}
+
 }

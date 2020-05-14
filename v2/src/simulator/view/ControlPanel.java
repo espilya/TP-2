@@ -31,15 +31,19 @@ import simulator.model.TrafficSimObserver;
 public class ControlPanel extends JPanel implements TrafficSimObserver, ActionListener {
 	private static final long serialVersionUID = 1L;
 
+	private Controller _ctrl;
+	private RoadMap _map;
+	private int _time;
+
 	private enum Buttons {
 		SAVE, LOAD, CLEAR, RUN, STOP, RESET, EXIT;
 	}
 
 	private JButton save, load, clear, run, stop, reset, exit;
-	private JSpinner _time;
+	private JSpinner ticks;
 
-	public ControlPanel(Controller _ctrl) {
-
+	public ControlPanel(Controller ctrl) {
+		_ctrl = ctrl;
 		add(createJTolBar());
 
 	}
@@ -48,11 +52,11 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		JToolBar toolBar = new JToolBar();
 
 		// spinner for selecting time
-		_time = new JSpinner(new SpinnerNumberModel(10, 1, 10000, 1));
-		_time.setToolTipText("Simulation tick to run: 1-10000");
-		_time.setMaximumSize(new Dimension(80, 40));
-		_time.setMinimumSize(new Dimension(80, 40));
-		_time.setPreferredSize(new Dimension(80, 40));
+		ticks = new JSpinner(new SpinnerNumberModel(10, 1, 10000, 1));
+		ticks.setToolTipText("Simulation tick to run: 1-10000");
+		ticks.setMaximumSize(new Dimension(80, 40));
+		ticks.setMinimumSize(new Dimension(80, 40));
+		ticks.setPreferredSize(new Dimension(80, 40));
 
 		load = new JButton(Buttons.LOAD.name());
 		load.setActionCommand(Buttons.LOAD.name());
@@ -103,33 +107,38 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		toolBar.add(stop);
 		toolBar.add(reset);
 		toolBar.add(new JLabel("Ticks: "));
-		toolBar.add(_time);
+		toolBar.add(ticks);
 		toolBar.add(exit);
 		return toolBar;
 	}
 
 	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
-
+		_map = map​;
+		_time = time​;
 	}
 
 	public void onAdvanceEnd(RoadMap map​, List<Event> events​, int time​) {
-
+		_map = map​;
+		_time = time​;
 	}
 
 	public void onEventAdded(RoadMap map​, List<Event> events​, Event e, int time​) {
-
+		_map = map​;
+		_time = time​;
 	}
 
 	public void onReset(RoadMap map​, List<Event> events​, int time​) {
-
+		_map = map​;
+		_time = time​;
 	}
 
 	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
-
+		_map = map​;
+		_time = time​;
 	}
 
 	public void onError(String err​) {
-
+		JOptionPane.showMessageDialog((Frame) SwingUtilities.getWindowAncestor(this), err​, "ERROR", JOptionPane.ERROR_MESSAGE);
 	}
 
 	@Override
@@ -172,7 +181,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	}
 
 	private void reset() {
-
+		_ctrl.reset();
 	}
 
 	private void close() {
