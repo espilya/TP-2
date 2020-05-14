@@ -5,17 +5,10 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JToolBar;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -34,6 +27,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private Controller _ctrl;
 	private RoadMap _map;
 	private int _time;
+	private JFileChooser fc;
 
 	private enum Buttons {
 		SAVE, LOAD, CLEAR, RUN, STOP, RESET, EXIT;
@@ -109,6 +103,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		toolBar.add(new JLabel("Ticks: "));
 		toolBar.add(ticks);
 		toolBar.add(exit);
+
+		this.fc = new JFileChooser();
 		return toolBar;
 	}
 
@@ -161,11 +157,21 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	}
 
 	private void save() {
-
+		int returnVal = fc.showSaveDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION){
+			File file = fc.getSelectedFile();
+			//writeFile(file, textArea.getText); // what can be text area
+		}
 	}
 
 	private void load() {
-
+		int returnVal = fc.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION){
+			File file = fc.getSelectedFile();
+			System.out.println("loading");
+			//String s = readFile(file);
+			//textArea.setText(s); // text area doesnt exit, it should be some info instead of
+		}
 	}
 
 	private void clear() {

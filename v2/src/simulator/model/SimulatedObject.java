@@ -4,6 +4,8 @@ import org.json.JSONObject;
 
 import simulator.exceptions.IncorrectVariableValueException;
 
+import java.util.List;
+
 public abstract class SimulatedObject {
 
 	protected String _id;
@@ -24,4 +26,6 @@ public abstract class SimulatedObject {
 	abstract void advance(int time) throws IncorrectVariableValueException;
 
 	abstract public JSONObject report();
+
+
 }
