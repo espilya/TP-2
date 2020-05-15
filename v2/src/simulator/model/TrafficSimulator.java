@@ -74,6 +74,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver> {
 		for (TrafficSimObserver o : listObs)
 			o.onReset(roadMap, listEvents, time);
 	}
+	
 
 	public JSONObject report() {
 		JSONObject j = new JSONObject();
@@ -95,5 +96,10 @@ public class TrafficSimulator implements Observable<TrafficSimObserver> {
 		if (o != null && listObs.contains(o))
 			listObs.remove(o);
 	}
+
+	public List<Event> getEvents() {
+		return listEvents;
+	}
+	
 
 }

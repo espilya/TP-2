@@ -1,11 +1,13 @@
 package simulator.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
+import simulator.model.Junction;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
@@ -18,7 +20,8 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 			"Distance" };
 
 	public VehiclesTableModel(Controller _ctrl) {
-		// TODO Auto-generated constructor stub
+		_vehicles = new ArrayList<Vehicle>();
+		_ctrl.addObserver(this);
 	}
 
 	public void update() {
@@ -57,21 +60,38 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	@Override
 	// returns the value of a particular cell
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return 0;
+		
 		// TODO
-//		Object s = null;
-//		switch (columnIndex) {
-//		case 0:
-//			s = rowIndex;
-//			break;
-//		case 1:
-//			s = _junctions.get(rowIndex).getTime();
-//			break;
-//		case 2:
-//			s = _junctions.get(rowIndex).getPriority();
-//			break;
-//		}
-//		return s;
+		Vehicle veh = _vehicles.get(rowIndex);
+		Object s = null;
+		switch (columnIndex) {
+		case 0:
+			s = veh.getId();
+			break;
+		case 1:
+			s = veh.getLocation();
+			break;
+		case 2:
+			s = veh.getItinerary();
+			break;
+		case 3:
+			s = veh.getContClass();
+			break;
+		case 4:
+			s = veh.getMaxSpeed();
+			break;
+			
+		case 5: 
+			s = veh.getSpeed();
+			break;
+		case 6: 
+			s = veh.getTotalCont();
+			break;
+		case 7:
+			s = veh.getTotalDist();
+			break;
+		}
+		return s;
 	}
 
 	@Override
@@ -81,15 +101,18 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	}
 
 	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
-		// TODO
+		_vehicles = map​.getVehicles();
+		fireTableStructureChanged();
 	}
 
 	public void onAdvanceEnd(RoadMap map​, List<Event> events​, int time​) {
-
+		_vehicles = map​.getVehicles();
+		fireTableStructureChanged();
 	}
 
 	public void onEventAdded(RoadMap map​, List<Event> events​, Event e, int time​) {
-
+		_vehicles = map​.getVehicles();
+		fireTableStructureChanged();
 	}
 
 	public void onReset(RoadMap map​, List<Event> events​, int time​) {

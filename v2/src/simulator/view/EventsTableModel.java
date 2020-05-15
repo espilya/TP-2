@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -7,22 +8,25 @@ import javax.swing.table.AbstractTableModel;
 import extra.jtable.EventEx;
 import simulator.control.Controller;
 import simulator.model.Event;
+import simulator.model.Junction;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
+import simulator.model.TrafficSimulator;
+import simulator.model.Vehicle;
 
 public class EventsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<EventEx> _events;
+	private List<Event> _events; // should be EventEx
 	private String[] _colNames = { "#", "Time", "Priority" };
 
-	public EventsTableModel() {
-		_events = null;
+	public EventsTableModel(Controller _ctrl) {
+		_events = new ArrayList<Event>();
+		_ctrl.addObserver(this);
 	}
 
-	public EventsTableModel(Controller _ctrl) {
-	}
+	
 
 	public void update() {
 		// observar que si no refresco la tabla no se carga
@@ -31,10 +35,10 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 
 		// We need to notify changes, otherwise the table does not refresh.
 		fireTableDataChanged();
-		;
+		
 	}
 
-	public void setEventsList(List<EventEx> events) {
+	public void setEventsList(List<Event> events) {
 		_events = events;
 		update();
 	}
@@ -77,30 +81,35 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 	// returns the value of a particular cell
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
+		Event event = _events.get(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			s = rowIndex;
 			break;
 		case 1:
-			s = _events.get(rowIndex).getTime();
+			s = event.getTime();
 			break;
 		case 2:
-			s = _events.get(rowIndex).getPriority();
+			s = event.toString();
 			break;
 		}
 		return s;
 	}
 
-	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
+	public void onAdvanceStart(RoadMap map​, List<Event> events, int time​) {
 // TODO
+		_events = events;
+		fireTableStructureChanged();
 	}
 
-	public void onAdvanceEnd(RoadMap map​, List<Event> events​, int time​) {
-
+	public void onAdvanceEnd(RoadMap map​,List<Event> events , int time​) {
+		_events = events;
+		fireTableStructureChanged();
 	}
 
-	public void onEventAdded(RoadMap map​, List<Event> events​, Event e, int time​) {
-
+	public void onEventAdded(RoadMap map​, List<Event> events, Event e, int time​) {
+		_events = events;
+		fireTableStructureChanged();
 	}
 
 	public void onReset(RoadMap map​, List<Event> events​, int time​) {
