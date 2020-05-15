@@ -5,35 +5,34 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
+import simulator.model.Event;
+import simulator.model.RoadMap;
+import simulator.model.TrafficSimObserver;
 
-public class EventsTableModel extends AbstractTableModel {
+public class EventsTableModel extends AbstractTableModel implements TrafficSimObserver {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	private List<EventEx> _events;
 	private String[] _colNames = { "#", "Time", "Priority" };
 
 	public EventsTableModel() {
-		_events=null;
+		_events = null;
 	}
 
 	public EventsTableModel(Controller _ctrl) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void update() {
 		// observar que si no refresco la tabla no se carga
 		// La tabla es la represantación visual de una estructura de datos,
 		// en este caso de un ArrayList, hay que notificar los cambios.
-		
+
 		// We need to notify changes, otherwise the table does not refresh.
-		fireTableDataChanged();;		
+		fireTableDataChanged();
+		;
 	}
-	
+
 	public void setEventsList(List<EventEx> events) {
 		_events = events;
 		update();
@@ -44,9 +43,9 @@ public class EventsTableModel extends AbstractTableModel {
 		return false;
 	}
 
-	//si no pongo esto no coge el nombre de las columnas
+	// si no pongo esto no coge el nombre de las columnas
 	//
-	//this is for the column header
+	// this is for the column header
 	@Override
 	public String getColumnName(int col) {
 		return _colNames[col];
@@ -74,7 +73,7 @@ public class EventsTableModel extends AbstractTableModel {
 	// el índice del arrayList es el número de fila pq en este ejemplo
 	// quiero enumerarlos.
 	//
-	// returns the value of a particular cell 
+	// returns the value of a particular cell
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object s = null;
 		switch (columnIndex) {
@@ -89,5 +88,29 @@ public class EventsTableModel extends AbstractTableModel {
 			break;
 		}
 		return s;
+	}
+
+	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
+// TODO
+	}
+
+	public void onAdvanceEnd(RoadMap map​, List<Event> events​, int time​) {
+
+	}
+
+	public void onEventAdded(RoadMap map​, List<Event> events​, Event e, int time​) {
+
+	}
+
+	public void onReset(RoadMap map​, List<Event> events​, int time​) {
+
+	}
+
+	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
+
+	}
+
+	public void onError(String err​) {
+
 	}
 }

@@ -54,4 +54,10 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
+	@Override
+	public void onLoad(RoadMap map, List<Event> events, int time) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

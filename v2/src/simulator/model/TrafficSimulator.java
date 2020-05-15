@@ -45,8 +45,10 @@ public class TrafficSimulator implements Observable<TrafficSimObserver> {
 			try {
 				copy.get(i).execute(roadMap);
 			} catch (ExistingObjectException | IncorrectObjectException | NonExistingObjectException
-					| IncorrectVariableValueException exc) {
-				exc.printStackTrace();
+					| IncorrectVariableValueException e) {
+				for (TrafficSimObserver o : listObs)
+					o.onError(e.getMessage());
+				e.printStackTrace();
 			}
 			listEvents.remove(copy.get(i));
 			i++;

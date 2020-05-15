@@ -83,9 +83,9 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 			// choose a color for the arrow depending on the traffic light of the road
 			Color arrowColor = _RED_LIGHT_COLOR;
 			int idx = r.getDestJunc().getGreenLightIndex();
-			//if (idx != -1 && r.equals(r.getDestJunc().getInRoads().get(idx))) {
-			//	arrowColor = _GREEN_LIGHT_COLOR;
-			//}
+			if (idx != -1 && r.equals(r.getDestJunc().getInRoads().get(idx))) {
+				arrowColor = _GREEN_LIGHT_COLOR;
+			}
 
 			// choose a color for the road depending on the total contamination, the darker
 			// the
@@ -217,6 +217,7 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onAdvanceStart(RoadMap map, List<Event> events, int time) {
+		
 	}
 
 	@Override
@@ -241,6 +242,12 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 
 	@Override
 	public void onError(String err) {
+	}
+
+	@Override
+	public void onLoad(RoadMap map, List<Event> events, int time) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
