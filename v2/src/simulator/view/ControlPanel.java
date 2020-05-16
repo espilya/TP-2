@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,10 +54,14 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private enum Buttons {
 		MENU, SAVE, LOAD, RUN, STOP, RESET, EXIT, CO2, WEATHER, UNDO;
 	}
+	
+	private enum menuOptions {
+		SAVE, LOAD, RUN, STOP, RESET, EXIT, CO2, WEATHER, UNDO;
+	}
 
 	JToolBar toolBar;
-	private JMenu menu;
-	private JMenuItem load1, save1;
+	private JMenuBar menuBar;
+	private JMenuItem loadM, saveM;
 	private JButton save, load, run, stop, reset, exit, changeCont, changeWeather, undo;
 	private JSpinner tickSpinner;
 	
@@ -65,9 +70,33 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		_ctrl = ctrl;
 		_stopped = true;
 		_file = file;
+		add(createMenu());
 		add(createJTolBar());
 		_ctrl.addObserver(this);
 
+	}
+	
+	public JMenuBar createMenu() {
+		menuBar = new JMenuBar();
+		JMenu menu = new JMenu("MENU");
+		menu.setMnemonic(KeyEvent.VK_M);
+		
+		loadM=new JMenuItem("Load");
+		loadM.setActionCommand(menuOptions.LOAD.name());
+		loadM.setToolTipText("Load a file");
+		loadM.addActionListener(this);
+		loadM.setMnemonic(KeyEvent.VK_O);
+		loadM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 
+				ActionEvent.ALT_MASK));
+
+		saveM = new JMenuItem("Save");
+		saveM.addActionListener(this);
+		
+		menu.add(loadM);
+		menu.add(saveM);
+		menu.setEnabled(true);
+		menuBar.add(menu);
+		return menuBar;
 	}
 
 	public JToolBar createJTolBar() {
@@ -79,26 +108,10 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		tickSpinner.setMaximumSize(new Dimension(80, 40));
 		tickSpinner.setMinimumSize(new Dimension(80, 40));
 		tickSpinner.setPreferredSize(new Dimension(80, 40));
-		// TODO: add editor
-		
-		
-		
-		menu = new JMenu("Menu");
-		load1=new JMenuItem("Load");
-		save1 = new JMenuItem("Save");
 		
 		
 		
 		
-		
-		//load1 = new JMenuItem("Load");
-		//load1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
-		load1.addActionListener(this);
-		//save1 = new JMenuItem("Save");
-		save1.addActionListener(this);
-		
-		menu.add(load1);
-		menu.add(save1);
 		
 		load = new JButton(Buttons.LOAD.name());
 		load.setActionCommand(Buttons.LOAD.name());
@@ -154,7 +167,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		undo.addActionListener(this);
 		undo.setIcon(new ImageIcon("resources/icons/undo.png"));
 
-		toolBar.add(menu);
 		toolBar.add(load);
 		toolBar.add(save);
 		toolBar.addSeparator();
@@ -301,7 +313,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	}
 
 	private void enableToolBar(boolean b) {
-		menu.setEnabled(b);
 		save.setEnabled(b);
 		load.setEnabled(b);
 		run.setEnabled(b);
