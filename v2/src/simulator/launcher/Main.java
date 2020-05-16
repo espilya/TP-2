@@ -41,7 +41,7 @@ import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
 import simulator.view.MainWindow;
 
-public class Main { 
+public class Main {
 
 	private final static Integer _timeLimitDefaultValue = 10;
 	private static int _ticks = -1;
@@ -120,7 +120,7 @@ public class Main {
 	}
 
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
-		if (!line.hasOption("m"))
+		if (line.hasOption("m") && !line.getOptionValue("m").equals("gui"))
 			_outFile = line.getOptionValue("o");
 	}
 
@@ -205,7 +205,7 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new MainWindow(control);
+				new MainWindow(control, _inFile);
 			}
 		});
 	}

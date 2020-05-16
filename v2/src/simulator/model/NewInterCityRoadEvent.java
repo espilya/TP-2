@@ -25,8 +25,8 @@ public class NewInterCityRoadEvent extends NewRoadEvent {
 		}
 		return newroad;
 	}
-	
+	@Override
 	public String toString() {
-		return "New InterCityRoad '" + id + "'";
+		return ("New InterCityRoad '" + id + "'");
 	}
 }

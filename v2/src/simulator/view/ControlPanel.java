@@ -6,9 +6,23 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JToolBar;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -29,20 +43,20 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private int _time;
 	private JFileChooser fc;
 	private boolean _stopped;
+	private String _file;
 
 	private enum Buttons {
-		SAVE, LOAD, CLEAR, RUN, STOP, RESET, EXIT;
+		SAVE, LOAD, RUN, STOP, RESET, EXIT, CO2, WEATHER, UNDO;
 	}
 
 	JToolBar toolBar;
-	private JButton save, load, clear, run, stop, reset, exit;
+	private JButton save, load, run, stop, reset, exit, changeCont, changeWeather, undo;
 	private JSpinner tickSpinner;
 
-
-	public ControlPanel(Controller ctrl) {
+	public ControlPanel(Controller ctrl, String file) {
 		_ctrl = ctrl;
 		_stopped = true;
-		_time = 0;
+		_file = file;
 		add(createJTolBar());
 		_ctrl.addObserver(this);
 
@@ -57,7 +71,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		tickSpinner.setMaximumSize(new Dimension(80, 40));
 		tickSpinner.setMinimumSize(new Dimension(80, 40));
 		tickSpinner.setPreferredSize(new Dimension(80, 40));
-		
+		// TODO: add editor
+
 		load = new JButton(Buttons.LOAD.name());
 		load.setActionCommand(Buttons.LOAD.name());
 		load.setToolTipText("Load");
@@ -68,13 +83,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		save.setActionCommand(Buttons.SAVE.name());
 		save.setToolTipText("Save");
 		save.addActionListener(this);
-		save.setIcon(new ImageIcon("resources/icons/open.png"));
-
-		clear = new JButton(Buttons.CLEAR.name());
-		clear.setActionCommand(Buttons.CLEAR.name());
-		clear.setToolTipText("Clear Text");
-		clear.addActionListener(this);
-		clear.setIcon(new ImageIcon("resources/icons/open.png"));
+		save.setIcon(new ImageIcon("resources/icons/save.png"));
 
 		run = new JButton(Buttons.RUN.name());
 		run.setActionCommand(Buttons.RUN.name());
@@ -92,7 +101,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		reset.setActionCommand(Buttons.RESET.name());
 		reset.setToolTipText("Reset");
 		reset.addActionListener(this);
-		reset.setIcon(new ImageIcon("resources/icons/open.png"));
+		reset.setIcon(new ImageIcon("resources/icons/reset.png"));
 
 		exit = new JButton(Buttons.EXIT.name());
 		exit.setActionCommand(Buttons.EXIT.name());
@@ -100,16 +109,41 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		exit.addActionListener(this);
 		exit.setIcon(new ImageIcon("resources/icons/exit.png"));
 
+		changeCont = new JButton("Change CO2 Class");
+		changeCont.setActionCommand(Buttons.CO2.name());
+		changeCont.setToolTipText("Exit");
+		changeCont.addActionListener(this);
+		changeCont.setIcon(new ImageIcon("resources/icons/co2class.png"));
+
+		changeWeather = new JButton("Change Road Weather");
+		changeWeather.setActionCommand(Buttons.WEATHER.name());
+		changeWeather.setToolTipText("Exit");
+		changeWeather.addActionListener(this);
+		changeWeather.setIcon(new ImageIcon("resources/icons/weather.png"));
+
+		undo = new JButton("UNDO");
+		undo.setActionCommand(Buttons.UNDO.name());
+		undo.setToolTipText("Exit");
+		undo.addActionListener(this);
+		undo.setIcon(new ImageIcon("resources/icons/undo.png"));
+
 		toolBar.add(load);
 		toolBar.add(save);
-		toolBar.add(clear);
+		toolBar.addSeparator();
+		toolBar.add(changeCont);
+		toolBar.add(changeWeather);
+		toolBar.addSeparator();
 		toolBar.add(run);
 		toolBar.add(stop);
-		toolBar.add(reset);
 		toolBar.add(new JLabel("Ticks: "));
 		toolBar.add(tickSpinner);
+		toolBar.addSeparator();
+		toolBar.add(reset);
+		toolBar.add(undo);
+		toolBar.addSeparator();
 		toolBar.add(exit);
-		
+		toolBar.setFloatable(false);
+
 		enableToolBar(true);
 
 		this.fc = new JFileChooser();
@@ -150,10 +184,12 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	public void actionPerformed(ActionEvent e) {
 		if (Buttons.SAVE.name().equals(e.getActionCommand())) {
 			save();
+		} else if (Buttons.WEATHER.name().equals(e.getActionCommand())) {
+			changeWeather();
+		} else if (Buttons.CO2.name().equals(e.getActionCommand())) {
+			changeCO2();
 		} else if (Buttons.LOAD.name().equals(e.getActionCommand())) {
 			load();
-		} else if (Buttons.CLEAR.name().equals(e.getActionCommand())) {
-			clear();
 		} else if (Buttons.RUN.name().equals(e.getActionCommand())) {
 			run();
 		} else if (Buttons.STOP.name().equals(e.getActionCommand())) {
@@ -165,33 +201,86 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		}
 	}
 
+	private void changeWeather() {
+		// TODO
+	}
+
+	private void changeCO2() {
+		// TODO
+	}
+
 	private void save() {
 		int returnVal = fc.showSaveDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
+			// _ctrl. ...
 			// writeFile(file, textArea.getText); // what can be text area
 		}
 	}
 
+	/**
+	 * TODO: load new simulation (ex1.json, ex2.json,..) - OR - load from previous
+	 * saved simulation
+	 */
 	private void load() {
 		int returnVal = fc.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			System.out.println("loading");
-			// String s = readFile(file);
-			// textArea.setText(s); // text area doesnt exit, it should be some info instead
-			// of
+			fc.setCurrentDirectory(new File("resources/examples"));
+			try {
+				InputStream in = new FileInputStream(file);
+				_ctrl.reset();
+				_ctrl.loadEvents(in);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
-	}
-
-	private void clear() {
-
 	}
 
 	private void run() {
 		enableToolBar(false);
 		_stopped = false;
 		run_sim((Integer) tickSpinner.getValue());
+	}
+
+	private void stop() {
+		_stopped = true;
+	}
+
+	private void reset() {
+		_ctrl.reset();
+		InputStream in;
+		try {
+			in = new FileInputStream(_file);
+			_ctrl.loadEvents(in);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		reset.setEnabled(false);
+	}
+
+	private void close() {
+		Object[] Arr = { "Press to close", "Cancel" };
+		ImageIcon icon = new ImageIcon(new ImageIcon("resources/icons/exit.png").getImage().getScaledInstance(40, 40,
+				Image.SCALE_AREA_AVERAGING));
+
+		int i = JOptionPane.showOptionDialog((Frame) SwingUtilities.getWindowAncestor(exit),
+				"Are you sure you want to close the aplication?", "Quit", JOptionPane.YES_NO_OPTION, 0, icon, Arr,
+				Arr[0]);
+		if (i == 0) {
+			System.exit(0);
+		}
+	}
+
+	private void enableToolBar(boolean b) {
+		save.setEnabled(b);
+		load.setEnabled(b);
+		run.setEnabled(b);
+		reset.setEnabled(b);
+		exit.setEnabled(b);
+		changeCont.setEnabled(b);
+		changeWeather.setEnabled(b);
+		undo.setEnabled(b);
 	}
 
 	private void run_sim(int n) {
@@ -212,36 +301,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		} else {
 			enableToolBar(true);
 			_stopped = true;
-		}
-	}
-
-	private void enableToolBar(boolean b) {
-		 save.setEnabled(b);
-		 load.setEnabled(b);
-		 clear.setEnabled(b);
-		 run.setEnabled(b);
-		 reset.setEnabled(b);
-		 exit.setEnabled(b);
-	}
-
-	private void stop() {
-		_stopped = true;
-	}
-
-	private void reset() {
-		_ctrl.reset();
-	}
-
-	private void close() {
-		Object[] Arr = { "Press to close", "Cancel" };
-		ImageIcon icon = new ImageIcon(new ImageIcon("resources/icons/exit.png").getImage().getScaledInstance(40, 40,
-				Image.SCALE_AREA_AVERAGING));
-
-		int i = JOptionPane.showOptionDialog((Frame) SwingUtilities.getWindowAncestor(exit),
-				"Are you sure you want to close the aplication?", "Quit", JOptionPane.YES_NO_OPTION, 0, icon, Arr,
-				Arr[0]);
-		if (i == 0) {
-			System.exit(0);
 		}
 	}
 

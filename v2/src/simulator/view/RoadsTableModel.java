@@ -10,11 +10,10 @@ import simulator.model.Event;
 import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
-import simulator.model.Vehicle;
 
 public class RoadsTableModel extends AbstractTableModel implements TrafficSimObserver {
 	private static final long serialVersionUID = -181580670234522327L;
-	
+
 	private List<Road> _roads;
 	private final String[] _colNames = { "Id", "Length", "Weather", "Max.Speed", "Speed Limit", "Total CO2",
 			"CO2 Limit" };
@@ -61,7 +60,7 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	// returns the value of a particular cell
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Road road = _roads.get(rowIndex);
-		
+
 		Object s = null;
 		switch (columnIndex) {
 		case 0:
@@ -111,11 +110,13 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 	}
 
 	public void onReset(RoadMap map​, List<Event> events​, int time​) {
-
+		_roads = map​.getRoads();
+		fireTableStructureChanged();
 	}
 
 	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
-
+		_roads = map​.getRoads();
+		fireTableStructureChanged();
 	}
 
 	public void onError(String err​) {
@@ -124,8 +125,9 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 
 	@Override
 	public void onLoad(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		_roads = map.getRoads();
+		fireTableStructureChanged();
+
 	}
 
 }

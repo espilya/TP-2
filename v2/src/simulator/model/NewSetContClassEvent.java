@@ -34,7 +34,15 @@ public class NewSetContClassEvent extends Event {
 		}
 	}
 	
+	@Override
 	public String toString() {
-		return "New Contamination class'" + cs + "'";
+		String str = "[";
+		if(cs != null) {
+			for(int i = 0; i < cs.size(); i++) {
+				if(i == 0) str = str + "(" + cs.get(i).getFirst() + "," + cs.get(i).getSecond() + ")";
+				else str = str + ",(" + cs.get(i).getFirst() + "," + cs.get(i).getSecond() + ")";
+			}
+	}
+		return ("New Contamination class'" + str + "'");
 	}
 }

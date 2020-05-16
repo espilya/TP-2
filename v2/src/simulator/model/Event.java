@@ -32,4 +32,6 @@ public abstract class Event implements Comparable<Event> {
 
 	abstract void execute(RoadMap map) throws ExistingObjectException, IncorrectObjectException,
 			NonExistingObjectException, IncorrectVariableValueException;
+	
+	public abstract String toString();
 }

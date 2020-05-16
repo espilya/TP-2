@@ -28,7 +28,14 @@ public class SetWeatherEvent extends Event {
 	}
 	
 	public String toString() {
-		return "SetWeather '" + ws + "'";
+		String str = "[";
+		if(ws != null) {
+			for(int i = 0; i < ws.size(); i++) {
+				if(i == 0) str = str + "(" + ws.get(i).getFirst() + "," + ws.get(i).getSecond() + ")";
+				else str = str + ",(" + ws.get(i).getFirst() + "," + ws.get(i).getSecond() + ")";
+			}
+		}
+		return ("SetWeather '" + str + "'");
 	}
 
 }

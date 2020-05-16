@@ -15,14 +15,12 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 	private static final long serialVersionUID = 2032952707334211174L;
 
 	private List<Junction> _junctions;
-	private final String[] _colNames = {"Id", "Green", "Queues"};
+	private final String[] _colNames = { "Id", "Green", "Queues" };
 
 	public JunctionsTableModel(Controller _ctrl) {
 		_junctions = new ArrayList<Junction>();
 		_ctrl.addObserver(this);
 	}
-
-
 
 	public void update() {
 		// We need to notify changes, otherwise the table does not refresh.
@@ -59,19 +57,20 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 
 	@Override
 	// returns the value of a particular cell
-	public Object getValueAt(int rowIndex, int columnIndex) {
+	public String getValueAt(int rowIndex, int columnIndex) {
 
 		Junction junc = _junctions.get(rowIndex);
-		Object s = null;
+		String s = null;
 		switch (columnIndex) {
 		case 0:
 			s = _junctions.get(rowIndex).getId();
 			break;
 		case 1:
-			s = (junc.getGreenLightIndex() == -1) ? "NONE" : junc.getInRoads().get(junc.getGreenLightIndex());;
+			s = ((junc.getGreenLightIndex() == -1) ? "NONE" : junc.getInRoads().get(junc.getGreenLightIndex()))
+					.toString();
 			break;
 		case 2:
-			s = junc.getInRoads();
+			s = junc.getQueues();
 			break;
 		}
 		return s;
@@ -82,39 +81,46 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
 		_junctions = map​.getJunctions();
 		fireTableStructureChanged();
 	}
+
 	@Override
 	public void onAdvanceEnd(RoadMap map​, List<Event> events​, int time​) {
 		_junctions = map​.getJunctions();
 		fireTableStructureChanged();
 	}
+
 	@Override
 	public void onEventAdded(RoadMap map​, List<Event> events​, Event e, int time​) {
 		_junctions = map​.getJunctions();
 		fireTableStructureChanged();
 	}
+
 	@Override
 	public void onReset(RoadMap map​, List<Event> events​, int time​) {
-
+		_junctions = map​.getJunctions();
+		fireTableStructureChanged();
 	}
+
 	@Override
 	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
-
+		_junctions = map​.getJunctions();
+		fireTableStructureChanged();
 	}
+
 	@Override
 	public void onError(String err​) {
 
 	}
 
-
 	@Override
 	public void onLoad(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		_junctions = map.getJunctions();
+		fireTableStructureChanged();
 	}
 
 }

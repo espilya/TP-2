@@ -20,25 +20,40 @@ public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 8720525028556625831L;
 	private Controller _ctrl;
 
-	public MainWindow(Controller ctrl) {
+	public MainWindow(Controller ctrl, String file) {
 		super("Traffic Simulator");
 		_ctrl = ctrl;
-		initGUI();
+		initGUI(file);
 	}
 
-	private void initGUI() {
-		JPanel mainPanel = new JPanel(new BorderLayout(5, 5));
+	/**
+	 * TODO: <br>
+	 * - Add keyboard input into the tickSpinner <br>
+	 * - Add menuBar at the top of window, next to toolBar <br>
+	 * - Finish with the statusBar <br>
+	 * - Load / Save <br>
+	 * - Undo (Memento Pattern) <br>
+	 * - In events, in the table... We need to check and / or rewrite all Events
+	 * 'toString()' <br>
+	 * - pop-up menus
+	 */
+
+	private void initGUI(String file) {
+		JPanel mainPanel = new JPanel(new BorderLayout());
 		this.setContentPane(mainPanel);
-		mainPanel.add(new ControlPanel(_ctrl), BorderLayout.PAGE_START);
+		mainPanel.add(new ControlPanel(_ctrl, file), BorderLayout.PAGE_START);
 		mainPanel.add(new StatusBar(_ctrl), BorderLayout.PAGE_END);
 
+		// creating panel
 		JPanel viewsPanel = new JPanel(new GridLayout(1, 2));
 		mainPanel.add(viewsPanel, BorderLayout.CENTER);
 
+		// creating panel for tables
 		JPanel tablesPanel = new JPanel();
 		tablesPanel.setLayout(new BoxLayout(tablesPanel, BoxLayout.Y_AXIS));
 		viewsPanel.add(tablesPanel);
 
+		// creating panel for maps
 		JPanel mapsPanel = new JPanel();
 		mapsPanel.setLayout(new BoxLayout(mapsPanel, BoxLayout.Y_AXIS));
 		viewsPanel.add(mapsPanel);
@@ -63,13 +78,15 @@ public class MainWindow extends JFrame {
 		eventsView.setPreferredSize(new Dimension(500, 200));
 		tablesPanel.add(junctionsView);
 
-		// maps
+		// map
 		JPanel mapView = createViewPanel(new MapComponent(_ctrl), "Map");
 		mapView.setPreferredSize(new Dimension(500, 400));
 		mapsPanel.add(mapView);
 
-		// TODO add a map for MapByRoadComponent
-		// ...
+		// mapByRoad
+		JPanel mapViewRoad = createViewPanel(new MapByRoadComponent(_ctrl), "Map by Road");
+		mapViewRoad.setPreferredSize(new Dimension(500, 400));
+		mapsPanel.add(mapViewRoad);
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -82,6 +99,7 @@ public class MainWindow extends JFrame {
 		Border b = BorderFactory.createLineBorder(Color.black, 2);
 		JScrollPane sp = new JScrollPane(c);
 		sp.setBorder(BorderFactory.createTitledBorder(b, title));
+		sp.setPreferredSize(new Dimension(80, 80));
 		p.add(sp);
 		return p;
 	}

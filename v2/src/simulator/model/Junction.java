@@ -161,8 +161,35 @@ public class Junction extends SimulatedObject {
 		return roadList;
 	}
 
-	public List<List<Vehicle>> getQueues() {
-		return listQueue;
+//	public String getVehiclesQueues() {
+////		String 
+////		for (List<Vehicle> queue : listQueue) {
+////			for (Vehicle v : queue) {
+////				
+////			}
+////		}
+//		
+//	}
+
+	public String getQueues() {
+
+		String str = "";
+		for (int i = 0; i < listQueue.size(); i++) {
+			str += roadList.get(i).getId();
+			str += ":[";
+			for (Vehicle v : listQueue.get(i)) {
+				str += v.getId();
+				str += ",";
+			}
+			if (listQueue.get(i).size() != 0) {
+				char[] strChars = str.toCharArray();
+				strChars[str.length()-1] = ']';
+				str = String.valueOf(strChars);
+			} else
+				str += " ]";
+			str += "  ";
+		}
+		return str;
 	}
 
 }

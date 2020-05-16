@@ -33,8 +33,9 @@ public class NewVehicleEvent extends Event {
 		map.addVehicle(newVehicle);
 	}
 	
+	@Override
 	public String toString() {
-		return "New Vehicle '" + id + "'";
+		return ("New Vehicle '" + id + "'");
 	}
 
 }

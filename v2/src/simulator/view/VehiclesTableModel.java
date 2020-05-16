@@ -7,7 +7,6 @@ import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
-import simulator.model.Junction;
 import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
@@ -60,7 +59,7 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	@Override
 	// returns the value of a particular cell
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		
+
 		// TODO
 		Vehicle veh = _vehicles.get(rowIndex);
 		Object s = null;
@@ -80,11 +79,11 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 		case 4:
 			s = veh.getMaxSpeed();
 			break;
-			
-		case 5: 
+
+		case 5:
 			s = veh.getSpeed();
 			break;
-		case 6: 
+		case 6:
 			s = veh.getTotalCont();
 			break;
 		case 7:
@@ -92,12 +91,6 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 			break;
 		}
 		return s;
-	}
-
-	@Override
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
@@ -116,11 +109,13 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 	}
 
 	public void onReset(RoadMap map​, List<Event> events​, int time​) {
-
+		_vehicles = map​.getVehicles();
+		fireTableStructureChanged();
 	}
 
 	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
-
+		_vehicles = map​.getVehicles();
+		fireTableStructureChanged();
 	}
 
 	public void onError(String err​) {
@@ -129,8 +124,9 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	@Override
 	public void onLoad(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
+		_vehicles.clear();
+		fireTableStructureChanged();
+
 	}
 
 }
