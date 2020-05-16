@@ -5,6 +5,8 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,10 +17,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -46,13 +51,16 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private String _file;
 
 	private enum Buttons {
-		SAVE, LOAD, RUN, STOP, RESET, EXIT, CO2, WEATHER, UNDO;
+		MENU, SAVE, LOAD, RUN, STOP, RESET, EXIT, CO2, WEATHER, UNDO;
 	}
 
 	JToolBar toolBar;
+	private JMenu menu;
+	private JMenuItem load1, save1;
 	private JButton save, load, run, stop, reset, exit, changeCont, changeWeather, undo;
 	private JSpinner tickSpinner;
-
+	
+	
 	public ControlPanel(Controller ctrl, String file) {
 		_ctrl = ctrl;
 		_stopped = true;
@@ -72,7 +80,26 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		tickSpinner.setMinimumSize(new Dimension(80, 40));
 		tickSpinner.setPreferredSize(new Dimension(80, 40));
 		// TODO: add editor
-
+		
+		
+		
+		menu = new JMenu("Menu");
+		load1=new JMenuItem("Load");
+		save1 = new JMenuItem("Save");
+		
+		
+		
+		
+		
+		//load1 = new JMenuItem("Load");
+		//load1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
+		load1.addActionListener(this);
+		//save1 = new JMenuItem("Save");
+		save1.addActionListener(this);
+		
+		menu.add(load1);
+		menu.add(save1);
+		
 		load = new JButton(Buttons.LOAD.name());
 		load.setActionCommand(Buttons.LOAD.name());
 		load.setToolTipText("Load");
@@ -127,6 +154,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		undo.addActionListener(this);
 		undo.setIcon(new ImageIcon("resources/icons/undo.png"));
 
+		toolBar.add(menu);
 		toolBar.add(load);
 		toolBar.add(save);
 		toolBar.addSeparator();
@@ -143,7 +171,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		toolBar.addSeparator();
 		toolBar.add(exit);
 		toolBar.setFloatable(false);
-
 		enableToolBar(true);
 
 		this.fc = new JFileChooser();
@@ -198,7 +225,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 			reset();
 		} else if (Buttons.EXIT.name().equals(e.getActionCommand())) {
 			close();
-		}
+		} 
 	}
 
 	private void changeWeather() {
@@ -217,6 +244,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 			// writeFile(file, textArea.getText); // what can be text area
 		}
 	}
+	
 
 	/**
 	 * TODO: load new simulation (ex1.json, ex2.json,..) - OR - load from previous
@@ -273,6 +301,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	}
 
 	private void enableToolBar(boolean b) {
+		menu.setEnabled(b);
 		save.setEnabled(b);
 		load.setEnabled(b);
 		run.setEnabled(b);
