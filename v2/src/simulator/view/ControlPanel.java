@@ -61,7 +61,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 
 	JToolBar toolBar;
 	private JMenuBar menuBar;
-	private JMenuItem loadM, saveM;
+	private JMenuItem loadM, saveM, runM, stopM,  resetM, exitM, changecontM, changeweatherM, undoM;
 	private JButton save, load, run, stop, reset, exit, changeCont, changeWeather, undo;
 	private JSpinner tickSpinner;
 	
@@ -79,6 +79,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	public JMenuBar createMenu() {
 		menuBar = new JMenuBar();
 		JMenu menu = new JMenu("MENU");
+		JMenu changeM = new JMenu("Change");
 		menu.setMnemonic(KeyEvent.VK_M);
 		
 		loadM=new JMenuItem("Load");
@@ -90,10 +91,77 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 				ActionEvent.ALT_MASK));
 
 		saveM = new JMenuItem("Save");
+		saveM.setActionCommand(menuOptions.SAVE.name());
+		saveM.setToolTipText("Save");
+		saveM.setMnemonic(KeyEvent.VK_S);
+		saveM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
 		saveM.addActionListener(this);
+		
+		
+		runM = new JMenuItem("Run");
+		runM.setActionCommand(menuOptions.RUN.name());
+		runM.setToolTipText("Run");
+		runM.setMnemonic(KeyEvent.VK_R);
+		runM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.ALT_MASK));
+		runM.addActionListener(this);
+		
+		
+		stopM = new JMenuItem("Stop");
+		stopM.setActionCommand(menuOptions.STOP.name());
+		stopM.setToolTipText("Stop");
+		stopM.setMnemonic(KeyEvent.VK_C);
+		stopM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.ALT_MASK));
+		stopM.addActionListener(this);
+		
+		resetM = new JMenuItem("Reset");
+		resetM.setActionCommand(menuOptions.RESET.name());
+		resetM.setToolTipText("Reset");
+		resetM.setMnemonic(KeyEvent.VK_L);
+		resetM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.ALT_MASK));
+		resetM.addActionListener(this);
+		
+		exitM = new JMenuItem("Exit");
+		exitM.setActionCommand(menuOptions.EXIT.name());
+		exitM.setToolTipText("Exit");
+		exitM.setMnemonic(KeyEvent.VK_X);
+		exitM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
+		exitM.addActionListener(this);
+		
+		//changeM = new JMenu("Change");
+		//changeM.addActionListener(this);
+		
+		changecontM = new JMenuItem("Change CO2 Class");
+		changecontM.setActionCommand(menuOptions.CO2.name());
+		changecontM.setToolTipText("Exit");
+		changecontM.setMnemonic(KeyEvent.VK_K);
+		changecontM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.ALT_MASK));
+		changecontM.addActionListener(this);
+		
+		changeweatherM = new JMenuItem("Change Road Weather");
+		changeweatherM.setActionCommand(menuOptions.WEATHER.name());
+		changeweatherM.setToolTipText("Exit");
+		changeweatherM.setMnemonic(KeyEvent.VK_W);
+		changeweatherM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.ALT_MASK));
+		changeweatherM.addActionListener(this);
+		
+		undoM = new JMenuItem("Undo");
+		undoM.setActionCommand(menuOptions.UNDO.name());
+		undoM.setToolTipText("Exit");
+		undoM.setMnemonic(KeyEvent.VK_U);
+		undoM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.ALT_MASK));
+		undoM.addActionListener(this);
+		
 		
 		menu.add(loadM);
 		menu.add(saveM);
+		menu.add(runM);
+		menu.add(stopM);
+		menu.add(resetM);
+		menu.add(exitM);
+		menu.add(changeM);
+		changeM.add(changecontM);
+		changeM.add(changeweatherM);
+		menu.add(undoM);
 		menu.setEnabled(true);
 		menuBar.add(menu);
 		return menuBar;
