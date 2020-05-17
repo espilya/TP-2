@@ -123,4 +123,10 @@ public class JunctionsTableModel extends AbstractTableModel implements TrafficSi
 		fireTableStructureChanged();
 	}
 
+	@Override
+	public void onUndo(RoadMap map, List<Event> events, int time) {
+		_junctions = map.getJunctions();
+		fireTableStructureChanged();
+	}
+
 }

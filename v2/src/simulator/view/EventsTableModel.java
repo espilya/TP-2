@@ -101,4 +101,12 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		_events = events;
 		fireTableStructureChanged();
 	}
+
+	@Override
+	public void onUndo(RoadMap map, List<Event> events, int time) {
+		_events = events;
+		fireTableStructureChanged();
+		
+	}
+
 }

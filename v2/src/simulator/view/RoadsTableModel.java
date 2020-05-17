@@ -130,4 +130,10 @@ public class RoadsTableModel extends AbstractTableModel implements TrafficSimObs
 
 	}
 
+	@Override
+	public void onUndo(RoadMap map, List<Event> events, int time) {
+		_roads = map.getRoads();
+		fireTableStructureChanged();
+	}
+
 }

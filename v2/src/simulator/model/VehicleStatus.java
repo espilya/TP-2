@@ -1,5 +1,7 @@
 package simulator.model;
 
-public enum VehicleStatus {
+import java.io.Serializable;
+
+public enum VehicleStatus implements Serializable {
 	PENDING, TRAVELING, WAITING, ARRIVED;
 }

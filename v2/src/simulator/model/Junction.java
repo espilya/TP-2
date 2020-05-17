@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,8 +13,9 @@ import org.json.JSONObject;
 import simulator.exceptions.IncorrectObjectException;
 import simulator.exceptions.IncorrectVariableValueException;
 
-public class Junction extends SimulatedObject {
-
+public class Junction extends SimulatedObject implements Serializable{
+	private static final long serialVersionUID = -1788508912661969090L;
+	
 	private List<Road> roadList;
 	private List<List<Vehicle>> listQueue;
 

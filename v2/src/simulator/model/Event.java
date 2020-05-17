@@ -1,12 +1,15 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import simulator.exceptions.ExistingObjectException;
 import simulator.exceptions.IncorrectObjectException;
 import simulator.exceptions.IncorrectVariableValueException;
 import simulator.exceptions.NonExistingObjectException;
 
-public abstract class Event implements Comparable<Event> {
-
+public abstract class Event implements Comparable<Event>, Serializable {
+	private static final long serialVersionUID = -2095739029638574261L;
+	
 	protected int _time;
 
 	Event(int time) {

@@ -1,5 +1,7 @@
 package simulator.model;
 
-public enum Weather {
+import java.io.Serializable;
+
+public enum Weather implements Serializable{
 	SUNNY, CLOUDY, RAINY, WINDY, STORM;
 }

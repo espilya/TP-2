@@ -164,16 +164,17 @@ public class Main {
 		_eventsFactory = new BuilderBasedFactory<>(ebs);
 	}
 
-	private static void startBatchMode() throws IOException, NonExistingObjectException {
+	private static void startBatchMode() throws Exception {
 		System.out.println("-Start");
 		Controller control = null;
 		TrafficSimulator simulator = new TrafficSimulator();
 		InputStream in = new FileInputStream(new File(_inFile));
-		OutputStream out = _outFile == null ? System.out : new FileOutputStream(new File(_outFile));
+		OutputStream out = (_outFile == null ? System.out : new FileOutputStream(new File(_outFile)));
 		control = new Controller(simulator, _eventsFactory);
 		control.loadEvents(in);
 		control.run(Main._ticks, out);
 		in.close();
+//		out.close();
 		System.out.println("-End");
 	}
 
@@ -185,7 +186,7 @@ public class Main {
 				startBatchMode();
 			else
 				startGUIMode();
-		} catch (NonExistingObjectException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

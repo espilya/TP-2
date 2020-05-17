@@ -129,4 +129,10 @@ public class VehiclesTableModel extends AbstractTableModel implements TrafficSim
 
 	}
 
+	@Override
+	public void onUndo(RoadMap map, List<Event> events, int time) {
+		_vehicles = map.getVehicles();
+		fireTableStructureChanged();
+	}
+
 }

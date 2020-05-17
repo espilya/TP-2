@@ -1,12 +1,15 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import simulator.exceptions.IncorrectVariableValueException;
 import simulator.exceptions.NonExistingObjectException;
 import simulator.misc.Pair;
 
-public class SetWeatherEvent extends Event {
+public class SetWeatherEvent extends Event implements Serializable{
+	private static final long serialVersionUID = -4149498967575804261L;
+
 	List<Pair<String, Weather>> ws;
 
 	public SetWeatherEvent(int time, List<Pair<String, Weather>> ws) {
@@ -26,13 +29,15 @@ public class SetWeatherEvent extends Event {
 			r.setWeather(p.getSecond());
 		}
 	}
-	
+
 	public String toString() {
 		String str = "[";
-		if(ws != null) {
-			for(int i = 0; i < ws.size(); i++) {
-				if(i == 0) str = str + "(" + ws.get(i).getFirst() + "," + ws.get(i).getSecond() + ")";
-				else str = str + ",(" + ws.get(i).getFirst() + "," + ws.get(i).getSecond() + ")";
+		if (ws != null) {
+			for (int i = 0; i < ws.size(); i++) {
+				if (i == 0)
+					str = str + "(" + ws.get(i).getFirst() + "," + ws.get(i).getSecond() + ")";
+				else
+					str = str + ",(" + ws.get(i).getFirst() + "," + ws.get(i).getSecond() + ")";
 			}
 		}
 		return ("SetWeather '" + str + "'");

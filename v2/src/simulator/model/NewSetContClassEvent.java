@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import simulator.exceptions.IncorrectVariableValueException;
@@ -7,7 +8,8 @@ import simulator.exceptions.NonExistingObjectException;
 import simulator.misc.Pair;
 
 //TO DO
-public class NewSetContClassEvent extends Event {
+public class NewSetContClassEvent extends Event implements Serializable{
+	private static final long serialVersionUID = -3813525122982745488L;
 
 	private List<Pair<String, Integer>> cs;
 
@@ -33,16 +35,18 @@ public class NewSetContClassEvent extends Event {
 //			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = "[";
-		if(cs != null) {
-			for(int i = 0; i < cs.size(); i++) {
-				if(i == 0) str = str + "(" + cs.get(i).getFirst() + "," + cs.get(i).getSecond() + ")";
-				else str = str + ",(" + cs.get(i).getFirst() + "," + cs.get(i).getSecond() + ")";
+		if (cs != null) {
+			for (int i = 0; i < cs.size(); i++) {
+				if (i == 0)
+					str = str + "(" + cs.get(i).getFirst() + "," + cs.get(i).getSecond() + ")";
+				else
+					str = str + ",(" + cs.get(i).getFirst() + "," + cs.get(i).getSecond() + ")";
 			}
-	}
+		}
 		return ("New Contamination class'" + str + "'");
 	}
 }

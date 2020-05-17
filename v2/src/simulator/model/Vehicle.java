@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,7 +8,8 @@ import org.json.JSONObject;
 
 import simulator.exceptions.IncorrectVariableValueException;
 
-public class Vehicle extends SimulatedObject {
+public class Vehicle extends SimulatedObject implements Serializable{
+	private static final long serialVersionUID = -2482459511645109242L;
 
 	private List<Junction> iter;
 	private int maxSpeed;
@@ -48,6 +50,7 @@ public class Vehicle extends SimulatedObject {
 	public int getSpeed() {
 		return actualSpeed;
 	}
+
 	public int getMaxSpeed() {
 		return maxSpeed;
 	}
@@ -59,9 +62,11 @@ public class Vehicle extends SimulatedObject {
 	public int getTotalCont() {
 		return totalCont;
 	}
+
 	public int getTotalDist() {
 		return totalDistance;
 	}
+
 	public VehicleStatus getStatus() {
 		return state;
 	}

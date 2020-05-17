@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +13,9 @@ import org.json.JSONObject;
 import simulator.exceptions.ExistingObjectException;
 import simulator.exceptions.NonExistingObjectException;
 
-public class RoadMap {
+public class RoadMap  implements Serializable{
+	private static final long serialVersionUID = -1176558416921793638L;
+	
 	private List<Junction> junctionList;
 	private List<Road> roadList;
 	private List<Vehicle> vehicleList;

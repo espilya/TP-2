@@ -1,8 +1,11 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import simulator.exceptions.IncorrectVariableValueException;
 
-public class NewCityRoadEvent extends NewRoadEvent {
+public class NewCityRoadEvent extends NewRoadEvent implements Serializable{
+	private static final long serialVersionUID = 1598498962842330471L;
 
 	RoadMap roadMap;
 

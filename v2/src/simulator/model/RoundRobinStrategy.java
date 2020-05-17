@@ -1,8 +1,10 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RoundRobinStrategy implements LightSwitchingStrategy {
+public class RoundRobinStrategy implements LightSwitchingStrategy, Serializable {
+	private static final long serialVersionUID = -4848749141407022396L;
 
 	int timeSlot;
 

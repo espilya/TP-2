@@ -1,8 +1,11 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import simulator.exceptions.IncorrectVariableValueException;
 
-public class InterCityRoad extends Road {
+public class InterCityRoad extends Road implements Serializable{
+	private static final long serialVersionUID = -9147848594275538822L;
 
 	InterCityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length,
 			Weather weather) throws IncorrectVariableValueException {

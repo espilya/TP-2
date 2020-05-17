@@ -286,4 +286,10 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 
 	}
 
+	@Override
+	public void onUndo(RoadMap map, List<Event> events, int time) {
+		update(map);
+		
+	}
+
 }

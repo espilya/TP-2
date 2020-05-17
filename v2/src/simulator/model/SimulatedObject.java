@@ -1,13 +1,14 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import simulator.exceptions.IncorrectVariableValueException;
 
-import java.util.List;
-
-public abstract class SimulatedObject {
-
+public abstract class SimulatedObject  implements Serializable{
+	private static final long serialVersionUID = 8939464864949307182L;
+	
 	protected String _id;
 
 	SimulatedObject(String id) {
@@ -18,7 +19,6 @@ public abstract class SimulatedObject {
 		return _id;
 	}
 
-	@Override
 	public String toString() {
 		return _id;
 	}

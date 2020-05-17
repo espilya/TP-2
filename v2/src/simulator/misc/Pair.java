@@ -1,6 +1,10 @@
 package simulator.misc;
 
-public class Pair<T1, T2> {
+import java.io.Serializable;
+
+public class Pair<T1, T2> implements Serializable{
+	private static final long serialVersionUID = -8234187009941969130L;
+	
 	private T1 _first;
 	private T2 _second;
 

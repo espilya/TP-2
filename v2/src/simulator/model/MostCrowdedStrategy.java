@@ -1,8 +1,11 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MostCrowdedStrategy implements LightSwitchingStrategy {
+public class MostCrowdedStrategy implements LightSwitchingStrategy, Serializable{
+	private static final long serialVersionUID = -8583135040677985077L;
+
 	int timeSlot;
 
 	public MostCrowdedStrategy(int t) {

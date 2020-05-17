@@ -1,17 +1,19 @@
 package simulator.model;
 
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import simulator.exceptions.IncorrectVariableValueException;
 import simulator.misc.SortedArrayList;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+public abstract class Road extends SimulatedObject implements Serializable {
+	private static final long serialVersionUID = -37201419222519488L;
 
-public abstract class Road extends SimulatedObject {
 	protected int length;
 	protected int contLimit;
 	protected int contTotal;
@@ -22,6 +24,19 @@ public abstract class Road extends SimulatedObject {
 	protected Weather weather;
 	protected List<Vehicle> vehicles;
 	private Comparator<Vehicle> _cmp;
+
+	public class SerializableComparator implements Comparator<Vehicle>, Serializable {
+		private static final long serialVersionUID = 1;
+
+		public int compare(Vehicle v1, Vehicle v2) {
+			if (v1.getLocation() == v2.getLocation())
+				return 0;
+			else if (v1.getLocation() < v2.getLocation())
+				return 1;
+			else
+				return -1;
+		}
+	}
 
 	Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length, Weather weather)
 			throws IncorrectVariableValueException {
@@ -46,16 +61,17 @@ public abstract class Road extends SimulatedObject {
 		this.contLimit = contLimit;
 		this.length = length;
 		this.weather = weather;
-		this._cmp = new Comparator<Vehicle>() {
-			public int compare(Vehicle v1, Vehicle v2) {
-				if (v1.getLocation() == v2.getLocation())
-					return 0;
-				else if (v1.getLocation() < v2.getLocation())
-					return 1;
-				else
-					return -1;
-			}
-		};
+		_cmp = new SerializableComparator();
+//		this._cmp = new Comparator<Vehicle>() {
+//			public int compare(Vehicle v1, Vehicle v2) {
+//				if (v1.getLocation() == v2.getLocation())
+//					return 0;
+//				else if (v1.getLocation() < v2.getLocation())
+//					return 1;
+//				else
+//					return -1;
+//			}
+//		};
 		vehicles = new SortedArrayList<Vehicle>(_cmp);
 
 	}
@@ -84,12 +100,12 @@ public abstract class Road extends SimulatedObject {
 		} catch (IncorrectVariableValueException e) {
 			e.printStackTrace();
 		}
-	
+
 		// 2)
 		updateSpeedLimit();
-	
+
 		// 3)
-		for(Vehicle n : vehicles) {
+		for (Vehicle n : vehicles) {
 			try {
 				if (n.getStatus() != VehicleStatus.WAITING)
 					n.setSpeed(calculateVehicleSpeed(n));
@@ -98,7 +114,7 @@ public abstract class Road extends SimulatedObject {
 				e.printStackTrace();
 			}
 		}
-	
+
 		// 4)
 		vehicles.sort(_cmp);
 	}

@@ -1,9 +1,13 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import simulator.exceptions.ExistingObjectException;
 import simulator.exceptions.IncorrectVariableValueException;
 
-public class NewJunctionEvent extends Event {
+public class NewJunctionEvent extends Event implements Serializable{
+	private static final long serialVersionUID = 5763844814921122212L;
+
 	private String id;
 	private LightSwitchingStrategy lsStrategy;
 	private DequeuingStrategy dqStrategy;
@@ -25,7 +29,7 @@ public class NewJunctionEvent extends Event {
 		Junction junc = new Junction(id, lsStrategy, dqStrategy, xCoor, yCoor);
 		map.addJunction(junc);
 	}
-	
+
 	@Override
 	public String toString() {
 		return ("New Junction '" + id + "'");

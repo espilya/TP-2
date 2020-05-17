@@ -1,11 +1,15 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import simulator.exceptions.ExistingObjectException;
 import simulator.exceptions.IncorrectObjectException;
 import simulator.exceptions.IncorrectVariableValueException;
 import simulator.exceptions.NonExistingObjectException;
 
-public abstract class NewRoadEvent extends Event {
+public abstract class NewRoadEvent extends Event implements Serializable{
+	private static final long serialVersionUID = -1820713712661960889L;
+
 	protected String id;
 	protected String srcJun;
 	protected String destJunc;
@@ -28,7 +32,8 @@ public abstract class NewRoadEvent extends Event {
 
 	}
 
-	void execute(RoadMap map) throws IncorrectObjectException, ExistingObjectException, NonExistingObjectException, IncorrectVariableValueException {
+	void execute(RoadMap map) throws IncorrectObjectException, ExistingObjectException, NonExistingObjectException,
+			IncorrectVariableValueException {
 		rMap = map;
 		Junction src = map.getJunction(srcJun);
 		Junction dest = map.getJunction(destJunc);

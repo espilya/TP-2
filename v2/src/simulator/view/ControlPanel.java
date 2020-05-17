@@ -10,7 +10,10 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -54,7 +57,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private enum Buttons {
 		MENU, SAVE, LOAD, RUN, STOP, RESET, EXIT, CO2, WEATHER, UNDO;
 	}
-	
+
 	private enum menuOptions {
 		SAVE, LOAD, RUN, STOP, RESET, EXIT, CO2, WEATHER, UNDO;
 	}
@@ -64,8 +67,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private JMenuItem loadM, saveM;
 	private JButton save, load, run, stop, reset, exit, changeCont, changeWeather, undo;
 	private JSpinner tickSpinner;
-	
-	
+
 	public ControlPanel(Controller ctrl, String file) {
 		_ctrl = ctrl;
 		_stopped = true;
@@ -75,23 +77,22 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		_ctrl.addObserver(this);
 
 	}
-	
+
 	public JMenuBar createMenu() {
 		menuBar = new JMenuBar();
 		JMenu menu = new JMenu("MENU");
 		menu.setMnemonic(KeyEvent.VK_M);
-		
-		loadM=new JMenuItem("Load");
+
+		loadM = new JMenuItem("Load");
 		loadM.setActionCommand(menuOptions.LOAD.name());
 		loadM.setToolTipText("Load a file");
 		loadM.addActionListener(this);
 		loadM.setMnemonic(KeyEvent.VK_O);
-		loadM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 
-				ActionEvent.ALT_MASK));
+		loadM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
 
 		saveM = new JMenuItem("Save");
 		saveM.addActionListener(this);
-		
+
 		menu.add(loadM);
 		menu.add(saveM);
 		menu.setEnabled(true);
@@ -108,11 +109,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		tickSpinner.setMaximumSize(new Dimension(80, 40));
 		tickSpinner.setMinimumSize(new Dimension(80, 40));
 		tickSpinner.setPreferredSize(new Dimension(80, 40));
-		
-		
-		
-		
-		
+
 		load = new JButton(Buttons.LOAD.name());
 		load.setActionCommand(Buttons.LOAD.name());
 		load.setToolTipText("Load");
@@ -189,36 +186,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		return toolBar;
 	}
 
-	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
-		_map = map​;
-		_time = time​;
-	}
-
-	public void onAdvanceEnd(RoadMap map​, List<Event> events​, int time​) {
-		_map = map​;
-		_time = time​;
-	}
-
-	public void onEventAdded(RoadMap map​, List<Event> events​, Event e, int time​) {
-		_map = map​;
-		_time = time​;
-	}
-
-	public void onReset(RoadMap map​, List<Event> events​, int time​) {
-		_map = map​;
-		_time = time​;
-	}
-
-	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
-		_map = map​;
-		_time = time​;
-	}
-
-	public void onError(String err​) {
-		JOptionPane.showMessageDialog((Frame) SwingUtilities.getWindowAncestor(this), err​, "ERROR",
-				JOptionPane.ERROR_MESSAGE);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (Buttons.SAVE.name().equals(e.getActionCommand())) {
@@ -237,7 +204,17 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 			reset();
 		} else if (Buttons.EXIT.name().equals(e.getActionCommand())) {
 			close();
-		} 
+		} else if (Buttons.CO2.name().equals(e.getActionCommand())) {
+			changeCO2();
+		} else if (Buttons.WEATHER.name().equals(e.getActionCommand())) {
+			changeWeather();
+		} else if (Buttons.UNDO.name().equals(e.getActionCommand())) {
+			undo();
+		}
+	}
+
+	private void undo() {
+		_ctrl.undo();
 	}
 
 	private void changeWeather() {
@@ -252,14 +229,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		int returnVal = fc.showSaveDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			// _ctrl. ...
-			// writeFile(file, textArea.getText); // what can be text area
+			try {
+				OutputStream out = new FileOutputStream(file);
+				_ctrl.saveGame(out);
+				out.close();
+			} catch (IOException e) {
+				// TODO Manage the error with the pop-up windows or other stuff
+				 e.printStackTrace();
+			}
 		}
 	}
-	
 
 	/**
-	 * TODO: load new simulation (ex1.json, ex2.json,..) - OR - load from previous
+	 * Load new simulation (ex1.json, ex2.json,..) - OR - load from previous
 	 * saved simulation
 	 */
 	private void load() {
@@ -267,13 +249,22 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			fc.setCurrentDirectory(new File("resources/examples"));
-			try {
-				InputStream in = new FileInputStream(file);
-				_ctrl.reset();
-				_ctrl.loadEvents(in);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+
+			//
+//			if (isLoadFromPreviousSave) {
+				try {
+					InputStream in = new FileInputStream(file);
+					_ctrl.reset();
+					_ctrl.loadGameFromSave(in);
+				} catch (Exception e) {
+					// TODO Manage the error with the pop-up windows or other stuff
+					e.printStackTrace();
+				}
+//			} else {
+				
+				
+
+//			}
 		}
 	}
 
@@ -317,7 +308,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		load.setEnabled(b);
 		run.setEnabled(b);
 		reset.setEnabled(b);
-		exit.setEnabled(b);
+		exit.setEnabled(b); // always visible or not?
+		stop.setEnabled(!b);
 		changeCont.setEnabled(b);
 		changeWeather.setEnabled(b);
 		undo.setEnabled(b);
@@ -328,7 +320,8 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 			try {
 				_ctrl.run(1);
 			} catch (Exception e) {
-				// TODO show error message
+				onError("Error: " + e.toString() + " More info in console.");
+				e.printStackTrace();
 				_stopped = true;
 				return;
 			}
@@ -344,9 +337,52 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		}
 	}
 
+	public void onAdvanceStart(RoadMap map​, List<Event> events​, int time​) {
+		_map = map​;
+		_time = time​;
+	}
+
+	public void onAdvanceEnd(RoadMap map​, List<Event> events​, int time​) {
+		_map = map​;
+		_time = time​;
+	}
+
+	public void onEventAdded(RoadMap map​, List<Event> events​, Event e, int time​) {
+		_map = map​;
+		_time = time​;
+	}
+
+	public void onReset(RoadMap map​, List<Event> events​, int time​) {
+		_map = map​;
+		_time = time​;
+	}
+
+	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
+		_map = map​;
+		_time = time​;
+	}
+
+	public void onError(String err​) {
+		JOptionPane.showMessageDialog((Frame) SwingUtilities.getWindowAncestor(this), err​, "ERROR",
+				JOptionPane.ERROR_MESSAGE);
+	}
+
 	@Override
 	public void onLoad(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
+		_map = map;
+		_time = time;
+
+	}
+
+	@Override
+	public void onUndo(RoadMap map, List<Event> events, int time) {
+		_map = map;
+		_time = time;
+		if (time == 0) {
+			undo.setEnabled(false);
+			reset.setEnabled(true);
+			stop.setEnabled(false);
+		}
 
 	}
 

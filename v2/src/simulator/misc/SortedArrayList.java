@@ -1,15 +1,14 @@
 package simulator.misc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 
-public class SortedArrayList<E> extends ArrayList<E> {
+public class SortedArrayList<E> extends ArrayList<E> implements Serializable {
+	private static final long serialVersionUID = -1532196368754600340L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Comparator<E> _cmp;
 
 	public SortedArrayList(Comparator<E> cmp) {
@@ -52,7 +51,7 @@ public class SortedArrayList<E> extends ArrayList<E> {
 		return true;
 	}
 
-	@Override 
+	@Override
 	public void add(int index, E element) {
 		throw new UnsupportedOperationException("Cannot insert to a sorted list");
 	}
@@ -66,5 +65,7 @@ public class SortedArrayList<E> extends ArrayList<E> {
 	public E set(int index, E element) {
 		throw new UnsupportedOperationException("Cannot set an element in a sorted list");
 	}
+	
+	
 
 }
