@@ -108,7 +108,7 @@ public class Controller {
 		trafficSim.removeObserver(o);
 	}
 
-	void addEvent(Event e) {
+	public void addEvent(Event e) {
 		trafficSim.addEvent(e);
 	}
 

@@ -29,14 +29,14 @@ public class MainWindow extends JFrame {
 	/**
 	 * TODO: <br>
 	 * - Add keyboard input into the tickSpinner. <br>
-	 * - Complete menuBar. <br>
+	 * + Complete menuBar. <br>
 	 * - Finish with the statusBar. <br>
 	 * + Load / Save <br>
 	 * + Undo (Memento Pattern) <br>
 	 * - In events, in the table... We need to check and / or rewrite all Events
-	 * 'toString()'. Our output in some tables is not like in the teacher
+	 * + 'toString()'. Our output in some tables is not like in the teacher
 	 * example<br>
-	 * - CO2 Change & Weather Change menu
+	 * + CO2 Change & Weather Change menu
 	 * - Load option menu. Load previous save or load new simulation
 	 * - Buttons in controlPanel need to be repair. Some time incorrect buttons are enabled.
 	 */

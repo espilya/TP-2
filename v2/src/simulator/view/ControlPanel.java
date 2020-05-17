@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -34,9 +35,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import simulator.control.Controller;
+import simulator.misc.Pair;
 import simulator.model.Event;
+import simulator.model.NewSetContClassEvent;
 import simulator.model.RoadMap;
+import simulator.model.SetWeatherEvent;
 import simulator.model.TrafficSimObserver;
+import simulator.model.Weather;
 
 /**
  * This is the top panel of the window
@@ -310,8 +315,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 			close();
 		} else if (Buttons.CO2.name().equals(e.getActionCommand())) {
 			changeCO2();
-		} else if (Buttons.WEATHER.name().equals(e.getActionCommand())) {
-			changeWeather();
 		} else if (Buttons.UNDO.name().equals(e.getActionCommand())) {
 			undo();
 		}
@@ -322,11 +325,28 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	}
 
 	private void changeWeather() {
-		// TODO
+		ChangeWeather changeWeather = new ChangeWeather((Frame) SwingUtilities.getWindowAncestor(this));
+		int status = changeWeather.open(_map);
+		if(status == 1) {
+			List<Pair<String, Weather>> ws = new ArrayList<Pair<String,Weather>>();
+			Pair<String, Weather> p =
+					new Pair<String,Weather>(changeWeather.getRoad().getId(), changeWeather.getWeather());
+			ws.add(p);
+			_ctrl.addEvent(new SetWeatherEvent(changeWeather.getTicks() + _time, ws));
+		}
+		
 	}
 
 	private void changeCO2() {
-		// TODO
+		ChangeCO2Class changeCont = new ChangeCO2Class((Frame) SwingUtilities.getWindowAncestor(this));
+		int status = changeCont.open(_map);
+		if(status == 1) {
+			List<Pair<String, Integer>> cs = new ArrayList<Pair<String,Integer>>();
+			Pair<String, Integer> p =
+				new Pair<String,Integer>(changeCont.getVehicle().getId(), changeCont.getCO2Class());
+			cs.add(p);
+			_ctrl.addEvent(new NewSetContClassEvent(changeCont.getTicks() + _time, cs));
+		}
 	}
 
 	private void save() {

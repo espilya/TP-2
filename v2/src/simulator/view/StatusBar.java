@@ -36,14 +36,14 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	private void initGUI() {
 		statusBar = new JPanel();
 		statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.X_AXIS));
-
-		ticksLabel = new JLabel("Tick: ");
+		ticksLabel = new JLabel("Time: ",SwingConstants.LEFT);
 		_time = new JLabel("None");
 		_addedEvent = new JLabel("Event: None");
 
 		ticksLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		_time.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		_addedEvent.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+		
 
 		statusBar.add(ticksLabel);
 		statusBar.add(_time);

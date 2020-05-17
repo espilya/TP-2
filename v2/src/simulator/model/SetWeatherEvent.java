@@ -31,7 +31,7 @@ public class SetWeatherEvent extends Event implements Serializable{
 	}
 
 	public String toString() {
-		String str = "[";
+		String str = "";
 		if (ws != null) {
 			for (int i = 0; i < ws.size(); i++) {
 				if (i == 0)

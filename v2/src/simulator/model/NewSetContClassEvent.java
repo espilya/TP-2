@@ -38,7 +38,7 @@ public class NewSetContClassEvent extends Event implements Serializable{
 
 	@Override
 	public String toString() {
-		String str = "[";
+		String str = "";
 		if (cs != null) {
 			for (int i = 0; i < cs.size(); i++) {
 				if (i == 0)
