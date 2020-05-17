@@ -1,4 +1,5 @@
 package simulator.model;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,12 +8,11 @@ import org.json.JSONObject;
 
 import myExceptions.IncorrectValue;
 
-public class Vehicle extends SimulatedObject {
+public class Vehicle extends SimulatedObject implements Serializable{
     private List<Junction> itinerario;
     private int velocidadMax, velocidadAct, localizacion, gradCont, contTotal, distTotalReco;
     private VehicleStatus estado;
     private Road carretera;
-    
     private int cruceActual; 
     private int c; //contaminación 
    
@@ -32,34 +32,34 @@ Vehicle(String id, int maxSpeed, int contClass,List<Junction> itinerary) throws 
         this.contTotal = 0;
         this.distTotalReco = 0;
     }
-	public int getVelocidadMax() {
-		return this.velocidadMax;
-	}
-	public int getVelocidadAct() {
-		return this.velocidadAct;
-	}
-	public int getLocalizacion() {
-		return this.localizacion;
-	}
-	public int getGradCont() {
-		return this.gradCont;
-	}
-	public int getContTotal() {
-		return this.contTotal;
-	}
-	public int getDistTotalReco() {
-		return this.distTotalReco;
-	}
-	public VehicleStatus getEstado(){
-		return this.estado;
-	}
-	public List<Junction> getItinerario(){
-		return this.itinerario;
-	}
-	public Road getCarretera() {
-		return this.carretera;
-		
-	}
+
+    public void setItinerario(List<Junction> itinerario) {
+    	this.itinerario = itinerario;
+    }
+
+    public void setVelocidadMax(int velocidadMax) {
+    	this.velocidadMax = velocidadMax;
+    }
+
+    public void setLocalizacion(int localizacion) {
+    	this.localizacion = localizacion;
+    }
+    
+    public void setContTotal(int contTotal) {
+    	this.contTotal = contTotal;
+    }
+
+    public void setDistTotalReco(int distTotalReco) {
+    	this.distTotalReco = distTotalReco;
+   	}
+
+    public void setEstado(VehicleStatus estado) {
+    	this.estado = estado;
+    }
+
+    public void setCarretera(Road carretera) {
+    	this.carretera = carretera;
+    }
 
     void setSpeed(int s) throws IncorrectValue {
     	if(s < 0) throw new IncorrectValue("La velocidad debe ser positiva");
@@ -155,6 +155,33 @@ Vehicle(String id, int maxSpeed, int contClass,List<Junction> itinerary) throws 
 		
 		return jo;
 	}
-  
+	public int getVelocidadMax() {
+		return this.velocidadMax;
+	}
+	public int getVelocidadAct() {
+		return this.velocidadAct;
+	}
+	public int getLocalizacion() {
+		return this.localizacion;
+	}
+	public int getGradCont() {
+		return this.gradCont;
+	}
+	public int getContTotal() {
+		return this.contTotal;
+	}
+	public int getDistTotalReco() {
+		return this.distTotalReco;
+	}
+	public VehicleStatus getEstado(){
+		return this.estado;
+	}
+	public List<Junction> getItinerario(){
+		return this.itinerario;
+	}
+	public Road getCarretera() {
+		return this.carretera;
+		
+	}
 
 }

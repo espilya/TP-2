@@ -128,7 +128,7 @@ public class ChangeWeatherDialogList extends JDialog{
 		okButt = new JButton("Ok");
 		okButt.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent e) { 
-				 if(road.getSelectedIndices() != null  && weather.getSelectedValue() != null) {
+				 if(road.getSelectedValue() != null  && weather.getSelectedValue() != null) {
 					 status = 1;
 					 ChangeWeatherDialogList.this.setVisible(false);
 				 } 

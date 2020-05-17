@@ -1,6 +1,8 @@
 package simulator.model;
 
-public class NewJunctionEvent extends Event{
+import java.io.Serializable;
+
+public class NewJunctionEvent extends Event implements Serializable{
 	protected String id;
 	protected LightSwitchingStrategy lsStrategy;
 	protected DequeuingStrategy dqStrategy;

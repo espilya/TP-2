@@ -1,9 +1,10 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewVehicleEvent extends Event{
+public class NewVehicleEvent extends Event implements Serializable{
 	  protected String id;
 	  protected	List<String> _itinerario;
 	  protected int maxSpeed, gradCont;

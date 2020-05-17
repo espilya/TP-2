@@ -2,8 +2,6 @@ package simulator.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.util.List;
@@ -20,6 +18,7 @@ import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
 public class StatusBar extends JPanel implements TrafficSimObserver{
+	private static final long serialVersionUID = 1L;
 	private Controller ctrl;
 	
 	private JPanel mainPanel;
@@ -55,17 +54,6 @@ public class StatusBar extends JPanel implements TrafficSimObserver{
 		
 		
 		this.setVisible(true);
-	}
-	
-	private JPanel createPanel(Color color, int x, int y) {
-		JPanel panel;
-		panel = new JPanel();
-		panel.setBackground(color);
-		panel.setAlignmentY(Component.LEFT_ALIGNMENT);
-		panel.setPreferredSize(new Dimension(x, y));
-		panel.setMaximumSize(new Dimension(x, y));
-		panel.setMinimumSize(new Dimension(x, y));
-		return panel;
 	}
 
 	@Override

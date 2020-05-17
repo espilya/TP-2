@@ -131,7 +131,7 @@ public class ChangeCO2ClassDialogList  extends JDialog{
 	okButt = new JButton("Ok");
 	okButt.addActionListener(new ActionListener() {
 		 public void actionPerformed(ActionEvent e) { 
-			 if(vehicle.getSelectedIndices() != null && co2.getSelectedValue() != null) {
+			 if(vehicle.getSelectedValue() != null && co2.getSelectedValue() != null) {
 				 status = 1;
 				 ChangeCO2ClassDialogList.this.setVisible(false);
 			 } 

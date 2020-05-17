@@ -1,8 +1,9 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RoundRobinStrategy implements LightSwitchingStrategy {
+public class RoundRobinStrategy implements LightSwitchingStrategy, Serializable {
 	protected int timeAct;
 	private int roadIndex;
 	public RoundRobinStrategy (int timeSlot){

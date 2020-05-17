@@ -1,6 +1,8 @@
 package simulator.model;
 
-public abstract class Event implements Comparable<Event> {
+import java.io.Serializable;
+
+public abstract class Event implements Comparable<Event>, Serializable {
 
 	protected int _time;
 

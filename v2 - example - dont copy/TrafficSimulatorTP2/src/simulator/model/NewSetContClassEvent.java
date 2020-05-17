@@ -1,11 +1,12 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import myExceptions.IncorrectValue;
 import simulator.misc.Pair;
 
-public class NewSetContClassEvent extends Event{
+public class NewSetContClassEvent extends Event implements Serializable{
 	protected List<Pair<String,Integer>> cs;
 	public NewSetContClassEvent(int time, List<Pair<String,Integer>> cs){
 		super(time);

@@ -1,5 +1,6 @@
 package simulator.control;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -71,11 +72,11 @@ public class Controller {
 		for(int i = 0; i < n; i++) this.TrafficSim.advance();
 	}
 
-	public void saveCtrl() {
+	public void saveCtrl() throws FileNotFoundException, IOException {
 		TrafficSim.saveSim();
 	}
 
-	public void loadSaveCtrl() {
+	public void loadSaveCtrl() throws Exception {
 		TrafficSim.loadSaveSim();
 		
 	}

@@ -1,8 +1,10 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import myExceptions.IncorrectValue;
 
-public class InterCityRoad extends Road {
+public class InterCityRoad extends Road implements Serializable{
 	 private int x;
 	 InterCityRoad(String id, Junction srcJunc, Junction destJunc, int maxSpeed, int contLimit, int length,
 			Weather weather) throws Exception {

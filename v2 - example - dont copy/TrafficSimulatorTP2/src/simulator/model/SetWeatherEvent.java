@@ -1,11 +1,12 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import myExceptions.IncorrectValue;
 import simulator.misc.Pair;
 
-public class SetWeatherEvent extends Event{
+public class SetWeatherEvent extends Event implements Serializable{
 	private List<Pair<String,Weather>> ws;
 	public SetWeatherEvent(int time, List<Pair<String,Weather>> ws){
 		super(time);

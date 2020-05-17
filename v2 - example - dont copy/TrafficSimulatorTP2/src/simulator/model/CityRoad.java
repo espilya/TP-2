@@ -1,8 +1,10 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import myExceptions.IncorrectValue;
 
-public class CityRoad extends Road {
+public class CityRoad extends Road implements Serializable{
 	
 	private int x;
 	

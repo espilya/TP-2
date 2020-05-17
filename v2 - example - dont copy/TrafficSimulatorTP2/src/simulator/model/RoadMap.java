@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class RoadMap {
+public class RoadMap implements Serializable {
 	private List<Junction> listJunc;
 	private List<Road> listRoad;
 	private List<Vehicle> listVeh;
@@ -61,7 +62,7 @@ public class RoadMap {
 					if(r1.getCruceOrigen() == j1 && r1.getCruceDest() == j2) ok = true; //comprubo si hay carretera que conecta
 				}
 			}
-			if(ok == false) throw new Exception(); //si no hay carretera que conecta los junction de listadeitinerario
+			if(ok == false) throw new Exception(); //si no hay carretera que conecta los junction de listadeItinerario
 		}
 		listVeh.add(v);
 		this.mapVeh.put(v.getId(), v);

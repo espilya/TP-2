@@ -1,8 +1,9 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MostCrowdedStrategy implements LightSwitchingStrategy{
+public class MostCrowdedStrategy implements LightSwitchingStrategy, Serializable{
 	private int timeAct;
 	private int roadIndex;
 	private int maxCola = -1;

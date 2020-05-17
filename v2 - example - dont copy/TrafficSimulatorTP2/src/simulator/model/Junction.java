@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ import org.json.JSONObject;
 
 import myExceptions.IncorrectValue;
 
-public class Junction extends SimulatedObject{
+public class Junction extends SimulatedObject {
 	private List<Road> lisRoad;
 	private Map<Junction, Road> MapaCarrSaliente;
 	private List<List<Vehicle>> listaColas;
@@ -39,11 +40,10 @@ public class Junction extends SimulatedObject{
 	    	MapRoadColas = new HashMap<Road,List<Vehicle>>();
 	    	indiLuzVerde = -1;
 	    	indUltimoVerde = 0;
-			
 	}
 	
-	// añade r al final de la lista de carreteras entrantes
-	//  y la añade al final de la lista de colas
+	// a帽ade r al final de la lista de carreteras entrantes
+	//  y la a帽ade al final de la lista de colas
 	void addIncommingRoad(Road r) throws IncorrectValue {
 		if(!this.equals(r.getCruceDest()))
 		throw new IncorrectValue("Su cruce destino NO!! es igual al cruce actual");
@@ -52,10 +52,10 @@ public class Junction extends SimulatedObject{
 		this.listaColas.add(listV);
 		this.MapRoadColas.put(r, listV);
 	}
-	// aé¦»de el par (j,r) al mapa de carreteras salientes,
+	// a茅娄禄de el par (j,r) al mapa de carreteras salientes,
 	//donde j es el cruce destino de la carretera r. Tienes que comprobar que ninguna otra
 	//carretera va desde this al cruce j y, que la carretera r, es realmente una carretera
-	//saliente al cruce actual. En otro caso debes lanzar una excepcié«‡.
+	//saliente al cruce actual. En otro caso debes lanzar una excepci茅芦鈥�.
 	void addOutGoingRoad(Road r) throws IncorrectValue {
 		for(Road road : lisRoad) {
 			if(road.getCruceDest().equals(r.getCruceDest()))
@@ -76,8 +76,8 @@ public class Junction extends SimulatedObject{
 	}
 	
 	//devuelve la carretera que va desde el cruce actual al cruce j.
-	//Para esto debes buscar en la lista de carreteras salientes ï¿½ es mejor llevar actualizado
-	//siempre el mapa Map<Junction,Road> para hacer la bé·–queda mé†© eficiente.
+	//Para esto debes buscar en la lista de carreteras salientes 茂驴陆 es mejor llevar actualizado
+	//siempre el mapa Map<Junction,Road> para hacer la b茅路鈥搎ueda m茅鈥犅� eficiente.
 	Road roadTo(Junction j) {
 		return this.MapaCarrSaliente.get(j);
 	}
@@ -141,6 +141,30 @@ public class Junction extends SimulatedObject{
 	public int getGreenLightIndex() {
 		// TODO Auto-generated method stub
 		return indiLuzVerde;
+	}
+
+	public Map<Junction, Road> getMapaCarrSaliente() {
+		return MapaCarrSaliente;
+	}
+
+	public List<List<Vehicle>> getListaColas() {
+		return listaColas;
+	}
+
+	public Map<Road, List<Vehicle>> getMapRoadColas() {
+		return MapRoadColas;
+	}
+
+	public int getIndUltimoVerde() {
+		return indUltimoVerde;
+	}
+
+	public LightSwitchingStrategy getLsStrategy() {
+		return lsStrategy;
+	}
+
+	public DequeuingStrategy getDqStrategy() {
+		return dqStrategy;
 	}
 }
 	

@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private final String RUN = "run";
 	private final String STOP = "stop";
 	private final String CLOSE = "close";
-	private final String SAVE = "run";
+	private final String SAVE = "save";
 	private final String LOADSAVE = "loadSave";
 	private final String RESET = "reset";
 	
@@ -585,11 +586,19 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private void save() {
 		enableSaveLoad = true;
 		this.loadSaveButt.setEnabled(enableSaveLoad);
-		this.ctrl.saveCtrl();
+		try {
+			this.ctrl.saveCtrl();
+		} catch (IOException e) {
+			showError(e.getMessage());
+		}
 	}
 	
 	private void loadSave() {
-		this.ctrl.loadSaveCtrl();
+		try {
+			this.ctrl.loadSaveCtrl();
+		} catch (Exception e) {
+			showError(e.getMessage());
+		}
 	}
 
 	private void reset() throws FileNotFoundException {

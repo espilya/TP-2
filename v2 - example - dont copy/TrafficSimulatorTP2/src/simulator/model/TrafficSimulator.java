@@ -1,5 +1,11 @@
 package simulator.model;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONObject;
@@ -13,10 +19,8 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 	protected List<Event> listEvent;
 	protected int timeSim;
 	private List<TrafficSimObserver> listObserver;
-	//para guardar
-	protected List<Event> saveListEvent;
-	private RoadMap saveMap;
 	private int saveTime;
+	
 	
 	 public TrafficSimulator(){
 		this.mapRoad = new RoadMap();
@@ -24,8 +28,8 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 		this.timeSim = 0;
 		this.listObserver = new ArrayList<TrafficSimObserver>();
 		//para guardar
-		this.saveListEvent = new SortedArrayList<Event>();
-		this.saveMap = new RoadMap();
+		//this.saveListEvent = new SortedArrayList<Event>();
+		//this.saveMap = new RoadMap();
 		this.saveTime = 0;
 	}
 	public void addEvent(Event e) {
@@ -97,17 +101,27 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>{
 			this.listObserver.remove(o);
 		
 	}
-	public void saveSim() {
-		this.saveListEvent = listEvent;
-		this.saveMap = mapRoad;
+	public void saveSim() throws FileNotFoundException, IOException {
 		this.saveTime = timeSim;
+	    ObjectOutputStream writeFic = new ObjectOutputStream( 
+	            new FileOutputStream("resources/examples/save.txt"));
+	    writeFic.writeObject(mapRoad);
+	    writeFic.writeObject(listEvent);
+	  
+	    writeFic.close();
 	}
 	
 	//para cargar lo guardado
-	public void loadSaveSim() {
-		this.mapRoad = saveMap;
-		this.timeSim = saveTime;
-		this.listEvent = saveListEvent;
+	@SuppressWarnings("unchecked")
+	public void loadSaveSim() throws Exception {
+		this.timeSim = this.saveTime;
+		mapRoad.reset();
+		ObjectInputStream loadFic = new ObjectInputStream( 
+	      new FileInputStream("resources/examples/saveListEvent.txt"));
+		this.listEvent = (List<Event>) loadFic.readObject();
+		this.mapRoad = (RoadMap) loadFic.readObject();
+
+	    loadFic.close();
 		for(TrafficSimObserver o : this.listObserver)
 			o.onLoad(this.mapRoad, this.listEvent, this.timeSim);
 	}

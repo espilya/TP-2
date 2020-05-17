@@ -1,5 +1,6 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 import myExceptions.IncorrectValue;
 import simulator.misc.SortedArrayList;
 
-public abstract class Road extends SimulatedObject  {
+public abstract class Road extends SimulatedObject {
 	
 	private Junction cruceOrigen, cruceDest;
 	private int longitud, velMax, alarContExcesiva;
@@ -133,12 +134,20 @@ public abstract class Road extends SimulatedObject  {
 		this.contamTotal -= x;
 		if(this.contamTotal < 0) this.contamTotal = 0;
 	}
-
-	/*public int getCO2Limit() {
-		return alarContExcesiva;
-	}*/
 	
 	public Weather getWeather() {
 		return this.condAmbi;
+	}
+
+	public int getLimActVel() {
+		return limActVel;
+	}
+
+	public List<Vehicle> getVehiculos() {
+		return vehiculos;
+	}
+
+	public Comparator<Vehicle> get_cmp() {
+		return _cmp;
 	}
 }

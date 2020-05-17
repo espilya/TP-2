@@ -1,8 +1,10 @@
 package simulator.model;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
-public abstract class SimulatedObject {
+public abstract class SimulatedObject implements Serializable{
 
 	protected String _id;
 

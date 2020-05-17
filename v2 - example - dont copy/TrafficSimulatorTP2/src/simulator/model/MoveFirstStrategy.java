@@ -1,9 +1,10 @@
 package simulator.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveFirstStrategy implements DequeuingStrategy{
+public class MoveFirstStrategy implements DequeuingStrategy, Serializable{
 	private List<Vehicle> lista = new ArrayList<Vehicle>();
 	@Override
 	public List<Vehicle> dequeue(List<Vehicle> q) {

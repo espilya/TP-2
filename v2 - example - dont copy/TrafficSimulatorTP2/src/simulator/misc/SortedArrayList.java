@@ -1,15 +1,12 @@
 package simulator.misc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 
-public class SortedArrayList<E> extends ArrayList<E> {
+public class SortedArrayList<E> extends ArrayList<E> implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Comparator<E> _cmp;
 
 	public SortedArrayList(Comparator<E> cmp) {

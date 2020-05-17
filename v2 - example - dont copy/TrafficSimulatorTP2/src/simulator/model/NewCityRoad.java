@@ -1,6 +1,8 @@
 package simulator.model;
 
-public class NewCityRoad extends NewRoadEvent{
+import java.io.Serializable;
+
+public class NewCityRoad extends NewRoadEvent implements Serializable{
 	
 	public NewCityRoad(int time, String id, String srcJunc, String
 			destJunc, int length, int co2Limit, int maxSpeed, Weather weather)

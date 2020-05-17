@@ -1,6 +1,8 @@
 package simulator.model;
 
-public abstract class NewRoadEvent extends Event{
+import java.io.Serializable;
+
+public abstract class NewRoadEvent extends Event implements Serializable{
 	protected String id;
 	protected String srcJunc, destJunc;
 	protected int length, co2Limit, maxSpeed;
