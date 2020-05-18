@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 
 public class SortedArrayList<E> extends ArrayList<E> implements Serializable {
 	private static final long serialVersionUID = -1532196368754600340L;

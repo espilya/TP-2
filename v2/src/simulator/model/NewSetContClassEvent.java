@@ -47,6 +47,6 @@ public class NewSetContClassEvent extends Event implements Serializable{
 					str = str + ",(" + cs.get(i).getFirst() + "," + cs.get(i).getSecond() + ")";
 			}
 		}
-		return ("New Contamination class'" + str + "'");
+		return ("Change CO2 class: [" + str + "]");
 	}
 }

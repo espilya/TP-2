@@ -91,7 +91,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>, Seriali
 			r.advance(time);
 		}
 		for (TrafficSimObserver o : listObs)
-			o.onAdvanceEnd(roadMap, listEvents, size);
+			o.onAdvanceEnd(roadMap, listEvents, time);
 	}
 
 	public void reset() {
@@ -151,6 +151,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>, Seriali
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void restore(String state) {
 		Trio<RoadMap, List<Event>, Integer> pair;
 		try {

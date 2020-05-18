@@ -29,6 +29,6 @@ public class NewInterCityRoadEvent extends NewRoadEvent implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return ("New InterCityRoad '" + id + "'");
+		return ("New InterCityRoad: '" + id + "'");
 	}
 }

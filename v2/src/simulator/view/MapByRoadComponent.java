@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
@@ -31,8 +30,6 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	private static final Color _BG_COLOR = Color.WHITE;
 	private static final Color _JUNCTION_COLOR = Color.BLUE;
 	private static final Color _JUNCTION_LABEL_COLOR = new Color(200, 100, 0);
-	private static final Color _GREEN_LIGHT_COLOR = Color.GREEN;
-	private static final Color _RED_LIGHT_COLOR = Color.RED;
 
 	private RoadMap _map;
 
@@ -93,12 +90,6 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 			int x2 = getWidth() - 100;
 			int y = (i + 1) * 50;
 
-			// choose a color for the arrow depending on the traffic light of the road
-			Color arrowColor = _RED_LIGHT_COLOR;
-			int idx = r.getDestJunc().getGreenLightIndex();
-			if (idx != -1 && r.equals(r.getDestJunc().getInRoads().get(idx))) {
-				arrowColor = _GREEN_LIGHT_COLOR;
-			}
 
 			// choose a color for the road depending on the total contamination, the darker
 			// the
@@ -119,7 +110,6 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 	}
 
 	private void drawVehicles(Graphics g, Road r, int y) {
-		int i = 0;
 		for (Vehicle v : r.getVehicles()) {
 			if (v.getStatus() != VehicleStatus.ARRIVED) {
 
@@ -140,13 +130,8 @@ public class MapByRoadComponent extends JComponent implements TrafficSimObserver
 				g.drawImage(_car, x - 4, y- 10, 16, 16, this);
 				g.drawString(v.getId(), x, y - 6);
 
-				// climat
 
-				// contamination
-				int c = (int) Math
-						.floor(Math.min((double) r.getContTotal() / (1.0 + (double) r.getContLimit()), 1.0) / 0.19);
 			}
-			i++;
 		}
 	}
 

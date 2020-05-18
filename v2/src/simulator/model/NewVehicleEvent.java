@@ -39,7 +39,7 @@ public class NewVehicleEvent extends Event implements Serializable{
 
 	@Override
 	public String toString() {
-		return ("New Vehicle '" + id + "'");
+		return ("New Vehicle: '" + id + "'");
 	}
 
 }

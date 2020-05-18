@@ -40,7 +40,7 @@ public class SetWeatherEvent extends Event implements Serializable{
 					str = str + ",(" + ws.get(i).getFirst() + "," + ws.get(i).getSecond() + ")";
 			}
 		}
-		return ("SetWeather '" + str + "'");
+		return ("Change Weather: [" + str + "]");
 	}
 
 }

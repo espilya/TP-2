@@ -4,17 +4,24 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 
 import simulator.control.Controller;
+import simulator.view.tables.EventsTableModel;
+import simulator.view.tables.JunctionsTableModel;
+import simulator.view.tables.RoadsTableModel;
+import simulator.view.tables.VehiclesTableModel;
 
 public class MainWindow extends JFrame {
 	private static final long serialVersionUID = 8720525028556625831L;
@@ -29,16 +36,6 @@ public class MainWindow extends JFrame {
 	/**
 	 * TODO: <br>
 	 * - Add keyboard input into the tickSpinner. <br>
-	 * + Complete menuBar. <br>
-	 * - Finish with the statusBar. <br>
-	 * + Load / Save <br>
-	 * + Undo (Memento Pattern) <br>
-	 * - In events, in the table... We need to check and / or rewrite all Events
-	 * + 'toString()'. Our output in some tables is not like in the teacher
-	 * example<br>
-	 * + CO2 Change & Weather Change menu
-	 * - Load option menu. Load previous save or load new simulation
-	 * - Buttons in controlPanel need to be repair. Some time incorrect buttons are enabled.
 	 */
 
 	private void initGUI(String file) {
@@ -93,8 +90,17 @@ public class MainWindow extends JFrame {
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.setMinimumSize(new Dimension(1195, 700));
 		this.pack();
 		this.setVisible(true);
+		addWindowListener();
+
+//		// get "actual size"
+//		this.addComponentListener(new ComponentAdapter() {
+//		    public void componentResized(ComponentEvent componentEvent) {
+//		    	System.out.println(mainPanel.getSize().height + " " +  mainPanel.getSize().width);
+//		    }
+//		});
 	}
 
 	private JPanel createViewPanel(JComponent c, String title) {
@@ -106,4 +112,44 @@ public class MainWindow extends JFrame {
 		p.add(sp);
 		return p;
 	}
+
+	private void addWindowListener() {
+		this.addWindowListener(new WindowListener() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int exit = JOptionPane.showOptionDialog(new JFrame(), "Are you sure you want to exit the application?",
+						"CLOSE", JOptionPane.YES_NO_OPTION, JOptionPane.YES_NO_OPTION, null, null, null);
+				if (exit == 0) {
+					System.exit(0);
+				} else
+					setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+		});
+
+	}
+
 }

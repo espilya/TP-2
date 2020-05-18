@@ -13,9 +13,9 @@ import org.json.JSONObject;
 import simulator.exceptions.ExistingObjectException;
 import simulator.exceptions.NonExistingObjectException;
 
-public class RoadMap  implements Serializable{
+public class RoadMap implements Serializable {
 	private static final long serialVersionUID = -1176558416921793638L;
-	
+
 	private List<Junction> junctionList;
 	private List<Road> roadList;
 	private List<Vehicle> vehicleList;
@@ -45,34 +45,18 @@ public class RoadMap  implements Serializable{
 		Junction src = r.getSource();
 		// i) and ii)
 		if (roadMap.containsKey(r._id))
-			throw new ExistingObjectException("Road '" + r._id + "' already exist in roadMap." );
+			throw new ExistingObjectException("Road '" + r._id + "' already exist in roadMap.");
 		if (!junctionMap.containsKey(dest._id))
-			throw new NonExistingObjectException("Junction '" + dest._id + "' does not exist in junctionMap." );
+			throw new NonExistingObjectException("Junction '" + dest._id + "' does not exist in junctionMap.");
 		if (!junctionMap.containsKey(src._id))
-			throw new NonExistingObjectException("Junction '" + src._id + "' does not exist in junctionMap." );
+			throw new NonExistingObjectException("Junction '" + src._id + "' does not exist in junctionMap.");
 		roadMap.put(r._id, r);
 	}
 
 	void addVehicle(Vehicle v) throws ExistingObjectException, NonExistingObjectException {
 		vehicleList.add(v);
-		// i) 
 		if (vehicleMap.containsKey(v._id))
-			throw new ExistingObjectException("Vehicle '" + v.getId() + "' already exist in junctionMap." );
-
-		
-		//terminar: ii)
-//		List<Junction> j = v.getItinerary();
-//		for (int i = 0; i < j.size() - 1; i++) {
-//
-//			boolean ok = false;
-//			for (Road r : roadList) {
-//				if (!r.getSource().equals(j.get(i)) || !r.getDestination().equals(j.get(i + 1)))
-//					throw new NonExistingObjectException("");
-//			}
-//			if (!ok)
-//				throw new NonExistingObjectException("");
-//		}
-
+			throw new ExistingObjectException("Vehicle '" + v.getId() + "' already exist in junctionMap.");
 		vehicleMap.put(v._id, v);
 	}
 
@@ -125,15 +109,15 @@ public class RoadMap  implements Serializable{
 		for (Road r : roadList)
 			ja2.put(r.report());
 		j.put("roads", ja2);
-		
+
 		for (Vehicle v : vehicleList)
 			ja3.put(v.report());
 		j.put("vehicles", ja3);
-		
+
 		for (Junction ju : junctionList)
 			ja.put(ju.report());
 		j.put("junctions", ja);
-		
+
 		return j;
 	}
 

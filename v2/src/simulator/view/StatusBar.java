@@ -1,5 +1,6 @@
 package simulator.view;
 
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import simulator.model.RoadMap;
 import simulator.model.TrafficSimObserver;
 
 public class StatusBar extends JPanel implements TrafficSimObserver {
+	private static final long serialVersionUID = 7404490899456263501L;
 
 	private Controller _ctrl;
 
@@ -34,17 +36,18 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	}
 
 	private void initGUI() {
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		statusBar = new JPanel();
-		statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.X_AXIS));
-		ticksLabel = new JLabel("Time: ",SwingConstants.LEFT);
+
 		_time = new JLabel("None");
 		_addedEvent = new JLabel("Event: None");
+		ticksLabel = new JLabel("Time: ", SwingConstants.LEFT);
 
-		ticksLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		_time.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		_addedEvent.setAlignmentX(JLabel.LEFT_ALIGNMENT);
-		
+		ticksLabel.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 
+		statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.X_AXIS));
 		statusBar.add(ticksLabel);
 		statusBar.add(_time);
 		statusBar.add(Box.createHorizontalStrut(50));
@@ -79,7 +82,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 
 	public void onRegister(RoadMap map​, List<Event> events​, int time​) {
 		if (!events​.isEmpty())
-			_addedEvent.setText("Event added (" + events​.get(events​.size() - 1).toString() + ")");
+			_addedEvent.setText("New observer (" + events​.get(events​.size() - 1).toString() + ")");
 	}
 
 	public void onError(String err​) {
@@ -96,8 +99,7 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 	public void onUndo(RoadMap map, List<Event> events, int time) {
 		_time.setText(Integer.toString(time));
 		_addedEvent.setText("Undo 1 tick");
-		
-		
+
 	}
 
 }
