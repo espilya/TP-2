@@ -8,6 +8,13 @@ import javax.swing.table.AbstractTableModel;
 import simulator.control.Controller;
 import simulator.model.TrafficSimObserver;
 
+
+
+/**
+ * Class used earlier to implement inheritance for tables: roads, junctions, and vehicles.
+ *
+ * @param <T>
+ */
 public abstract class TableBase<T> extends AbstractTableModel implements TrafficSimObserver {
 	private static final long serialVersionUID = -993463091959701722L;
 

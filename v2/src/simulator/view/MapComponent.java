@@ -252,10 +252,5 @@ public class MapComponent extends JPanel implements TrafficSimObserver {
 		
 	}
 
-	@Override
-	public void onUndo(RoadMap map, List<Event> events, int time) {
-		update(map);
-		
-	}
 
 }

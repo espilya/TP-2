@@ -70,10 +70,4 @@ public class EventsTableModel extends TableBase<Event> {
 		fireTableStructureChanged();
 	}
 
-	@Override
-	public void onUndo(RoadMap map, List<Event> events, int time) {
-		_list = events;
-		fireTableStructureChanged();
-
-	}
 }

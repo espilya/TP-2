@@ -1,19 +1,27 @@
 package simulator.view.tables;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.Junction;
 import simulator.model.RoadMap;
+import simulator.model.TrafficSimObserver;
 
-public class JunctionsTableModel extends TableBase<Junction> {
+public class JunctionsTableModel extends AbstractTableModel implements TrafficSimObserver {
 	private static final long serialVersionUID = 2032952707334211174L;
 
-	static private final String[] colNames ={ "Id", "Green", "Queues" };
+	protected List<Junction> _list;
+
+	static private final String[] _colNames = { "Id", "Green", "Queues" };
 
 	public JunctionsTableModel(Controller _ctrl) {
-		super(colNames, _ctrl);
+		_ctrl.addObserver(this);
+		_list = new ArrayList<>();
+		fireTableStructureChanged();
 	}
 
 	@Override
@@ -85,8 +93,22 @@ public class JunctionsTableModel extends TableBase<Junction> {
 	}
 
 	@Override
-	public void onUndo(RoadMap map, List<Event> events, int time) {
-		_list = map.getJunctions();
+	public String getColumnName(int col) {
+		return _colNames[col];
+	}
+
+	@Override
+	public int getColumnCount() {
+		return _colNames.length;
+	}
+
+	@Override
+	public int getRowCount() {
+		return (_list == null ? 0 : _list.size());
+	}
+
+	public void setEventsList(List<Junction> events) {
+		_list = events;
 		fireTableStructureChanged();
 	}
 

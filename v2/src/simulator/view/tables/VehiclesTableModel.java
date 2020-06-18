@@ -1,21 +1,29 @@
 package simulator.view.tables;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
 
 import simulator.control.Controller;
 import simulator.model.Event;
 import simulator.model.RoadMap;
+import simulator.model.TrafficSimObserver;
 import simulator.model.Vehicle;
 
-public class VehiclesTableModel extends TableBase<Vehicle> {
+public class VehiclesTableModel extends AbstractTableModel implements TrafficSimObserver {
 	private static final long serialVersionUID = 4907758801698460961L;
-	
-	static private final String[] colNames ={ "Id", "Location", "Iterinary", "CO2 Class", "Max. Speed", "Speed", "Total CO2",
-	"Distance" };
-	
+
+	static private final String[] _colNames = { "Id", "Location", "Iterinary", "CO2 Class", "Max. Speed", "Speed",
+			"Total CO2", "Distance" };
+
 	public VehiclesTableModel(Controller _ctrl) {
-		super(colNames, _ctrl);
+		_ctrl.addObserver(this);
+		_list = new ArrayList<>();
+		fireTableStructureChanged();
 	}
+
+	protected List<Vehicle> _list;
 
 	@Override
 	// returns the value of a particular cell
@@ -94,9 +102,23 @@ public class VehiclesTableModel extends TableBase<Vehicle> {
 	}
 
 	@Override
-	public void onUndo(RoadMap map, List<Event> events, int time) {
-		_list = map.getVehicles();
-		fireTableStructureChanged();
-
+	public String getColumnName(int col) {
+		return _colNames[col];
 	}
+
+	@Override
+	public int getColumnCount() {
+		return _colNames.length;
+	}
+
+	@Override
+	public int getRowCount() {
+		return (_list == null ? 0 : _list.size());
+	}
+
+	public void setEventsList(List<Vehicle> events) {
+		_list = events;
+		fireTableStructureChanged();
+	}
+
 }

@@ -9,6 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -18,16 +20,26 @@ import simulator.model.Road;
 import simulator.model.RoadMap;
 import simulator.model.Weather;
 
-public class ChangeWeatherDialog<T1 extends Road, T2> extends OptionsDialog<T1, T2> {
+public class ChangeWeatherDialog extends JDialog {
 	private static final long serialVersionUID = 7325697385390860815L;
 
-
+	protected JPanel _mainPanel, _textPanel, _selectPanel, _buttonPanel;
+	protected DefaultComboBoxModel<Road> firstModel;
+	protected DefaultComboBoxModel<Weather> secondModel;
+	protected JComponent firstList;
+	protected JComponent secondList;
+	protected JSpinner tickSpinner;
+	protected JButton submitButton, cancelButton;
+	protected int status;
+	protected RoadMap _map;
+	
 	public ChangeWeatherDialog(Frame windowAncestor, RoadMap map) {
-		super(windowAncestor, true, map);
-		this.initGUI();
+		super(windowAncestor, true);
+		_map = map;
+		status = 0;
+		initGUI();
 	}
 
-	@Override
 	protected void initGUI() {
 		_mainPanel = new JPanel();
 		_mainPanel.setLayout(new BoxLayout(_mainPanel, BoxLayout.PAGE_AXIS));
@@ -53,7 +65,6 @@ public class ChangeWeatherDialog<T1 extends Road, T2> extends OptionsDialog<T1, 
 		setVisible(false);
 	}
 
-	@Override
 	protected JPanel createTextPanel() {
 		JPanel panel = new JPanel();
 		String text = 
@@ -63,24 +74,22 @@ public class ChangeWeatherDialog<T1 extends Road, T2> extends OptionsDialog<T1, 
 		return panel;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
 	protected JPanel createSelectPanel() {
 		JPanel panel = new JPanel();
 
-		firstModel = new DefaultComboBoxModel<T1>();
-		firstList = new JComboBox<T1>(firstModel);
+		firstModel = new DefaultComboBoxModel<Road>();
+		firstList = new JComboBox<Road>(firstModel);
 		
 		firstModel.removeAllElements();
 		for (Road r : _map.getRoads())
-			firstModel.addElement((T1) r);
+			firstModel.addElement(r);
 
-		secondModel = new DefaultComboBoxModel<T2>();
-		secondModel.addElement((T2) Weather.SUNNY);
-		secondModel.addElement((T2)Weather.CLOUDY);
-		secondModel.addElement((T2)Weather.RAINY);
-		secondModel.addElement((T2)Weather.WINDY);
-		secondModel.addElement((T2)Weather.STORM);
+		secondModel = new DefaultComboBoxModel<Weather>();
+		secondModel.addElement(Weather.SUNNY);
+		secondModel.addElement(Weather.CLOUDY);
+		secondModel.addElement(Weather.RAINY);
+		secondModel.addElement(Weather.WINDY);
+		secondModel.addElement(Weather.STORM);
 		secondList = new JComboBox<>(secondModel);
 
 		tickSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 5000, 1));
@@ -98,7 +107,6 @@ public class ChangeWeatherDialog<T1 extends Road, T2> extends OptionsDialog<T1, 
 		return panel;
 	}
 
-	@Override
 	protected JPanel createButtonPanel() {
 		JPanel panel = new JPanel();
 
@@ -124,26 +132,20 @@ public class ChangeWeatherDialog<T1 extends Road, T2> extends OptionsDialog<T1, 
 		return panel;
 	}
 
-	@Override
 	public int open() {
 		setLocation(250, 150);
 		setVisible(true);
 		return status;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public T1 getFirst() {
-		return (T1) firstModel.getSelectedItem();
+	public Road getFirst() {
+		return (Road) firstModel.getSelectedItem();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public T2 getSecond() {
-		return (T2) secondModel.getSelectedItem();
+	public Weather getSecond() {
+		return (Weather) secondModel.getSelectedItem();
 	}
 
-	@Override
 	public int getTicks() {
 		return (int) tickSpinner.getValue();
 

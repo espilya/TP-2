@@ -1,13 +1,7 @@
 package simulator.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 
@@ -18,7 +12,6 @@ import simulator.exceptions.IncorrectObjectException;
 import simulator.exceptions.IncorrectVariableValueException;
 import simulator.exceptions.NonExistingObjectException;
 import simulator.misc.SortedArrayList;
-import simulator.misc.Trio;
 
 public class TrafficSimulator implements Observable<TrafficSimObserver>, Serializable {
 	private static final long serialVersionUID = -1919698891670845698L;
@@ -131,49 +124,7 @@ public class TrafficSimulator implements Observable<TrafficSimObserver>, Seriali
 		return time;
 	}
 
-	public String backup() {
-		
-		List<Event> events = new ArrayList<Event>();
-		for(Event ev : listEvents) {
-			events.add(ev);
-		}
-		Trio<RoadMap, List<Event>, Integer> pair = new Trio<RoadMap, List<Event>, Integer>(roadMap, events, time);
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
-			oos.writeObject(pair);
-			oos.close();
-			return Base64.getEncoder().encodeToString(baos.toByteArray());
-		} catch (IOException e) {
-			System.out.print("IOException occurred.");
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void restore(String state) {
-		Trio<RoadMap, List<Event>, Integer> pair;
-		try {
-			byte[] data = Base64.getDecoder().decode(state);
-			ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-			pair = (Trio<RoadMap, List<Event>, Integer>) ois.readObject();
-			ois.close();
-			roadMap = pair.getFirst();
-			listEvents.clear();
-			listEvents.addAll(pair.getSecond());
-			time = pair.getThird();
-		} catch (ClassNotFoundException e) {
-			System.out.print("ClassNotFoundException occurred.");
-		} catch (IOException e) {
-			System.out.print("IOException occurred.");
-			e.printStackTrace();
-			for (TrafficSimObserver o : listObs)
-				o.onError("IOException occurred. More info in console");
-		}
-		System.out.print(" occurred.");
-		for (TrafficSimObserver o : listObs)
-			o.onUndo(roadMap, listEvents, time);
-	}
+	
+	
 
 }

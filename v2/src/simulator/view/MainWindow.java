@@ -33,9 +33,23 @@ public class MainWindow extends JFrame {
 		initGUI(file);
 	}
 
-	/**
-	 * TODO: <br>
-	 * - Add keyboard input into the tickSpinner. <br>
+	/*
+	 * - Añadir a la Tool Bar un botón que permita salvar el estado de la
+	 * simulación, y otro botón que permita luego cargar dicho estado y por tanto
+	 * reanudar la simulación en ese estado.
+	 * 
+	 * - Añadir a la Tool Bar un botón "Reset", que limpia todas las tablas, y
+	 * recupera el estado inicial de la tabla de eventos (es decir el contenido
+	 * inicial del fichero que cargó al principio).
+	 * 
+	 * - Añadir un Menú con las mismas funcionalidades de la Tool Bar.
+	 * 
+	 * - Programar genéricos para los modelos de las tablas.
+	 * 
+	 * - Hacer herencia y/o genéricos en los diálogos. Son diálogos prácticamente
+	 * iguales. * Cambiar uno de los dos ComboBox de los diálogos por JList.
+	 * 
+	 * - Cualquier otra extensión que se os ocurra.
 	 */
 
 	private void initGUI(String file) {

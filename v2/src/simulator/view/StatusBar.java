@@ -95,11 +95,4 @@ public class StatusBar extends JPanel implements TrafficSimObserver {
 		_time.setText(Integer.toString(time));
 	}
 
-	@Override
-	public void onUndo(RoadMap map, List<Event> events, int time) {
-		_time.setText(Integer.toString(time));
-		_addedEvent.setText("Undo 1 tick");
-
-	}
-
 }

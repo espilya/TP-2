@@ -20,7 +20,5 @@ public interface TrafficSimObserver extends Serializable{
 	
 	void onLoad(RoadMap map, List<Event> events, int time); 
 	
-	void onUndo(RoadMap map, List<Event> events, int time);
-	
 	
 }

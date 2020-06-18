@@ -120,9 +120,4 @@ public class EventsTableModel extends AbstractTableModel implements TrafficSimOb
 		
 	}
 
-	@Override
-	public void onUndo(RoadMap map, List<Event> events, int time) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -11,6 +11,10 @@ import javax.swing.JSpinner;
 
 import simulator.model.RoadMap;
 
+/**
+ * Class used earlier to implement inheritance for dialogs: CO2Class, Weather.
+ *
+ */
 public abstract class OptionsDialog<T1, T2> extends JDialog {
 	private static final long serialVersionUID = -6344194842352655281L;
 
