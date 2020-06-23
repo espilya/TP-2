@@ -1,0 +1,94 @@
+ {
+ 
+ 
+   "events": 
+  
+  {
+  	  "type" : "set_weather",
+      "data" : {
+          "time"     : 100,
+          "info"     : [ { "road" : "r1", "weather": "SUNNY" }, 
+                         { "road" : "r2", "weather": "STORM" }, 
+	                   ]
+  	  }
+    },
+    {
+      "type" : "set_cont_class",
+      "data" : {
+          "time"     : 50,
+          "info"     : [ { "vehicle" : "v1", "class": 5 }, 
+                         { "vehicle" : "v2", "class": 2 }, 
+                       ]
+      }
+    },
+	{
+      "time": 25,
+      "state": {
+         "roads": [
+            {
+               "speedlimit": 120,
+               "co2": 1952,
+               "weather": "SUNNY",
+               "vehicles": [
+                  "v1",
+                  "v2"
+               ],
+               "id": "r1"
+            },
+            {
+               "speedlimit": 120,
+               "co2": 0,
+               "weather": "SUNNY",
+               "vehicles": [],
+               "id": "r2"
+            }
+         ],
+         "vehicles": [
+            {
+               "distance": 2000,
+               "road": "r1",
+               "co2": 2000,
+               "location": 2000,
+               "id": "v1",
+               "class": 1,
+               "speed": 80,
+               "status": "TRAVELING"
+            },
+            {
+               "distance": 1250,
+               "road": "r1",
+               "co2": 0,
+               "location": 1250,
+               "id": "v2",
+               "class": 0,
+               "speed": 50,
+               "status": "TRAVELING"
+            }
+         ],
+         "junctions": [
+            {
+               "green": "none",
+               "queues": [],
+               "id": "j1"
+            },
+            {
+               "green": "r1",
+               "queues": [{
+                  "road": "r1",
+                  "vehicles": []
+               }],
+               "id": "j2"
+            },
+            {
+               "green": "r2",
+               "queues": [{
+                  "road": "r2",
+                  "vehicles": []
+               }],
+               "id": "j3"
+            }
+         ]
+      }
+   }
+  
+}
