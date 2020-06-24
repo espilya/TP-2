@@ -1,0 +1,5 @@
+Ilya Lapshin. 2A
+
+
+-controlpanel y una clase de dialogo y tabla
+No se como hacer update de la tabla desde fuera

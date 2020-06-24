@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.swing.SwingUtilities;
 
@@ -24,7 +25,6 @@ import simulator.exceptions.NonExistingObjectException;
 import simulator.factories.Builder;
 import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
-import simulator.factories.LessContaminationStrategyBuilder;
 import simulator.factories.MostCrowdedStrategyBuilder;
 import simulator.factories.MoveAllStrategyBuilder;
 import simulator.factories.MoveFirstStrategyBuilder;
@@ -37,7 +37,6 @@ import simulator.factories.SetContClassEventBuilder;
 import simulator.factories.SetWeatherEventBuilder;
 import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
-import simulator.model.LessContaminationStrategy;
 import simulator.model.LightSwitchingStrategy;
 import simulator.model.TrafficSimulator;
 import simulator.view.MainWindow;
@@ -154,7 +153,6 @@ public class Main {
 		lsbs.add(new RoundRobinStrategyBuilder());
 		dqbs.add(new MoveFirstStrategyBuilder());
 		dqbs.add(new MoveAllStrategyBuilder());
-		dqbs.add(new LessContaminationStrategyBuilder());
 		ebs.add(new NewCityRoadEventBuilder());
 		ebs.add(new NewInterCityRoadEventBuilder());
 		ebs.add(new NewVehicleEventBuilder());
@@ -170,14 +168,20 @@ public class Main {
 		System.out.println("-Start");
 		Controller control = null;
 		TrafficSimulator simulator = new TrafficSimulator();
+		RoadsInfoAnalizer infoAnalizer = new RoadsInfoAnalizer();
 		InputStream in = new FileInputStream(new File(_inFile));
 		OutputStream out = (_outFile == null ? System.out : new FileOutputStream(new File(_outFile)));
 		control = new Controller(simulator, _eventsFactory);
+		control.addObserver(infoAnalizer);
 		control.loadEvents(in);
 		control.run(Main._ticks, out);
 		in.close();
 //		out.close();
+		
 		System.out.println("-End");
+		String roadInfo = "[roads_info]\n";
+		roadInfo += infoAnalizer.analizeCrowdedness();
+		System.out.println(roadInfo);
 	}
 
 	private static void start(String[] args) throws IOException {
@@ -227,6 +231,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+ 
 
 	}
 

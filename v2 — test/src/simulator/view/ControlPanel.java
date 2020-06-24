@@ -35,7 +35,6 @@ import simulator.model.TrafficSimObserver;
 import simulator.model.Weather;
 import simulator.view.dialogs.ChangeCO2ClassDialog;
 import simulator.view.dialogs.ChangeWeatherDialog;
-import simulator.view.dialogs.VehiclesSpeedHistoryDialog;
 
 /**
  * This is the top panel of the window
@@ -225,7 +224,7 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 	private void openStats() {
 		VehiclesSpeedHistoryDialog statDialog = new VehiclesSpeedHistoryDialog(
 				(Frame) SwingUtilities.getWindowAncestor(this), _map, _ctrl);
-		statDialog.open();
+		int status = statDialog.open();
 //		if (status == 1) {
 //			List<Pair<String, Integer>> cs = new ArrayList<Pair<String, Integer>>();
 //			Pair<String, Integer> p = new Pair<String, Integer>(statDialog.getFirst().getId(), statDialog.getSecond());
@@ -361,7 +360,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		stop.setEnabled(!b);
 		changeCont.setEnabled(b);
 		changeWeather.setEnabled(b);
-		stats.setEnabled(b);
 
 	}
 
@@ -374,7 +372,6 @@ public class ControlPanel extends JPanel implements TrafficSimObserver, ActionLi
 		stop.setEnabled(!b);
 		changeCont.setEnabled(b);
 		changeWeather.setEnabled(b);
-		stats.setEnabled(b);
 	}
 
 	private void run_sim(int n) {

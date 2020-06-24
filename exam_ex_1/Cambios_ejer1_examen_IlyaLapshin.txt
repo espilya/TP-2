@@ -1,0 +1,9 @@
+Ilya Lapshin. 2A
+
+Cmabios:
+Nuevas clases:
+- LessContaminationStrategy
+- LessContaminationStrategyBuilder
+
+En el main en la linea 157 se anadio: 		
+- dqbs.add(new LessContaminationStrategyBuilder());
